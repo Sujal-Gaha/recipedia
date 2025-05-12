@@ -2,9 +2,7 @@
   "name": "@recipedia/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    
-  },
+  "scripts": {},
   "private": true,
   "dependencies": {
     "axios": "^1.6.0",
@@ -43,6 +41,7 @@
     "eslint-plugin-react-hooks": "5.0.0",
     "jiti": "2.4.2",
     "jsdom": "~22.1.0",
+    "jsonc-eslint-parser": "^2.1.0",
     "nx": "21.0.3",
     "postcss": "8.4.38",
     "prettier": "^2.6.2",
@@ -54,6 +53,10 @@
     "vitest": "^3.0.0"
   },
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "libs/auth",
+    "libs/domain",
+    "libs/contract",
+    "libs/backend-db"
   ]
 }
