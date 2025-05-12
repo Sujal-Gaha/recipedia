@@ -6,6 +6,8 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  */
 export function NxWelcome({ title }: { title: string }) {
+  console.log("hello sujal");
+  
   return (
     <>
       <style
