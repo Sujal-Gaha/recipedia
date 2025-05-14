@@ -1,8 +1,14 @@
 {
-  "name": "@recipedia-v2/source",
+  "name": "@recipedia/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "dev:frontend": "npx nx run frontend:serve",
+    "dev:backend": "npx nx run backend:serve",
+    "build:frontend": "npx nx run frontend:build",
+    "build:backend": "npx nx run backend:build --configuration=production",
+    "build": "yarn build:frontend && yarn build:backend"
+  },
   "private": true,
   "dependencies": {
     "axios": "^1.6.0",

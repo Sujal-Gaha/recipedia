@@ -1,5 +1,5 @@
 {
-  "name": "@recipedia-v2/backend",
+  "name": "@recipedia/backend",
   "version": "0.0.1",
   "private": true,
   "nx": {
