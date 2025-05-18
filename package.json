@@ -15,7 +15,8 @@
     "build:lib-auth": "npx nx run auth:build",
     "build:lib": "yarn build:lib-database && yarn build:lib-auth",
     "build:armageddon": "yarn build && yarn build:lib",
-    "auth:generate": "npx @better-auth/cli@latest generate --config=libs/auth/src/lib/auth --output=libs/database/prisma/schema.prisma"
+    "auth:generate": "npx @better-auth/cli@latest generate --config=libs/auth/src/lib/auth --output=libs/database/prisma/schema.prisma",
+    "auth:migrate": "npx @better-auth/cli@latest migrate --config=libs/auth/src/lib/auth"
   },
   "private": true,
   "dependencies": {
