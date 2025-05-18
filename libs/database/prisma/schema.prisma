@@ -16,7 +16,7 @@ datasource db {
 
 generator zod {
   provider                         = "npx zod-prisma-types"
-  output                           = "../src/generated"
+  output                           = "../src/__generated__"
   prismaClientPath                 = ".prisma/client"
   useMultipleFiles                 = false
   writeBarrelFiles                 = false
