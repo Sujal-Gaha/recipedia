@@ -1,1 +1,4 @@
-export * from './lib/contract.js';
+export * from "./lib/schema";
+
+export * from "./todo/contract";
+export * from "./todo/schema";
