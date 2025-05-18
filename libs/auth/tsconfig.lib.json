@@ -2,12 +2,17 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "rootDir": ".",
+    "rootDir": "src",
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
     "emitDeclarationOnly": false,
-    "types": ["node"],
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"]
   },
-  "include": ["**/*.ts"],
-  "references": []
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../database/tsconfig.lib.json"
+    }
+  ]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "database",
+  "name": "@recipedia/auth",
   "version": "0.0.1",
   "private": true,
   "main": "./dist/index.js",
@@ -15,10 +15,9 @@
     }
   },
   "nx": {
-    "name": "database"
+    "name": "auth"
   },
   "dependencies": {
-    "tslib": "^2.8.1",
-    "@prisma/client": "^6.8.2"
+    "tslib": "^2.3.0"
   }
 }
