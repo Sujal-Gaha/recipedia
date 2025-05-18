@@ -33,6 +33,18 @@ generator zod {
   writeNullishInModelTypes         = false
 }
 
+model Todo {
+  id          String @id @default(cuid())
+  name        String
+  description String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  is_deleted Boolean   @default(false)
+  deleted_at DateTime?
+}
+
 model User {
   id            String    @id
   name          String

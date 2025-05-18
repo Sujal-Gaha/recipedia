@@ -10,6 +10,7 @@
     "build": "yarn build:frontend && yarn build:backend",
     "db:generate": "npx prisma generate --schema=libs/database/prisma/schema.prisma",
     "db:migrate": "npx prisma migrate dev --schema=libs/database/prisma/schema.prisma",
+    "db:migrate-reset": "npx prisma migrate reset --force --schema=libs/database/prisma/schema.prisma",
     "db:push": "npx prisma db push --schema=libs/database/prisma/schema.prisma",
     "build:lib-database": "npx nx run database:build",
     "build:lib-auth": "npx nx run auth:build",
