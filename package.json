@@ -14,12 +14,14 @@
     "build:lib-database": "npx nx run database:build",
     "build:lib-auth": "npx nx run auth:build",
     "build:lib": "yarn build:lib-database && yarn build:lib-auth",
-    "build:armageddon": "yarn build && yarn build:lib"
+    "build:armageddon": "yarn build && yarn build:lib",
+    "auth:generate": "npx @better-auth/cli@latest generate --config=libs/auth/src/lib/auth --output=libs/database/prisma/schema.prisma"
   },
   "private": true,
   "dependencies": {
     "@prisma/client": "^6.8.2",
     "axios": "^1.6.0",
+    "better-auth": "^1.2.8",
     "express": "^4.21.2",
     "react": "19.0.0",
     "react-dom": "19.0.0",
