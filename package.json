@@ -12,7 +12,9 @@
     "db:migrate": "npx prisma migrate dev --schema=libs/database/prisma/schema.prisma",
     "db:push": "npx prisma db push --schema=libs/database/prisma/schema.prisma",
     "build:lib-database": "npx nx run database:build",
-    "build:lib": "yarn build:lib-database"
+    "build:lib-auth": "npx nx run auth:build",
+    "build:lib": "yarn build:lib-database && yarn build:lib-auth",
+    "build:armageddon": "yarn build && yarn build:lib"
   },
   "private": true,
   "dependencies": {
@@ -68,6 +70,7 @@
   },
   "workspaces": [
     "apps/*",
-    "libs/database"
+    "libs/database",
+    "libs/auth"
   ]
 }
