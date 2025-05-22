@@ -13,9 +13,9 @@
     "db:migrate-reset": "npx prisma migrate reset --force --schema=libs/database/src/prisma/schema.prisma",
     "db:push": "npx prisma db push --schema=libs/database/src/prisma/schema.prisma",
     "build:lib-database": "npx nx run database:build",
-    "build:lib-auth": "npx nx run auth:build",
     "build:lib-contract": "npx nx run contract:build",
-    "build:lib": "yarn build:lib-database && yarn build:lib-contract",
+    "build:lib-quasar": "npx nx run quasar:build",
+    "build:lib": "yarn build:lib-database && yarn build:lib-contract && yarn build:lib-quasar",
     "build:armageddon": "yarn build && yarn build:lib"
   },
   "private": true,
@@ -64,7 +64,8 @@
     "packages/*",
     "apps/*",
     "libs/database",
-    "libs/contract"
+    "libs/contract",
+    "libs/quasar"
   ],
   "dependencies": {
     "@prisma/client": "^6.8.2",
