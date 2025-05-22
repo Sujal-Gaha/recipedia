@@ -18,6 +18,8 @@
     "name": "auth"
   },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "better-auth": "^1.2.8",
+    "@recipedia/database": "0.0.1"
   }
 }
