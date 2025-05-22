@@ -2,7 +2,7 @@ import { AppRouteImplementation } from '@ts-rest/express';
 import { todoContract } from '@recipedia/contract';
 import { db } from '@recipedia/database';
 import { StatusCodes } from 'http-status-codes';
-import { handleApiErrorAndRespond } from '../../error-handler';
+import { handleApiErrorAndRespond } from '@recipedia/quasar';
 
 export const createTodo: AppRouteImplementation<
   typeof todoContract.createTodo
@@ -34,7 +34,6 @@ export const createTodo: AppRouteImplementation<
       },
     };
   } catch (e) {
-    console.log('Error while creating todo', e);
     return handleApiErrorAndRespond(e, req);
   }
 };
