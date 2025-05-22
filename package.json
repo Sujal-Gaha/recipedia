@@ -8,10 +8,15 @@
     "build:frontend": "npx nx run frontend:build",
     "build:backend": "npx nx run backend:build --configuration=production",
     "build": "yarn build:frontend && yarn build:backend",
-    "db:generate": "npx prisma generate --schema=libs/database/prisma/schema.prisma",
-    "db:migrate": "npx prisma migrate dev --schema=libs/database/prisma/schema.prisma",
-    "db:migrate-reset": "npx prisma migrate reset --force --schema=libs/database/prisma/schema.prisma",
-    "db:push": "npx prisma db push --schema=libs/database/prisma/schema.prisma"
+    "db:generate": "npx prisma generate --schema=libs/database/src/prisma/schema.prisma",
+    "db:migrate": "npx prisma migrate dev --schema=libs/database/src/prisma/schema.prisma",
+    "db:migrate-reset": "npx prisma migrate reset --force --schema=libs/database/src/prisma/schema.prisma",
+    "db:push": "npx prisma db push --schema=libs/database/src/prisma/schema.prisma",
+    "build:lib-database": "npx nx run database:build",
+    "build:lib-auth": "npx nx run auth:build",
+    "build:lib-contract": "npx nx run contract:build",
+    "build:lib": "yarn build:lib-database && yarn build:lib-contract",
+    "build:armageddon": "yarn build && yarn build:lib"
   },
   "private": true,
   "devDependencies": {
@@ -64,7 +69,9 @@
   "dependencies": {
     "@prisma/client": "^6.8.2",
     "@ts-rest/core": "^3.52.1",
+    "@ts-rest/express": "^3.52.1",
     "express": "^4.21.2",
+    "http-status-codes": "^2.3.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "zod": "^3.25.20"
