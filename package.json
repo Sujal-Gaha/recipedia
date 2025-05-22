@@ -65,7 +65,8 @@
     "apps/*",
     "libs/database",
     "libs/contract",
-    "libs/quasar"
+    "libs/quasar",
+    "libs/auth"
   ],
   "dependencies": {
     "@prisma/client": "^6.8.2",
