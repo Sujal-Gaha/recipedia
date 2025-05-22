@@ -58,7 +58,8 @@
   "workspaces": [
     "packages/*",
     "apps/*",
-    "libs/database"
+    "libs/database",
+    "libs/contract"
   ],
   "dependencies": {
     "@prisma/client": "^6.8.2",
