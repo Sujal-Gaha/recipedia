@@ -63,6 +63,7 @@
   ],
   "dependencies": {
     "@prisma/client": "^6.8.2",
+    "@ts-rest/core": "^3.52.1",
     "express": "^4.21.2",
     "react": "19.0.0",
     "react-dom": "19.0.0",
