@@ -1,19 +1,17 @@
-import { AppRouteImplementation } from '@ts-rest/express';
-import { todoContract } from '@recipedia/contract';
-import { db } from '@recipedia/database';
-import { StatusCodes } from 'http-status-codes';
-import { handleApiErrorAndRespond } from '@recipedia/quasar';
+import { AppRouteImplementation } from "@ts-rest/express";
+import { todoContract } from "@recipedia/contract";
+import { db } from "@recipedia/database";
+import { StatusCodes } from "http-status-codes";
+import { handleApiErrorAndRespond } from "@recipedia/quasar";
 
-export const createTodo: AppRouteImplementation<
-  typeof todoContract.createTodo
-> = async ({ req, body }) => {
+export const createTodo: AppRouteImplementation<typeof todoContract.createTodo> = async ({ req, body }) => {
   try {
     if (!body.name || !body.description) {
       return {
         status: StatusCodes.BAD_REQUEST,
         body: {
           isSuccess: false,
-          message: 'Todo name and description is required',
+          message: "Todo name and description is required",
         },
       };
     }
@@ -29,7 +27,7 @@ export const createTodo: AppRouteImplementation<
       status: StatusCodes.CREATED,
       body: {
         isSuccess: true,
-        message: 'Created Todo Successfully',
+        message: "Created Todo Successfully",
         data: createdTodo,
       },
     };

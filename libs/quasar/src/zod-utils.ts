@@ -1,13 +1,13 @@
-import { z } from 'zod';
-import { BaseError } from './error-handler';
-import { StatusCodes } from 'http-status-codes';
+import { z } from "zod";
+import { BaseError } from "./error-handler";
+import { StatusCodes } from "http-status-codes";
 
 const numFromString = z.string().transform((val) => {
   const num = Number(val);
   if (isNaN(num)) {
     throw new BaseError({
-      message: 'Invalid number',
-      type: 'client',
+      message: "Invalid number",
+      type: "client",
       status: StatusCodes.BAD_REQUEST,
     });
   }
@@ -20,8 +20,8 @@ export function getNumFromString(numAsString: string) {
     return parsed.data;
   } else {
     throw new BaseError({
-      message: 'Invalid number',
-      type: 'client',
+      message: "Invalid number",
+      type: "client",
       status: StatusCodes.BAD_REQUEST,
     });
   }

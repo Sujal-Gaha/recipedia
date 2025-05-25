@@ -1,13 +1,13 @@
-import { betterAuth } from 'better-auth';
-import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { admin } from 'better-auth/plugins';
-import { db } from '@recipedia/database';
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import { admin } from "better-auth/plugins";
+import { db } from "@recipedia/database";
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:1234';
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:4200";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
-    provider: 'postgresql',
+    provider: "postgresql",
   }),
   emailAndPassword: {
     enabled: true,
