@@ -1,23 +1,18 @@
-import { Request, Response, NextFunction } from 'express';
-import { StatusCodes } from 'http-status-codes';
+import { Request, Response, NextFunction } from "express";
+import { StatusCodes } from "http-status-codes";
 
 export type TNextError = {
   message: string;
   status: StatusCodes;
 };
 
-export function errorHandler(
-  err: TNextError,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  console.error(err, 'Caught final exception');
-  res.status(err.status || 500).json({ error: 'Internal server error' });
+export function errorHandler(err: TNextError, req: Request, res: Response, next: NextFunction) {
+  console.error(err, "Caught final exception");
+  res.status(err.status || 500).json({ error: "Internal server error" });
 }
 
 export function notFoundHandler(req: Request, res: Response) {
-  res.status(StatusCodes.NOT_FOUND).json({ error: 'Not found' });
+  res.status(StatusCodes.NOT_FOUND).json({ error: "Not found" });
 }
 
 export function customNext(next: NextFunction, arg?: TNextError) {
@@ -64,19 +59,19 @@ export function handleApiErrorAndRespond(error: unknown, req: Request) {
 
 export class BaseError extends Error {
   status: StatusCodes;
-  type: 'server' | 'client';
+  type: "server" | "client";
 
   constructor({
     message,
     status,
-    type = 'server',
+    type = "server",
   }: {
     message: string;
     status: StatusCodes;
-    type: 'server' | 'client';
+    type: "server" | "client";
   }) {
     super(message);
-    this.name = 'BaseError';
+    this.name = "BaseError";
     this.status = status;
     this.type = type;
   }

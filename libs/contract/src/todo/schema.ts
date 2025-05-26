@@ -1,6 +1,6 @@
-import { TodoSchema } from '@recipedia/database';
-import { PaginationOutputSchema, SuccessSchema } from '../lib/schema';
-import z from 'zod';
+import { TodoSchema } from "@recipedia/database";
+import { PaginationOutputSchema, SuccessSchema } from "../lib/schema";
+import z from "zod";
 
 /** -------- Create Todo -------- */
 export const CreateTodoInputSchema = TodoSchema.pick({
