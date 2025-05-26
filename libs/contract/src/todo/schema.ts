@@ -37,7 +37,6 @@ export type TGetAllTodosOutput = z.infer<typeof GetAllTodosOutputSchema>;
 
 /** -------- Update Todo -------- */
 export const UpdateTodoInputSchema = TodoSchema.pick({
-  id: true,
   name: true,
   description: true,
   is_completed: true,
