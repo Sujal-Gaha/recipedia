@@ -112,3 +112,16 @@ model Verification {
 
   @@map("verification")
 }
+
+model File {
+  id                 String   @id @default(uuid())
+  file_name          String
+  file_path          String
+  file_size_in_bytes Int
+  created_at         DateTime @default(now())
+
+  is_deleted Boolean?  @default(false)
+  deleted_at DateTime?
+
+  @@map("files")
+}
