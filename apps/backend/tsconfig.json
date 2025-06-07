@@ -4,6 +4,15 @@
   "include": [],
   "references": [
     {
+      "path": "../../libs/database"
+    },
+    {
+      "path": "../../libs/contract"
+    },
+    {
+      "path": "../../libs/quasar"
+    },
+    {
       "path": "./tsconfig.app.json"
     }
   ]
