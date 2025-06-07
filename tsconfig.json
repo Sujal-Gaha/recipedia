@@ -11,6 +11,18 @@
     },
     {
       "path": "./apps/frontend"
+    },
+    {
+      "path": "./libs/auth"
+    },
+    {
+      "path": "./libs/database"
+    },
+    {
+      "path": "./libs/contract"
+    },
+    {
+      "path": "./libs/quasar"
     }
   ]
 }
