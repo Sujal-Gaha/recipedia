@@ -4,9 +4,7 @@ import { handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { StatusCodes } from 'http-status-codes';
 
-export const updateTodo: AppRouteImplementation<
-  typeof todoContract.updateTodo
-> = async ({ req, params, body }) => {
+export const updateTodo: AppRouteImplementation<typeof todoContract.updateTodo> = async ({ req, params, body }) => {
   try {
     const todo = await db.todo.findUnique({
       where: {

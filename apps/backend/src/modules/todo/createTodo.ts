@@ -4,9 +4,7 @@ import { db } from '@libs/database';
 import { StatusCodes } from 'http-status-codes';
 import { handleApiErrorAndRespond } from '@libs/quasar';
 
-export const createTodo: AppRouteImplementation<
-  typeof todoContract.createTodo
-> = async ({ req, body }) => {
+export const createTodo: AppRouteImplementation<typeof todoContract.createTodo> = async ({ req, body }) => {
   try {
     const createdTodo = await db.todo.create({
       data: {

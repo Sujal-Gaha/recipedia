@@ -4,9 +4,7 @@ import { handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { StatusCodes } from 'http-status-codes';
 
-export const deleteTodo: AppRouteImplementation<
-  typeof todoContract.deleteTodo
-> = async ({ req, params }) => {
+export const deleteTodo: AppRouteImplementation<typeof todoContract.deleteTodo> = async ({ req, params }) => {
   try {
     const todo = await db.todo.findUnique({
       where: {
