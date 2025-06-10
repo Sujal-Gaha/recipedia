@@ -4,9 +4,7 @@ import { getNumFromString, handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { StatusCodes } from 'http-status-codes';
 
-export const getAllTodos: AppRouteImplementation<
-  typeof todoContract.getAllTodos
-> = async ({ req, query }) => {
+export const getAllTodos: AppRouteImplementation<typeof todoContract.getAllTodos> = async ({ req, query }) => {
   try {
     const pageNum = getNumFromString(query.page);
     const perPageNum = getNumFromString(query.perPage);

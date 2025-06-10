@@ -7,12 +7,7 @@ export type TNextError = {
   status: StatusCodes;
 };
 
-export function errorHandler(
-  err: TNextError,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function errorHandler(err: TNextError, req: Request, res: Response, next: NextFunction) {
   logger.error(err, 'Caught final exception');
   res.status(err.status || 500).json({ error: 'Internal server error' });
 }
@@ -35,8 +30,7 @@ export function notFoundHandler(req: Request, res: Response) {
 
 export function handleApiErrorAndRespond(error: unknown, req: Request) {
   if (error instanceof BaseError) {
-    const baseMessage =
-      error.type === 'server' ? 'Internal Server Error' : 'Client Error';
+    const baseMessage = error.type === 'server' ? 'Internal Server Error' : 'Client Error';
 
     logger.error(
       {
