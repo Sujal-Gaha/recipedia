@@ -4,9 +4,7 @@ import { getNumFromString, handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { StatusCodes } from 'http-status-codes';
 
-export const getAllFiles: AppRouteImplementation<
-  typeof fileContract.getAllFiles
-> = async ({ req, query }) => {
+export const getAllFiles: AppRouteImplementation<typeof fileContract.getAllFiles> = async ({ req, query }) => {
   try {
     const pageNum = getNumFromString(query.page);
     const perPageNum = getNumFromString(query.perPage);
@@ -37,7 +35,7 @@ export const getAllFiles: AppRouteImplementation<
       body: {
         isSuccess: true,
         message: 'Get All Files Successfully',
-        data: files[0] ?? null,
+        data: files,
         pagination: {
           page: pageNum,
           perPage: perPageNum,

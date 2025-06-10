@@ -4,11 +4,11 @@ import {
   CreateFileInputSchema,
   CreateFileResponseSchema,
   DeleteFileResponseSchema,
-  GetFileResponseSchema,
+  GetAllFilesResponseSchema,
+  GetFileByIdResponseSchema,
   UpdateFileInputSchema,
   UpdateFileResponseSchema,
 } from './schema';
-import { GetAllTodosOutputSchema } from '../todo/schema';
 import { z } from 'zod';
 
 const c = initContract();
@@ -32,7 +32,7 @@ export const fileContract = c.router({
     method: 'GET',
     path: `${BASE_API_PATH}/file/getFileById/:id`,
     responses: {
-      200: GetFileResponseSchema,
+      200: GetFileByIdResponseSchema,
       400: ErrorSchema,
       404: ErrorSchema,
       500: ErrorSchema,
@@ -47,7 +47,7 @@ export const fileContract = c.router({
       perPage: z.string(),
     }),
     responses: {
-      200: GetFileResponseSchema,
+      200: GetAllFilesResponseSchema,
       400: ErrorSchema,
       404: ErrorSchema,
       500: ErrorSchema,

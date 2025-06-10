@@ -4,35 +4,7 @@ import { FileSchema } from '../__generated__';
 
 export const MAX_SIZE_IN_BYTES = 10 * 1024 * 1024; // 10MB Limit
 
-export const ALLOWED_MIME_TYPES = new Set([
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'application/pdf',
-]);
-
-export type TFile = z.infer<typeof FileSchema>;
-
-/** -------- Get Files -------- */
-export const GetFilesInputSchema = z.object({});
-export type TGetFilesInput = z.infer<typeof GetFilesInputSchema>;
-
-export const GetFilesResponseSchema = SuccessSchema.extend({
-  data: z.array(FileSchema),
-  pagination: PaginationOutputSchema,
-});
-export type TGetFilesResponse = z.infer<typeof GetFilesResponseSchema>;
-
-/** -------- Get File -------- */
-export const GetFileInputSchema = FileSchema.pick({
-  id: true,
-});
-export type TGetFileInput = z.infer<typeof GetFileInputSchema>;
-
-export const GetFileResponseSchema = SuccessSchema.extend({
-  data: FileSchema,
-});
-export type TGetFileResponse = z.infer<typeof GetFileResponseSchema>;
+export const ALLOWED_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'application/pdf']);
 
 /** -------- Create File -------- */
 export const CreateFileInputSchema = FileSchema.pick({
@@ -46,6 +18,27 @@ export const CreateFileResponseSchema = SuccessSchema.extend({
   data: FileSchema,
 });
 export type TCreateFileResponse = z.infer<typeof CreateFileResponseSchema>;
+
+/** -------- Get All Files -------- */
+export const GetFilesInputSchema = z.object({});
+export type TGetFilesInput = z.infer<typeof GetFilesInputSchema>;
+
+export const GetAllFilesResponseSchema = SuccessSchema.extend({
+  data: z.array(FileSchema),
+  pagination: PaginationOutputSchema,
+});
+export type TGetFilesResponse = z.infer<typeof GetAllFilesResponseSchema>;
+
+/** -------- Get File By Id -------- */
+export const GetFileInputSchema = FileSchema.pick({
+  id: true,
+});
+export type TGetFileInput = z.infer<typeof GetFileInputSchema>;
+
+export const GetFileByIdResponseSchema = SuccessSchema.extend({
+  data: FileSchema,
+});
+export type TGetFileResponse = z.infer<typeof GetFileByIdResponseSchema>;
 
 /** -------- Delete File -------- */
 export const DeleteFileInputSchema = FileSchema.pick({
