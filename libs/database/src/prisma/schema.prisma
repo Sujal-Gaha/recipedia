@@ -167,6 +167,8 @@ model RecipeImage {
 
   recipe Recipe @relation("recipe_image", fields: [recipe_id], references: [id])
 
+  created_at DateTime @default(now())
+
   @@map("recipe_images")
 }
 
@@ -240,6 +242,7 @@ model RecipeReviewVote {
   review RecipeReview @relation("recipe_review_vote", fields: [review_id], references: [id])
 
   created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@unique([user_id, review_id])
   @@map("recipe_review_votes")
@@ -253,6 +256,9 @@ model RecipeStep {
 
   recipe Recipe @relation("recipe_step", fields: [recipe_id], references: [id])
 
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
   @@unique([recipe_id, step_no])
   @@map("recipe_steps")
 }
@@ -264,6 +270,9 @@ model Ingredient {
   image String
 
   variants IngredientVariant[] @relation("ingredient_variant")
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("ingredients")
 }
@@ -278,6 +287,9 @@ model IngredientVariant {
   images            IngredientVariantImage[] @relation("ingredient_variant_image")
   recipeIngredients RecipeIngredient[]       @relation("recipe_ingredient_variant")
 
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
   @@map("ingredient_variants")
 }
 
@@ -288,6 +300,8 @@ model IngredientVariantImage {
   ingredient_variant_id String
 
   ingredient_variant IngredientVariant @relation("ingredient_variant_image", fields: [ingredient_variant_id], references: [id])
+
+  created_at DateTime @default(now())
 
   @@map("ingredient_variant_images")
 }
@@ -302,6 +316,9 @@ model RecipeIngredient {
 
   recipe             Recipe            @relation("recipe_ingredient", fields: [recipe_id], references: [id])
   ingredient_variant IngredientVariant @relation("recipe_ingredient_variant", fields: [ingredient_variant_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("recipe_ingredients")
 }
