@@ -64,6 +64,12 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
+  recipe            Recipe[]           @relation("recipe_user")
+  recipeUpvotes     RecipeUpvote[]     @relation("recipe_upvote_user")
+  recipeFavourites  RecipeFavourite[]  @relation("recipe_favourite_user")
+  recipeReviews     RecipeReview[]     @relation("recipe_review_user")
+  recipeReviewVotes RecipeReviewVote[] @relation("recipe_review_vote_user")
+
   @@map("user")
 }
 
@@ -111,4 +117,191 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+enum RecipeDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum RecipeStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+  DELETED
+}
+
+model Recipe {
+  id               String           @id @default(cuid())
+  title            String
+  slug             String           @unique // eg: title = Ram's Curry Omelete, slug = rams-curry-omelete
+  description      String
+  preparation_time Int // In minutes
+  cook_time        Int // In minutes
+  difficulty       RecipeDifficulty @default(EASY)
+  status           RecipeStatus     @default(DRAFT)
+  is_flagged       Boolean          @default(false)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user_id String
+  user    User   @relation("recipe_user", fields: [user_id], references: [id])
+
+  ingredients RecipeIngredient[] @relation("recipe_ingredient")
+  images      RecipeImage[]      @relation("recipe_image")
+  upvotes     RecipeUpvote[]     @relation("recipe_upvote")
+  favourites  RecipeFavourite[]  @relation("recipe_favourite")
+  reviews     RecipeReview[]     @relation("recipe_review")
+  steps       RecipeStep[]       @relation("recipe_step")
+
+  @@map("recipes")
+}
+
+model RecipeImage {
+  id         String  @id @default(cuid())
+  url        String
+  is_primary Boolean @default(false)
+  recipe_id  String
+
+  recipe Recipe @relation("recipe_image", fields: [recipe_id], references: [id])
+
+  @@map("recipe_images")
+}
+
+model RecipeUpvote {
+  id        String @id @default(cuid())
+  user_id   String
+  recipe_id String
+
+  user   User   @relation("recipe_upvote_user", fields: [user_id], references: [id])
+  recipe Recipe @relation("recipe_upvote", fields: [recipe_id], references: [id])
+
+  created_at DateTime @default(now())
+
+  @@unique([user_id, recipe_id])
+  @@map("recipe_upvotes")
+}
+
+model RecipeFavourite {
+  id        String @id @default(cuid())
+  user_id   String
+  recipe_id String
+
+  user   User   @relation("recipe_favourite_user", fields: [user_id], references: [id])
+  recipe Recipe @relation("recipe_favourite", fields: [recipe_id], references: [id])
+
+  created_at DateTime @default(now())
+
+  @@unique([user_id, recipe_id])
+  @@map("user_favourites")
+}
+
+enum RecipeReviewRatingEnum {
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+}
+
+model RecipeReview {
+  id         String                 @id @default(cuid())
+  user_id    String
+  recipe_id  String
+  rating     RecipeReviewRatingEnum
+  comment    String
+  is_flagged Boolean                @default(false)
+
+  user   User   @relation("recipe_review_user", fields: [user_id], references: [id])
+  recipe Recipe @relation("recipe_review", fields: [recipe_id], references: [id])
+
+  votes RecipeReviewVote[] @relation("recipe_review_vote")
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("recipe_reviews")
+}
+
+enum RecipeReviewVoteType {
+  UPVOTE
+  DOWNVOTE
+}
+
+model RecipeReviewVote {
+  id        String               @id @default(cuid())
+  user_id   String
+  review_id String
+  type      RecipeReviewVoteType
+
+  user   User         @relation("recipe_review_vote_user", fields: [user_id], references: [id])
+  review RecipeReview @relation("recipe_review_vote", fields: [review_id], references: [id])
+
+  created_at DateTime @default(now())
+
+  @@unique([user_id, review_id])
+  @@map("recipe_review_votes")
+}
+
+model RecipeStep {
+  id        String @id @default(cuid())
+  step_no   Int
+  content   String
+  recipe_id String
+
+  recipe Recipe @relation("recipe_step", fields: [recipe_id], references: [id])
+
+  @@unique([recipe_id, step_no])
+  @@map("recipe_steps")
+}
+
+model Ingredient {
+  id    String @id @default(cuid())
+  name  String
+  slug  String @unique
+  image String
+
+  variants IngredientVariant[] @relation("ingredient_variant")
+
+  @@map("ingredients")
+}
+
+model IngredientVariant {
+  id            String @id @default(cuid())
+  name          String
+  ingredient_id String
+
+  ingredient Ingredient @relation("ingredient_variant", fields: [ingredient_id], references: [id])
+
+  images            IngredientVariantImage[] @relation("ingredient_variant_image")
+  recipeIngredients RecipeIngredient[]       @relation("recipe_ingredient_variant")
+
+  @@map("ingredient_variants")
+}
+
+model IngredientVariantImage {
+  id                    String  @id @default(cuid())
+  url                   String
+  is_primary            Boolean @default(false)
+  ingredient_variant_id String
+
+  ingredient_variant IngredientVariant @relation("ingredient_variant_image", fields: [ingredient_variant_id], references: [id])
+
+  @@map("ingredient_variant_images")
+}
+
+model RecipeIngredient {
+  id                    String  @id @default(cuid())
+  recipe_id             String
+  ingredient_variant_id String
+  quantity              Float
+  unit                  String? // eg: 1tbsp, 300ml
+  note                  String?
+
+  recipe             Recipe            @relation("recipe_ingredient", fields: [recipe_id], references: [id])
+  ingredient_variant IngredientVariant @relation("recipe_ingredient_variant", fields: [ingredient_variant_id], references: [id])
+
+  @@map("recipe_ingredients")
 }
