@@ -1,12 +1,18 @@
-import { todoContract } from '@libs/contract';
+import { contract, fileContract, todoContract } from '@libs/contract';
 import { todoRouter } from './todo-route';
 import { createExpressEndpoints } from '@ts-rest/express';
 import { logger } from '@libs/quasar';
+import { router } from 'better-auth/api';
+import { fileRouter } from './file-router';
 
 const routers = [
   {
     contract: todoContract,
     router: todoRouter,
+  },
+  {
+    contract: fileContract,
+    router: fileRouter,
   },
 ];
 
