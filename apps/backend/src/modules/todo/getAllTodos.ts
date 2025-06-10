@@ -1,5 +1,5 @@
 import { todoContract } from '@libs/contract';
-import { db } from '@libs/database';
+import { PrismaTodoRepo } from '@libs/database';
 import { getNumFromString, handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { StatusCodes } from 'http-status-codes';
@@ -9,14 +9,12 @@ export const getAllTodos: AppRouteImplementation<typeof todoContract.getAllTodos
     const pageNum = getNumFromString(query.page);
     const perPageNum = getNumFromString(query.perPage);
 
-    const todos = await db.todo.findMany({
-      skip: (pageNum - 1) * perPageNum,
-      take: perPageNum,
-      orderBy: {
-        created_at: 'desc',
-      },
-      where: {
-        is_deleted: false,
+    const todoRepo = new PrismaTodoRepo();
+
+    const todos = await todoRepo.findMany({
+      data: {
+        page: pageNum,
+        perPage: perPageNum,
       },
     });
 
@@ -30,21 +28,15 @@ export const getAllTodos: AppRouteImplementation<typeof todoContract.getAllTodos
       };
     }
 
-    const total = await db.todo.count();
-    const totalPages = Math.ceil(total / perPageNum);
+    const { data, pagination } = todos;
 
     return {
       status: StatusCodes.OK,
       body: {
+        data,
+        pagination,
         isSuccess: true,
         message: 'Get All Todos Successfully',
-        data: todos,
-        pagination: {
-          page: pageNum,
-          perPage: perPageNum,
-          total,
-          totalPages,
-        },
       },
     };
   } catch (e) {
