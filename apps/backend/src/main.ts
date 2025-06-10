@@ -1,13 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { generateEndPoints } from './routers/merge';
-import {
-  errorHandler,
-  logger,
-  loggerMiddleware,
-  notFoundHandler,
-  env,
-} from '@libs/quasar';
+import { errorHandler, logger, loggerMiddleware, notFoundHandler, env } from '@libs/quasar';
 import compression from 'compression';
 import helmet from 'helmet';
 

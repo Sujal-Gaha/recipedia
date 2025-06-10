@@ -3141,6 +3141,11 @@
     "@anatine/zod-openapi" "^1.12.0"
     openapi3-ts "^2.0.2"
 
+"@ts-rest/react-query@^3.52.1":
+  version "3.52.1"
+  resolved "https://registry.yarnpkg.com/@ts-rest/react-query/-/react-query-3.52.1.tgz#7c546eb6e5b0c998fc007176e1924c19efd2e330"
+  integrity sha512-Y4wx3oQwyEj7h3hVz2Wsrd8u7xWRqXc0K6YpKruZJg5G1pioKdlqqjKvv+JJbtgk+vImzha9z+NgeFnO4oYAkA==
+
 "@tybys/wasm-util@^0.9.0":
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@tybys/wasm-util/-/wasm-util-0.9.0.tgz#3e75eb00604c8d6db470bf18c37b7d984a0e3355"

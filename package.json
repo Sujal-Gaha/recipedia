@@ -18,6 +18,7 @@
     "@ts-rest/core": "^3.52.1",
     "@ts-rest/express": "^3.52.1",
     "@ts-rest/open-api": "^3.52.1",
+    "@ts-rest/react-query": "^3.52.1",
     "axios": "^1.6.0",
     "better-auth": "^1.2.8",
     "compression": "^1.8.0",

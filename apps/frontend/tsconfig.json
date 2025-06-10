@@ -3,6 +3,15 @@
   "include": [],
   "references": [
     {
+      "path": "../../libs/auth"
+    },
+    {
+      "path": "../../libs/quasar"
+    },
+    {
+      "path": "../../libs/contract"
+    },
+    {
       "path": "./tsconfig.app.json"
     }
   ],
