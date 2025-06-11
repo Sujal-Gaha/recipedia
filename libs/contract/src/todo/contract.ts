@@ -2,12 +2,12 @@ import { initContract } from '@ts-rest/core';
 import { BASE_API_PATH, ErrorSchema } from '../lib/schema';
 import {
   CreateTodoInputSchema,
-  CreateTodoOutputSchema,
-  DeleteTodoOutputSchema,
-  GetAllTodosOutputSchema,
-  GetTodoByIdOutputSchema,
+  CreateTodoResponseSchema,
+  DeleteTodoResponseSchema,
+  GetAllTodosResponseSchema,
+  GetTodoByIdResponseSchema,
   UpdateTodoInputSchema,
-  UpdateTodoOutputSchema,
+  UpdateTodoResponseSchema,
 } from './schema';
 import z from 'zod';
 
@@ -19,7 +19,7 @@ export const todoContract = c.router({
     path: `${BASE_API_PATH}/todo/createTodo`,
     body: CreateTodoInputSchema,
     responses: {
-      201: CreateTodoOutputSchema,
+      201: CreateTodoResponseSchema,
       400: ErrorSchema,
       500: ErrorSchema,
     },
@@ -30,7 +30,7 @@ export const todoContract = c.router({
     method: 'GET',
     path: `${BASE_API_PATH}/todo/getTodoById/:id`,
     responses: {
-      200: GetTodoByIdOutputSchema,
+      200: GetTodoByIdResponseSchema,
       400: ErrorSchema,
       404: ErrorSchema,
       500: ErrorSchema,
@@ -46,7 +46,7 @@ export const todoContract = c.router({
       perPage: z.string(),
     }),
     responses: {
-      200: GetAllTodosOutputSchema,
+      200: GetAllTodosResponseSchema,
       400: ErrorSchema,
       500: ErrorSchema,
     },
@@ -58,7 +58,7 @@ export const todoContract = c.router({
     path: `${BASE_API_PATH}/todo/updateTodo/:id`,
     body: UpdateTodoInputSchema,
     responses: {
-      200: UpdateTodoOutputSchema,
+      200: UpdateTodoResponseSchema,
       400: ErrorSchema,
       404: ErrorSchema,
       500: ErrorSchema,
@@ -70,7 +70,7 @@ export const todoContract = c.router({
     method: 'DELETE',
     path: `${BASE_API_PATH}/todo/deleteTodo/:id`,
     responses: {
-      200: DeleteTodoOutputSchema,
+      200: DeleteTodoResponseSchema,
       400: ErrorSchema,
       404: ErrorSchema,
       500: ErrorSchema,

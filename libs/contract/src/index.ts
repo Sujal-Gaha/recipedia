@@ -6,3 +6,5 @@ export * from './todo/schema';
 
 export * from './file/schema';
 export * from './file/contract';
+
+export * from './__generated__';

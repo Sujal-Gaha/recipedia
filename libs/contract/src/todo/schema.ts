@@ -9,10 +9,10 @@ export const CreateTodoInputSchema = TodoSchema.pick({
 });
 export type TCreateTodoInput = z.infer<typeof CreateTodoInputSchema>;
 
-export const CreateTodoOutputSchema = SuccessSchema.extend({
+export const CreateTodoResponseSchema = SuccessSchema.extend({
   data: TodoSchema,
 });
-export type TCreateTodoOutput = z.infer<typeof CreateTodoOutputSchema>;
+export type TCreateTodoResponse = z.infer<typeof CreateTodoResponseSchema>;
 
 /** -------- Get Todo By Id -------- */
 export const GetTodoByIdInputSchema = TodoSchema.pick({
@@ -20,20 +20,27 @@ export const GetTodoByIdInputSchema = TodoSchema.pick({
 });
 export type TGetTodoByIdInput = z.infer<typeof GetTodoByIdInputSchema>;
 
-export const GetTodoByIdOutputSchema = SuccessSchema.extend({
+export const GetTodoByIdResponseSchema = SuccessSchema.extend({
   data: TodoSchema,
 });
-export type TGetTodoByIdOutput = z.infer<typeof GetTodoByIdOutputSchema>;
+export type TGetTodoByIdResponse = z.infer<typeof GetTodoByIdResponseSchema>;
 
 /** -------- Get All Todos -------- */
-export const GetAllTodosInputSchema = z.object({});
+export const GetAllTodosInputSchema = z.object({
+  page: z.number(),
+  perPage: z.number(),
+});
 export type TGetAllTodosInput = z.infer<typeof GetAllTodosInputSchema>;
 
-export const GetAllTodosOutputSchema = SuccessSchema.extend({
-  data: z.array(TodoSchema),
+export const GetAllTodosOutputSchema = TodoSchema;
+
+export type TGetAllTodosOutput = z.infer<typeof GetAllTodosOutputSchema>;
+
+export const GetAllTodosResponseSchema = SuccessSchema.extend({
+  data: z.array(GetAllTodosOutputSchema),
   pagination: PaginationOutputSchema,
 });
-export type TGetAllTodosOutput = z.infer<typeof GetAllTodosOutputSchema>;
+export type TGetAllTodosResponse = z.infer<typeof GetAllTodosResponseSchema>;
 
 /** -------- Update Todo -------- */
 export const UpdateTodoInputSchema = TodoSchema.pick({
@@ -43,10 +50,10 @@ export const UpdateTodoInputSchema = TodoSchema.pick({
 });
 export type TUpdateTodoInput = z.infer<typeof UpdateTodoInputSchema>;
 
-export const UpdateTodoOutputSchema = SuccessSchema.extend({
+export const UpdateTodoResponseSchema = SuccessSchema.extend({
   data: TodoSchema,
 });
-export type TUpdateTodoOutput = z.infer<typeof UpdateTodoOutputSchema>;
+export type TUpdateTodoResponse = z.infer<typeof UpdateTodoResponseSchema>;
 
 /** -------- Delete Todos -------- */
 export const DeleteTodoInputSchema = TodoSchema.pick({
@@ -54,7 +61,7 @@ export const DeleteTodoInputSchema = TodoSchema.pick({
 });
 export type TDeleteTodoInput = z.infer<typeof DeleteTodoInputSchema>;
 
-export const DeleteTodoOutputSchema = SuccessSchema.extend({
+export const DeleteTodoResponseSchema = SuccessSchema.extend({
   data: TodoSchema,
 });
-export type TDeleteTodoOutput = z.infer<typeof DeleteTodoOutputSchema>;
+export type TDeleteTodoResponse = z.infer<typeof DeleteTodoResponseSchema>;

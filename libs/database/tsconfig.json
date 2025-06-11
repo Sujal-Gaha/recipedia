@@ -4,6 +4,9 @@
   "include": [],
   "references": [
     {
+      "path": "../quasar"
+    },
+    {
       "path": "./tsconfig.lib.json"
     }
   ]

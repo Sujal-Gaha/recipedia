@@ -1,19 +1,16 @@
 import { todoContract } from '@libs/contract';
-import { db } from '@libs/database';
+import { PrismaTodoRepo } from '@libs/database';
 import { handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { StatusCodes } from 'http-status-codes';
 
 export const updateTodo: AppRouteImplementation<typeof todoContract.updateTodo> = async ({ req, params, body }) => {
   try {
-    const todo = await db.todo.findUnique({
-      where: {
-        id: params.id,
-        is_deleted: false,
-      },
-    });
+    const todoRepo = new PrismaTodoRepo();
 
-    if (!todo) {
+    const todoExists = await todoRepo.findById({ data: { id: params.id } });
+
+    if (!todoExists) {
       return {
         status: StatusCodes.NOT_FOUND,
         body: {
@@ -23,22 +20,21 @@ export const updateTodo: AppRouteImplementation<typeof todoContract.updateTodo> 
       };
     }
 
-    const updatedTodo = await db.todo.update({
-      where: {
-        id: params.id,
-      },
+    const data = await todoRepo.update({
+      id: params.id,
       data: {
-        name: body.name,
         description: body.description,
+        name: body.name,
+        is_completed: body.is_completed,
       },
     });
 
     return {
       status: StatusCodes.OK,
       body: {
+        data,
         isSuccess: true,
         message: 'Updated Todo Successfully',
-        data: updatedTodo,
       },
     };
   } catch (e) {
