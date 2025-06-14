@@ -1,7 +1,6 @@
 import { initContract } from '@ts-rest/core';
 import { BASE_API_PATH, ErrorSchema } from '../lib/schema';
 import {
-  CreateFileInputSchema,
   CreateFileResponseSchema,
   DeleteFileResponseSchema,
   GetAllFilesResponseSchema,
@@ -54,27 +53,27 @@ export const fileContract = c.router({
     },
     summary: 'Get all todos',
   },
-  // updateFile: {
-  //   method: 'PUT',
-  //   path: `${BASE_API_PATH}/file/updateFile/:id`,
-  //   body: UpdateFileInputSchema,
-  //   responses: {
-  //     200: UpdateFileResponseSchema,
-  //     400: ErrorSchema,
-  //     404: ErrorSchema,
-  //     500: ErrorSchema,
-  //   },
-  //   summary: 'Updated a file',
-  // },
-  // deleteFile: {
-  //   method: 'DELETE',
-  //   path: `${BASE_API_PATH}/file/deleteFile/:id`,
-  //   responses: {
-  //     200: DeleteFileResponseSchema,
-  //     400: ErrorSchema,
-  //     404: ErrorSchema,
-  //     500: ErrorSchema,
-  //   },
-  //   summary: 'Delete a file',
-  // },
+  updateFile: {
+    method: 'PUT',
+    path: `${BASE_API_PATH}/file/updateFile/:id`,
+    body: UpdateFileInputSchema,
+    responses: {
+      200: UpdateFileResponseSchema,
+      400: ErrorSchema,
+      404: ErrorSchema,
+      500: ErrorSchema,
+    },
+    summary: 'Updated a file',
+  },
+  deleteFile: {
+    method: 'DELETE',
+    path: `${BASE_API_PATH}/file/deleteFile/:id`,
+    responses: {
+      200: DeleteFileResponseSchema,
+      400: ErrorSchema,
+      404: ErrorSchema,
+      500: ErrorSchema,
+    },
+    summary: 'Delete a file',
+  },
 });

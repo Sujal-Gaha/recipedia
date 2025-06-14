@@ -4,6 +4,8 @@ import { upload } from '@libs/quasar';
 import { createFile } from '../modules/file/createFile';
 import { getFileById } from '../modules/file/getFileById';
 import { getAllFiles } from '../modules/file/getAllFiles';
+import { updateFile } from '../modules/file/updateFile';
+import { deleteFile } from '../modules/file/deleteFile';
 
 const s = initServer();
 
@@ -17,5 +19,11 @@ export const fileRouter = s.router(fileContract, {
   },
   getAllFiles: {
     handler: getAllFiles,
+  },
+  updateFile: {
+    handler: updateFile,
+  },
+  deleteFile: {
+    handler: deleteFile,
   },
 });

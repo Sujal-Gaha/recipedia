@@ -99,3 +99,127 @@ And join the Nx community:
 - [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
 - [Our Youtube channel](https://www.youtube.com/@nxdevtools)
 - [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+
+```
+recipedia
+├─ .editorconfig
+├─ .nx
+├─ .prettierignore
+├─ .prettierrc
+├─ apps
+│  ├─ backend
+│  │  ├─ eslint.config.mjs
+│  │  ├─ package.json
+│  │  ├─ src
+│  │  │  ├─ assets
+│  │  │  ├─ main.ts
+│  │  │  ├─ modules
+│  │  │  │  ├─ file
+│  │  │  │  │  ├─ createFile.ts
+│  │  │  │  │  ├─ getAllFiles.ts
+│  │  │  │  │  └─ getFileById.ts
+│  │  │  │  └─ todo
+│  │  │  │     ├─ createTodo.ts
+│  │  │  │     ├─ deleteTodo.ts
+│  │  │  │     ├─ getAllTodos.ts
+│  │  │  │     ├─ getTodoById.ts
+│  │  │  │     └─ updateTodo.ts
+│  │  │  ├─ routers
+│  │  │  │  ├─ file-router.ts
+│  │  │  │  ├─ merge.ts
+│  │  │  │  └─ todo-route.ts
+│  │  │  └─ utils
+│  │  │     └─ swagger.ts
+│  │  ├─ tsconfig.app.json
+│  │  └─ tsconfig.json
+│  └─ frontend
+│     ├─ eslint.config.mjs
+│     ├─ index.html
+│     ├─ package.json
+│     ├─ postcss.config.js
+│     ├─ public
+│     │  └─ favicon.ico
+│     ├─ src
+│     │  ├─ app
+│     │  │  ├─ app.tsx
+│     │  │  └─ nx-welcome.tsx
+│     │  ├─ assets
+│     │  ├─ main.tsx
+│     │  └─ styles.css
+│     ├─ tailwind.config.js
+│     ├─ tsconfig.app.json
+│     ├─ tsconfig.json
+│     └─ vite.config.ts
+├─ eslint.config.mjs
+├─ libs
+│  ├─ auth
+│  │  ├─ eslint.config.mjs
+│  │  ├─ package.json
+│  │  ├─ README.md
+│  │  ├─ src
+│  │  │  ├─ auth-client.ts
+│  │  │  ├─ auth-server.ts
+│  │  │  └─ index.ts
+│  │  ├─ tsconfig.json
+│  │  └─ tsconfig.lib.json
+│  ├─ contract
+│  │  ├─ eslint.config.mjs
+│  │  ├─ package.json
+│  │  ├─ README.md
+│  │  ├─ src
+│  │  │  ├─ file
+│  │  │  │  ├─ contract.ts
+│  │  │  │  └─ schema.ts
+│  │  │  ├─ index.ts
+│  │  │  ├─ lib
+│  │  │  │  ├─ contract.ts
+│  │  │  │  └─ schema.ts
+│  │  │  └─ todo
+│  │  │     ├─ contract.ts
+│  │  │     └─ schema.ts
+│  │  ├─ tsconfig.json
+│  │  └─ tsconfig.lib.json
+│  ├─ database
+│  │  ├─ eslint.config.mjs
+│  │  ├─ package.json
+│  │  ├─ README.md
+│  │  ├─ src
+│  │  │  ├─ index.ts
+│  │  │  ├─ lib
+│  │  │  │  └─ database.ts
+│  │  │  ├─ prisma
+│  │  │  │  ├─ client.ts
+│  │  │  │  └─ schema.prisma
+│  │  │  └─ repos
+│  │  │     └─ todo-repo.ts
+│  │  ├─ tsconfig.json
+│  │  └─ tsconfig.lib.json
+│  └─ quasar
+│     ├─ eslint.config.mjs
+│     ├─ package.json
+│     ├─ README.md
+│     ├─ src
+│     │  ├─ domain
+│     │  │  └─ base-repo.ts
+│     │  ├─ env.ts
+│     │  ├─ error-handler.ts
+│     │  ├─ image-processor.ts
+│     │  ├─ index.ts
+│     │  ├─ logger.ts
+│     │  ├─ multer.ts
+│     │  ├─ repos
+│     │  │  └─ todo-repo.ts
+│     │  ├─ types.ts
+│     │  └─ zod-utils.ts
+│     ├─ tsconfig.json
+│     └─ tsconfig.lib.json
+├─ nx.json
+├─ package.json
+├─ README.md
+├─ tsconfig.base.json
+├─ tsconfig.json
+├─ uploads
+│  └─ uploads.md
+└─ yarn.lock
+
+```
