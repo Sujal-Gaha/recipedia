@@ -20,11 +20,18 @@ export const CreateFileResponseSchema = SuccessSchema.extend({
 export type TCreateFileResponse = z.infer<typeof CreateFileResponseSchema>;
 
 /** -------- Get All Files -------- */
-export const GetFilesInputSchema = z.object({});
-export type TGetFilesInput = z.infer<typeof GetFilesInputSchema>;
+export const GetAllFilesInputSchema = z.object({
+  page: z.number(),
+  perPage: z.number(),
+});
+export type TGetAllFilesInput = z.infer<typeof GetAllFilesInputSchema>;
+
+export const GetAllFilesOutputSchema = FileSchema;
+
+export type TGetAllFilesOutput = z.infer<typeof GetAllFilesOutputSchema>;
 
 export const GetAllFilesResponseSchema = SuccessSchema.extend({
-  data: z.array(FileSchema),
+  data: z.array(GetAllFilesOutputSchema),
   pagination: PaginationOutputSchema,
 });
 export type TGetFilesResponse = z.infer<typeof GetAllFilesResponseSchema>;
@@ -33,12 +40,12 @@ export type TGetFilesResponse = z.infer<typeof GetAllFilesResponseSchema>;
 export const GetFileInputSchema = FileSchema.pick({
   id: true,
 });
-export type TGetFileInput = z.infer<typeof GetFileInputSchema>;
+export type TGetFileByIdInput = z.infer<typeof GetFileInputSchema>;
 
 export const GetFileByIdResponseSchema = SuccessSchema.extend({
   data: FileSchema,
 });
-export type TGetFileResponse = z.infer<typeof GetFileByIdResponseSchema>;
+export type TGetFileByIdResponse = z.infer<typeof GetFileByIdResponseSchema>;
 
 /** -------- Delete File -------- */
 export const DeleteFileInputSchema = FileSchema.pick({
