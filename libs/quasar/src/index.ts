@@ -11,5 +11,6 @@ export * from './repos/recipe-image-repo';
 export * from './repos/recipe-repo';
 export * from './repos/recipe-review-repo';
 export * from './repos/recipe-review-vote-repo';
+export * from './repos/recipe-step-repo';
 export * from './repos/recipe-upvote-repo';
 export * from './repos/todo-repo';
