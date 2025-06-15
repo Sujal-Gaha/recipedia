@@ -2,6 +2,7 @@ export * from './lib/contract';
 export * from './lib/schema';
 
 export * from './recipe/schema';
+export * from './recipe-favourite/schema';
 export * from './recipe-image/schema';
 export * from './recipe-upvote/schema';
 

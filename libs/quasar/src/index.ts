@@ -6,6 +6,7 @@ export * from './multer';
 export * from './image-processor';
 
 export * from './repos/file-repo';
+export * from './repos/recipe-favourite-repo';
 export * from './repos/recipe-image-repo';
 export * from './repos/recipe-repo';
 export * from './repos/recipe-upvote-repo';
