@@ -28,6 +28,7 @@ export type TGetRecipeFavouriteByIdResponse = z.infer<typeof GetRecipeFavouriteB
 /** -------- Get All Recipe Favourites -------- */
 export const GetAllRecipeFavouritesInputSchema = RecipeFavouriteSchema.pick({
   recipe_id: true,
+  user_id: true,
 });
 export type TGetAllRecipeFavouritesInput = z.infer<typeof GetAllRecipeFavouritesInputSchema>;
 

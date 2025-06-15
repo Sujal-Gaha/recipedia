@@ -35,10 +35,13 @@ export class PrismaRecipeFavouriteRepo extends RecipeFavouriteRepo {
     });
   }
 
-  override async findMany({ data: { recipe_id } }: TFindManyRecipeFavouritesRepoInput): Promise<TRecipeFavourite[]> {
+  override async findMany({
+    data: { recipe_id, user_id },
+  }: TFindManyRecipeFavouritesRepoInput): Promise<TRecipeFavourite[]> {
     return await db.recipeFavourite.findMany({
       where: {
         recipe_id,
+        user_id,
       },
     });
   }
@@ -46,7 +49,7 @@ export class PrismaRecipeFavouriteRepo extends RecipeFavouriteRepo {
   override async deleteMany({
     data: { recipe_id },
   }: TDeleteManyRecipeFavouritesRepoOuput): Promise<TRecipeFavourite[]> {
-    const Favourites = db.recipeFavourite.findMany({
+    const favourites = db.recipeFavourite.findMany({
       where: {
         recipe_id,
       },
@@ -58,6 +61,6 @@ export class PrismaRecipeFavouriteRepo extends RecipeFavouriteRepo {
       },
     });
 
-    return Favourites;
+    return favourites;
   }
 }

@@ -4,6 +4,7 @@ export * from './lib/schema';
 export * from './recipe/schema';
 export * from './recipe-favourite/schema';
 export * from './recipe-image/schema';
+export * from './recipe-review/schema';
 export * from './recipe-upvote/schema';
 
 export * from './todo/contract';
