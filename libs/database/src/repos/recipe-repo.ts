@@ -99,11 +99,6 @@ export class PrismaRecipeRepo extends RecipeRepo {
       include: {
         user: true,
         images: true,
-        reviews: {
-          include: {
-            votes: true,
-          },
-        },
         steps: true,
         upvotes: true,
       },
