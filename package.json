@@ -30,6 +30,7 @@
     "pino-http": "^10.5.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-slugify": "^4.0.1",
     "sharp": "^0.34.2",
     "swagger-ui-express": "^5.0.1",
     "zod": "^3.25.56"

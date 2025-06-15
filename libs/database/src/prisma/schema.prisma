@@ -155,9 +155,11 @@ model Recipe {
   difficulty       RecipeDifficulty @default(EASY)
   status           RecipeStatus     @default(DRAFT)
   is_flagged       Boolean          @default(false)
+  is_deleted       Boolean          @default(false)
 
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 
   user_id String
   user    User   @relation("recipe_user", fields: [user_id], references: [id])
