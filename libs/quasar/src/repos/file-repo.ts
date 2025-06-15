@@ -41,7 +41,7 @@ export type TFindManyFilesRepoOutput = {
 
 export abstract class FileRepo implements BaseRepo {
   log(): void {
-    logger.info('Todo Repo initialized...');
+    logger.info('File Repo initialized...');
   }
 
   abstract create(input: TCreateFileRepoInput): Promise<TFile>;
