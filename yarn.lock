@@ -5299,6 +5299,11 @@ detect-port@^1.5.1:
     address "^1.0.1"
     debug "4"
 
+diacritics@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/diacritics/-/diacritics-1.3.0.tgz#3efa87323ebb863e6696cebb0082d48ff3d6f7a1"
+  integrity sha512-wlwEkqcsaxvPJML+rDh/2iS824jbREk6DUMUKkEaSlxdYHeS43cClJtsWglvw2RfeXGm6ohKDqsXteJ5sP5enA==
+
 didyoumean@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/didyoumean/-/didyoumean-1.2.2.tgz#989346ffe9e839b4555ecf5666edea0d3e8ad037"
@@ -8971,6 +8976,13 @@ react-refresh@^0.17.0:
   version "0.17.0"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.17.0.tgz#b7e579c3657f23d04eccbe4ad2e58a8ed51e7e53"
   integrity sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==
+
+react-slugify@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-slugify/-/react-slugify-4.0.1.tgz#d998d99b804e1fe07ab27b6ba6a252c84fa23215"
+  integrity sha512-duyPk7qbkEPdizf+d+lD18+POgJnt8sAmvd4plKhJmdHy3w3BG+kg/wC3lPf35MaKt5B+CWYFTaU6HQOdZmFQA==
+  dependencies:
+    diacritics "^1.3.0"
 
 react@19.0.0:
   version "19.0.0"
