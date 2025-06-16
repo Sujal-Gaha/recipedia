@@ -1,0 +1,3 @@
+export typ TCreateIngredientRepoInput = {
+    data: 
+}
