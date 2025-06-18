@@ -1,9 +1,9 @@
-import NxWelcome from './nx-welcome';
+import { Button } from '../components/ui/button';
 
 export function App() {
   return (
     <div>
-      <NxWelcome title="frontend" />
+      <Button variant='default'>Click Me</Button>
     </div>
   );
 }
