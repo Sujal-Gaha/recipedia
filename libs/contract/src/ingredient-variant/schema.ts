@@ -1,14 +1,20 @@
 import { z } from 'zod';
-/**------Create Ingredient Variant---------- */
 
 import { IngredientVariantImageSchema, IngredientVariantSchema } from 'src/__generated__';
 import { SuccessSchema } from 'src/lib/schema';
+
+/**------Create Ingredient Variant---------- */
 
 export const CreateIngredientVariantInputSchema = IngredientVariantSchema.pick({
   name: true,
   ingredient_id: true,
 });
 export type TCreateIngredientVariantInput = z.infer<typeof CreateIngredientVariantInputSchema>;
+
+export const CreateIngredientVariantResponseSchema = SuccessSchema.extend({
+  data: IngredientVariantSchema,
+});
+export type TCreateIngredientVariantResponse = z.infer<typeof CreateIngredientVariantResponseSchema>;
 
 /***------------Get Ingredient Variant By Id--------- */
 export const GetIngredientVariantByIdInputSchema = IngredientVariantSchema.pick({
