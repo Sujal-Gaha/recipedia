@@ -161,9 +161,9 @@ export class PrismaRecipeRepo extends RecipeRepo {
             id: recipe.user.id,
             name: recipe.user.name,
             email: recipe.user.email,
-            role: recipe.user.role,
+            user_type: recipe.user.user_type,
             image: recipe.user.image,
-            emailVerified: recipe.user.emailVerified,
+            is_email_verified: recipe.user.is_email_verified,
           },
           recipe_images: recipe.images.map((image) => ({
             id: image.id,

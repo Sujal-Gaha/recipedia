@@ -1,9 +1,9 @@
-import { contract, fileContract, todoContract } from '@libs/contract';
+import { fileContract, todoContract } from '@libs/contract';
 import { todoRouter } from './todo-route';
 import { createExpressEndpoints } from '@ts-rest/express';
 import { logger } from '@libs/quasar';
-import { router } from 'better-auth/api';
 import { fileRouter } from './file-router';
+import type { Express } from 'express';
 
 const routers = [
   {
@@ -16,7 +16,7 @@ const routers = [
   },
 ];
 
-export function generateEndPoints(app: any) {
+export function generateEndPoints(app: Express) {
   return routers.map(({ contract, router }) => {
     createExpressEndpoints(contract, router, app, {
       logInitialization: true,

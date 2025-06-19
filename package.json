@@ -11,11 +11,11 @@
     "db:generate": "yarn prisma generate --schema ./libs/database/src/prisma/schema.prisma",
     "db:migrate": "yarn prisma migrate dev --schema ./libs/database/src/prisma/schema.prisma",
     "db:push": "yarn prisma db push --schema ./libs/database/src/prisma/schema.prisma",
-    "db:studio": "yarn prisma studio --schema ./libs/database/src/prisma/schema.prisma",
-    "auth:generate": "npx @better-auth/cli@latest generate --config=libs/auth/src/auth-server --output=libs/database/src/prisma/schema.prisma"
+    "db:studio": "yarn prisma studio --schema ./libs/database/src/prisma/schema.prisma"
   },
   "private": true,
   "dependencies": {
+    "@baijanstack/express-auth": "^1.10.0",
     "@prisma/client": "^6.9.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -36,7 +36,6 @@
     "@ts-rest/express": "^3.52.1",
     "@ts-rest/open-api": "^3.52.1",
     "axios": "^1.6.0",
-    "better-auth": "^1.2.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "compression": "^1.8.0",
