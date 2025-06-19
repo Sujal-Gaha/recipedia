@@ -1,62 +1,91 @@
-import { Prisma, UserType } from '@prisma/client';
+import {
+  TCreateUserRepoInput,
+  TFindUserByEmailRepoInput,
+  TFindUserByIdRepoInput,
+  TSignUpUserRepoInput,
+  TUpdateUserByEmailRepoInput,
+  TUpdateUserByIdRepoInput,
+  TUser,
+  TVerifyEmailRepoInput,
+  UserRepo,
+} from '@libs/quasar';
 import { db } from '../prisma/client';
 
-export const userRepo = {
-  create,
-  updateById,
-  updateByEmail,
-  signUp,
-  findById,
-  findByEmail,
-};
+export class PrismaUserRepo extends UserRepo {
+  override async create({ data: { email, name, password } }: TCreateUserRepoInput): Promise<TUser> {
+    return await db.user.create({
+      data: {
+        email,
+        name,
+        password,
+      },
+    });
+  }
 
-async function create(input: Prisma.UserCreateInput) {
-  return db.user.create({
-    data: input,
-  });
-}
+  override async signUp({ data: { email, name, password, user_type } }: TSignUpUserRepoInput): Promise<TUser> {
+    return await db.user.create({
+      data: {
+        name,
+        email,
+        password,
+        user_type,
+      },
+    });
+  }
 
-async function signUp(input: { name: string; email: string; password: string; user_type: UserType }) {
-  return db.user.create({
-    data: {
-      name: input.name,
-      email: input.email,
-      password: input.password,
-      user_type: input.user_type,
-    },
-  });
-}
+  override async updateById({
+    id,
+    data: { image, is_email_verified, name, password, user_type },
+  }: TUpdateUserByIdRepoInput): Promise<TUser> {
+    return await db.user.update({
+      where: {
+        id,
+      },
+      data: {
+        image,
+        is_email_verified,
+        name,
+        password,
+        user_type,
+      },
+    });
+  }
 
-async function updateById(id: string, input: Prisma.UserUpdateInput) {
-  return db.user.update({
-    where: {
-      id,
-    },
-    data: input,
-  });
-}
+  override async findById({ data: { id } }: TFindUserByIdRepoInput): Promise<TUser | null> {
+    return await db.user.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
 
-async function updateByEmail(email: string, input: Prisma.UserUpdateInput) {
-  return db.user.update({
-    where: {
-      email,
-    },
-    data: input,
-  });
-}
+  override async updateByEmail({ email, data: { password } }: TUpdateUserByEmailRepoInput): Promise<TUser> {
+    return await db.user.update({
+      where: {
+        email,
+      },
+      data: {
+        password,
+      },
+    });
+  }
 
-async function findById(id: string) {
-  return db.user.findUnique({
-    where: {
-      id,
-    },
-  });
-}
+  override async findByEmail({ data: { email } }: TFindUserByEmailRepoInput): Promise<TUser | null> {
+    return await db.user.findUnique({
+      where: {
+        email,
+      },
+    });
+  }
 
-async function findByEmail(email: string) {
-  return db.user.findUnique({
-    where: {
-      email,
-    },
-  });
+  override async verify({ data: { email } }: TVerifyEmailRepoInput): Promise<TUser> {
+    return await db.user.update({
+      where: {
+        email,
+      },
+      data: {
+        is_email_verified: true,
+      },
+    });
+  }
 }

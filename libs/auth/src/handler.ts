@@ -9,7 +9,7 @@ import {
   IForgotPasswordHandler,
   ISendOtpHandler,
 } from '@baijanstack/express-auth';
-import { userRepo } from '@libs/database';
+import { PrismaUserRepo } from '@libs/database';
 import { UserType } from '@prisma/client';
 
 export type TUser = {
@@ -30,29 +30,36 @@ interface TSignUpBodyInput extends TEmailObj {
   user_type: UserType;
 }
 
+const prismaUserRepo = new PrismaUserRepo();
+
 export class SignUpHandler implements ISignUpHandler {
   constructor() {
     //
   }
 
-  doesUserExists: (body: TSignUpBodyInput) => Promise<boolean> = async (body) => {
-    const user = await userRepo.findByEmail(body.email);
+  doesUserExists: (body: TSignUpBodyInput) => Promise<boolean> = async ({ email }) => {
+    const user = await prismaUserRepo.findByEmail({ data: { email } });
     return !!user;
   };
 
-  saveUser: (body: TSignUpBodyInput, hashedPassword: string) => Promise<void> = async (body, hashedPassword) => {
-    await userRepo.signUp({
-      name: body.name,
-      email: body.email,
-      password: hashedPassword,
-      user_type: body.user_type,
+  saveUser: (body: TSignUpBodyInput, hashedPassword: string) => Promise<void> = async (
+    { email, name, user_type },
+    hashedPassword
+  ) => {
+    await prismaUserRepo.signUp({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        user_type,
+      },
     });
   };
 }
 
 export class LoginHandler implements ILoginHandler {
   getUserByEmail: (email: string) => Promise<TUser | null> = async (email) => {
-    const user = await userRepo.findByEmail(email);
+    const user = await prismaUserRepo.findByEmail({ data: { email } });
 
     if (!user) {
       return null;
@@ -71,7 +78,7 @@ export class LoginHandler implements ILoginHandler {
     name: string;
     email: string;
   } | null> = async (email) => {
-    const user = await userRepo.findByEmail(email);
+    const user = await prismaUserRepo.findByEmail({ data: { email } });
 
     if (!user) {
       return null;
@@ -98,7 +105,7 @@ export class RefreshHandler implements IRefreshHandler {
     name: string;
     email: string;
   } | null> = async (email) => {
-    const user = await userRepo.findByEmail(email);
+    const user = await prismaUserRepo.findByEmail({ data: { email } });
 
     if (!user) {
       return null;
@@ -113,12 +120,10 @@ export class RefreshHandler implements IRefreshHandler {
 
 export class ResetPasswordHandler implements IResetPasswordHandler {
   saveHashedPassword: (email: string, hashedPassword: string) => Promise<void> = async (email, hashedPassword) => {
-    await userRepo.updateByEmail(email, {
-      password: hashedPassword,
-    });
+    await prismaUserRepo.updateByEmail({ email, data: { password: hashedPassword } });
   };
   getOldPasswordHash: (email: string) => Promise<string> = async (email) => {
-    const user = await userRepo.findByEmail(email);
+    const user = await prismaUserRepo.findByEmail({ data: { email } });
 
     if (!user) {
       return '';
@@ -129,7 +134,7 @@ export class ResetPasswordHandler implements IResetPasswordHandler {
 
 export class MeRouteHandler implements IMeRouteHandler {
   getMeByEmail: (email: string) => Promise<{ email: string; name: string } | null> = async (email) => {
-    const user = await userRepo.findByEmail(email);
+    const user = await prismaUserRepo.findByEmail({ data: { email } });
 
     if (!user) {
       return null;
@@ -147,26 +152,24 @@ export class MeRouteHandler implements IMeRouteHandler {
 
 export class VerifyEmailHandler implements IVerifyEmailHandler {
   updateIsEmailVerifiedField: (email: string) => Promise<void> = async (email) => {
-    await userRepo.updateByEmail(email, { is_email_verified: true });
+    await prismaUserRepo.verify({ data: { email } });
   };
 
   isEmailAlreadyVerified: (email: string) => Promise<boolean> = async (email) => {
-    const user = await userRepo.findByEmail(email);
+    const user = await prismaUserRepo.findByEmail({ data: { email } });
     return !user?.is_email_verified;
   };
 }
 
 export class SendOtpHandler implements ISendOtpHandler {
   doesUserExists: (email: string) => Promise<boolean> = async (email) => {
-    const user = await userRepo.findByEmail(email);
+    const user = await prismaUserRepo.findByEmail({ data: { email } });
     return !!user;
   };
 }
 
 export class ForgotPasswordHandler implements IForgotPasswordHandler {
   saveNewPassword: (email: string, password: string) => Promise<void> = async (email, password) => {
-    await userRepo.updateByEmail(email, {
-      password,
-    });
+    await prismaUserRepo.updateByEmail({ email, data: { password } });
   };
 }
