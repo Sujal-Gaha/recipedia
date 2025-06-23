@@ -1,7 +1,7 @@
 import { ChefHat } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export const LandingPageFooter = () => {
+export const Footer = () => {
   return (
     <footer className="bg-muted py-16 px-6 mt-20">
       <div className="container mx-auto max-w-6xl">
