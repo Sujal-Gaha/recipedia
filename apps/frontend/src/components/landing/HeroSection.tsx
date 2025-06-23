@@ -25,7 +25,7 @@ export const HeroSection = () => {
         </div>
       </div>
 
-      <div className="absolute top-20 right-10 hidden lg:block">
+      <div className="absolute top-32 right-40 hidden lg:block">
         <Card className="w-64 transform rotate-6 hover:rotate-3 transition-transform duration-500">
           <CardContent className="p-4">
             <img
@@ -50,7 +50,7 @@ export const HeroSection = () => {
         </Card>
       </div>
 
-      <div className="absolute bottom-32 left-10 hidden lg:block">
+      <div className="absolute bottom-32 left-40 hidden lg:block">
         <Card className="w-64 transform -rotate-3 hover:rotate-0 transition-transform duration-500">
           <CardContent className="p-4">
             <img
