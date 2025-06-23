@@ -6,7 +6,7 @@ const router = createBrowserRouter(routes);
 
 function App() {
   return (
-    <ThemeProvider storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <RouterProvider router={router} />
     </ThemeProvider>
   );
