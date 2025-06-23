@@ -14,3 +14,4 @@ export * from './repos/recipe-review-vote-repo';
 export * from './repos/recipe-step-repo';
 export * from './repos/recipe-upvote-repo';
 export * from './repos/todo-repo';
+export * from './repos/user-repo';
