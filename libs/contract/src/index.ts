@@ -15,4 +15,8 @@ export * from './todo/schema';
 export * from './file/schema';
 export * from './file/contract';
 
+export * from './ingredient/schema';
+export * from './ingredient-variant/schema';
+export * from './ingredient-variant-images/schema';
+
 export * from './__generated__';

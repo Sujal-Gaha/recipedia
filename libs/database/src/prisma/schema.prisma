@@ -279,10 +279,12 @@ model RecipeStep {
 }
 
 model Ingredient {
-  id    String @id @default(cuid())
-  name  String
-  slug  String @unique
-  image String
+  id         String    @id @default(cuid())
+  name       String
+  slug       String    @unique
+  image      String
+  is_deleted Boolean   @default(false)
+  deleted_at DateTime?
 
   variants IngredientVariant[] @relation("ingredient_variant")
 
@@ -293,9 +295,11 @@ model Ingredient {
 }
 
 model IngredientVariant {
-  id            String @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String
   ingredient_id String
+  is_deleted    Boolean   @default(false)
+  deleted_at    DateTime?
 
   ingredient Ingredient @relation("ingredient_variant", fields: [ingredient_id], references: [id])
 
@@ -309,10 +313,12 @@ model IngredientVariant {
 }
 
 model IngredientVariantImage {
-  id                    String  @id @default(cuid())
+  id                    String    @id @default(cuid())
   url                   String
-  is_primary            Boolean @default(false)
+  is_primary            Boolean   @default(false)
   ingredient_variant_id String
+  is_deleted            Boolean   @default(false)
+  deleted_at            DateTime?
 
   ingredient_variant IngredientVariant @relation("ingredient_variant_image", fields: [ingredient_variant_id], references: [id])
 
