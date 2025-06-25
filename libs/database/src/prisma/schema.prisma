@@ -48,21 +48,23 @@ model Todo {
   completed_at DateTime?
 }
 
-model User {
-  id    String  @id @default(cuid())
-  name  String  @unique
-  email String
-  image String?
+enum UserType {
+  ADMIN
+  CHEF
+  USER
+}
 
-  emailVerified Boolean
-  createdAt     DateTime
-  updatedAt     DateTime
-  role          String?
-  banned        Boolean?
-  banReason     String?
-  banExpires    DateTime?
-  sessions      Session[]
-  accounts      Account[]
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  name              String
+  password          String
+  image             String?
+  is_email_verified Boolean  @default(false)
+  user_type         UserType @default(USER)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   recipe            Recipe[]           @relation("recipe_user")
   recipeUpvotes     RecipeUpvote[]     @relation("recipe_upvote_user")
@@ -71,52 +73,6 @@ model User {
   recipeReviewVotes RecipeReviewVote[] @relation("recipe_review_vote_user")
 
   @@map("user")
-}
-
-model Session {
-  id             String   @id
-  expiresAt      DateTime
-  token          String
-  createdAt      DateTime
-  updatedAt      DateTime
-  ipAddress      String?
-  userAgent      String?
-  userId         String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  impersonatedBy String?
-
-  @@unique([token])
-  @@map("session")
-}
-
-model Account {
-  id                    String    @id
-  accountId             String
-  providerId            String
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime
-  updatedAt             DateTime
-
-  @@map("account")
-}
-
-model Verification {
-  id         String    @id
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime?
-  updatedAt  DateTime?
-
-  @@map("verification")
 }
 
 model File {

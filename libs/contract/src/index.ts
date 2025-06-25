@@ -18,5 +18,6 @@ export * from './file/contract';
 export * from './ingredient/schema';
 export * from './ingredient-variant/schema';
 export * from './ingredient-variant-images/schema';
+export * from './user/schema';
 
 export * from './__generated__';

@@ -1,10 +1,14 @@
-import { Button } from '../components/ui/button';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { routes } from '../routes/routes';
+import { ThemeProvider } from '../components/theme-provider';
 
-export function App() {
+const router = createBrowserRouter(routes);
+
+function App() {
   return (
-    <div>
-      <Button variant='default'>Click Me</Button>
-    </div>
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <RouterProvider router={router} />
+    </ThemeProvider>
   );
 }
 

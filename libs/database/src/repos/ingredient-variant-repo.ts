@@ -13,7 +13,7 @@ import {
   TFindManyIngredientVariantsRepoOutput,
   TUpdateIngredientVariantRepoInput,
 } from '@libs/quasar';
-import { db } from 'src/prisma/client';
+import { db } from '../prisma/client';
 
 export class PrismaIngredientVariantRepo extends IngredientVariantRepo {
   override async create({

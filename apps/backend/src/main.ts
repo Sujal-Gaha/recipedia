@@ -1,18 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import { generateEndPoints } from './routers/merge';
-import {
-  errorHandler,
-  logger,
-  loggerMiddleware,
-  notFoundHandler,
-  env,
-} from '@libs/quasar';
+import { errorHandler, logger, loggerMiddleware, notFoundHandler, env } from '@libs/quasar';
 import compression from 'compression';
 import helmet from 'helmet';
 
 import * as swaggerUi from 'swagger-ui-express';
 import { openApiDocument } from './utils/swagger';
+import { createAuth } from '@libs/auth';
 
 logger.debug(env, 'Environment variables');
 
@@ -50,6 +45,8 @@ app.use((req, res, next) => {
   logger.debug({ body: req.body }, 'Request body');
   next();
 });
+
+createAuth(app);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocument));
 app.use('/api-docs.json', (req, res) => {

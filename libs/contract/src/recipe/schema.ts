@@ -55,9 +55,9 @@ export const GetAllRecipesOutputSchema = RecipeSchema.extend({
     id: true,
     name: true,
     email: true,
-    role: true,
+    user_type: true,
     image: true,
-    emailVerified: true,
+    is_email_verified: true,
   }),
   recipe_images: z.array(RecipeImageSchema),
   recipe_upvotes: z.object({

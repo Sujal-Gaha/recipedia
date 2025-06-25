@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { IngredientVariantImageSchema, IngredientVariantSchema } from 'src/__generated__';
-import { SuccessSchema } from 'src/lib/schema';
+import { IngredientVariantImageSchema, IngredientVariantSchema } from '../__generated__';
+import { SuccessSchema } from '../lib/schema';
 
 /**------Create Ingredient Variant---------- */
 

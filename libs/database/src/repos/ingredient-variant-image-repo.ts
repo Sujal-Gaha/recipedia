@@ -13,7 +13,7 @@ import {
   TFindManyIngredientVariantImagesRepoOutput,
   TUpdateIngredientVariantImageRepoInput,
 } from '@libs/quasar';
-import { db } from 'src/prisma/client';
+import { db } from '../prisma/client';
 
 export class PrismaIngredientVariantImageRepo extends IngredientVariantImageRepo {
   override async create({

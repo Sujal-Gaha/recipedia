@@ -10,10 +10,13 @@
   "exclude": ["eslint.config.js", "eslint.config.cjs", "eslint.config.mjs"],
   "references": [
     {
+      "path": "../../libs/contract/tsconfig.lib.json"
+    },
+    {
       "path": "../../libs/database/tsconfig.lib.json"
     },
     {
-      "path": "../../libs/contract/tsconfig.lib.json"
+      "path": "../../libs/auth/tsconfig.lib.json"
     },
     {
       "path": "../../libs/quasar/tsconfig.lib.json"

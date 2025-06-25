@@ -1,8 +1,8 @@
 import { z } from 'zod';
 /**--------- Create Ingredient Variant images ---------------------- */
 
-import { IngredientVariantImageSchema } from 'src/__generated__';
-import { SuccessSchema } from 'src/lib/schema';
+import { IngredientVariantImageSchema } from '../__generated__';
+import { SuccessSchema } from '../lib/schema';
 
 export const CreateIngredientVariantImageInputSchema = IngredientVariantImageSchema.pick({
   url: true,

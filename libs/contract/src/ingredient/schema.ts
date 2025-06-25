@@ -1,8 +1,8 @@
 import { z } from 'zod';
 /***----------Create Ingredient ----------- */
 
-import { IngredientSchema, IngredientVariantSchema } from 'src/__generated__';
-import { SuccessSchema } from 'src/lib/schema';
+import { SuccessSchema } from '../lib/schema';
+import { IngredientSchema, IngredientVariantSchema } from '../__generated__';
 
 export const CreateIngredientInputSchema = IngredientSchema.pick({
   name: true,

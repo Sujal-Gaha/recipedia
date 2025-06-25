@@ -11,8 +11,8 @@ import {
   TUpdateIngredientInput,
   TUpdateIngredientResponse,
 } from '@libs/contract';
-import { BaseRepo } from 'src/domain/base-repo';
-import { logger } from 'src/logger';
+import { BaseRepo } from '../domain/base-repo';
+import { logger } from '../logger';
 
 /**-------Input types----------- */
 export type TCreateIngredientRepoInput = {

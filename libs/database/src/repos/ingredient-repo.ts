@@ -1,4 +1,4 @@
-import { db } from 'src/prisma/client';
+import { db } from '../prisma/client';
 import slugify from 'react-slugify';
 import {
   IngredientRepo,
