@@ -15,5 +15,5 @@ export * from './repos/recipe-step-repo';
 export * from './repos/recipe-upvote-repo';
 export * from './repos/todo-repo';
 export * from './repos/ingredient-repo';
-export * from './repos/ingredient-variant-image';
 export * from './repos/ingredient-variant-repo';
+export * from './repos/ingredient-variant-image-repo';
