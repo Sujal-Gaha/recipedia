@@ -3,6 +3,7 @@ import { ForgotPasswordPage } from '../pages/auth/ForgotPasswordPage';
 import { LoginPage } from '../pages/auth/LoginPage';
 import { RegisterPage } from '../pages/auth/RegisterPage';
 import { VerifyEmailPage } from '../pages/auth/VerifyEmailPage';
+import { VerifyOTPPage } from '../pages/auth/VerifyOtpPage';
 import { HomePage } from '../pages/HomePage';
 import { UserLayout } from '../pages/layout/UserLayout';
 import { NotFoundPage } from '../pages/NotFoundPage';
@@ -24,6 +25,10 @@ const authRoutes: RouteObject[] = [
   {
     path: _FULL_ROUTES.VERIFY_EMAIL,
     element: <VerifyEmailPage />,
+  },
+  {
+    path: _FULL_ROUTES.VERIFY_OTP,
+    element: <VerifyOTPPage />,
   },
 ];
 
