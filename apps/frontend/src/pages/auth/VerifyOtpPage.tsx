@@ -1,7 +1,7 @@
 import type React from 'react';
 
 import { useState, useEffect, useRef } from 'react';
-import { ChefHat, Shield, CheckCircle, Clock, RefreshCw, ArrowLeft, AlertCircle } from 'lucide-react';
+import { Shield, CheckCircle, Clock, RefreshCw, ArrowLeft, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Link } from 'react-router-dom';
@@ -148,7 +148,6 @@ export const VerifyOTPPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background flex items-center justify-center p-4">
-      {/* Background Pattern */}
       <BackgroundPattern />
 
       <div className="w-full max-w-md relative z-10">
