@@ -1,5 +1,5 @@
-import { RecipeReviewSchema } from '../__generated__';
-import { SuccessSchema } from '../lib/schema';
+import { RecipeReviewSchema } from '../../__generated__';
+import { SuccessSchema } from '../../lib/schema';
 import z from 'zod';
 
 /** -------- Create Recipe Review -------- */

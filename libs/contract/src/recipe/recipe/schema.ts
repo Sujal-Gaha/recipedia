@@ -7,8 +7,8 @@ import {
   RecipeStatusSchema,
   RecipeStepSchema,
   UserSchema,
-} from '../__generated__';
-import { SuccessSchema, TrueOrFalseInputSchema } from '../lib/schema';
+} from '../../__generated__';
+import { SuccessSchema, TrueOrFalseInputSchema } from '../../lib/schema';
 
 /** -------- Create Recipe -------- */
 export const CreateRecipeInputSchema = RecipeSchema.pick({

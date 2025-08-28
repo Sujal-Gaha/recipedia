@@ -1,5 +1,5 @@
-import { RecipeImageSchema } from '../__generated__';
-import { PaginationOutputSchema, SuccessSchema } from '../lib/schema';
+import { RecipeImageSchema } from '../../__generated__';
+import { PaginationOutputSchema, SuccessSchema } from '../../lib/schema';
 import z from 'zod';
 
 /** -------- Create Recipe Image -------- */
