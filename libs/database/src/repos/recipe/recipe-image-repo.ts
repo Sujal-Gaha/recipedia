@@ -7,7 +7,7 @@ import {
   TFindRecipeImageByIdRepoInput,
   TRecipeImage,
 } from '@libs/quasar';
-import { db } from '../prisma/client';
+import { db } from '../../prisma/client';
 
 export class PrismaRecipeImageRepo extends RecipeImageRepo {
   override async create({ data: { is_primary, recipe_id, url } }: TCreateRecipeImageRepoInput): Promise<TRecipeImage> {

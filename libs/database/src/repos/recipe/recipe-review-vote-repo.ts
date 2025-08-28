@@ -7,7 +7,7 @@ import {
   TFindRecipeReviewVoteByIdRepoInput,
   TRecipeReviewVote,
 } from '@libs/quasar';
-import { db } from '../prisma/client';
+import { db } from '../../prisma/client';
 
 export class PrismaRecipeReviewVoteRepo extends RecipeReviewVoteRepo {
   override async create({

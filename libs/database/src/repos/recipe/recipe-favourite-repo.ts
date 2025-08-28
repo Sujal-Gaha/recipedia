@@ -7,7 +7,7 @@ import {
   TFindRecipeFavouriteByIdRepoInput,
   TRecipeFavourite,
 } from '@libs/quasar';
-import { db } from '../prisma/client';
+import { db } from '../../prisma/client';
 
 export class PrismaRecipeFavouriteRepo extends RecipeFavouriteRepo {
   override async create({ data: { recipe_id, user_id } }: TCreateRecipeFavouriteRepoInput): Promise<TRecipeFavourite> {

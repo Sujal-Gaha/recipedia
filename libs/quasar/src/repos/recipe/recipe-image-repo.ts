@@ -6,8 +6,8 @@ import {
   TGetRecipeImageByIdInput,
   TDeleteManyRecipeImagesInput,
 } from '@libs/contract';
-import { BaseRepo } from '../domain/base-repo';
-import { logger } from '../logger';
+import { BaseRepo } from '../../domain/base-repo';
+import { logger } from '../../logger';
 
 export type TRecipeImage = RecipeImage;
 

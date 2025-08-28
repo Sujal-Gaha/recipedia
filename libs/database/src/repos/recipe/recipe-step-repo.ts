@@ -7,7 +7,7 @@ import {
   TFindRecipeStepByIdRepoInput,
   TRecipeStep,
 } from '@libs/quasar';
-import { db } from '../prisma/client';
+import { db } from '../../prisma/client';
 
 export class PrismaRecipeStepRepo extends RecipeStepRepo {
   override async create({ data: { recipe_id, content, step_no } }: TCreateRecipeStepRepoInput): Promise<TRecipeStep> {

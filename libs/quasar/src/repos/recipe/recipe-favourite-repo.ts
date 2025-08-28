@@ -6,8 +6,8 @@ import {
   TGetRecipeFavouriteByIdInput,
   TDeleteManyRecipeFavouritesInput,
 } from '@libs/contract';
-import { BaseRepo } from '../domain/base-repo';
-import { logger } from '../logger';
+import { BaseRepo } from '../../domain/base-repo';
+import { logger } from '../../logger';
 
 export type TRecipeFavourite = RecipeFavourite;
 

@@ -7,7 +7,7 @@ import {
   TFindRecipeUpvoteByIdRepoInput,
   TRecipeUpvote,
 } from '@libs/quasar';
-import { db } from '../prisma/client';
+import { db } from '../../prisma/client';
 
 export class PrismaRecipeUpvoteRepo extends RecipeUpvoteRepo {
   override async create({ data: { recipe_id, user_id } }: TCreateRecipeUpvoteRepoInput): Promise<TRecipeUpvote> {

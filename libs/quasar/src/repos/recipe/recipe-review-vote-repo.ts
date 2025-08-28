@@ -6,8 +6,8 @@ import {
   TGetRecipeReviewVoteByIdInput,
   TDeleteManyRecipeReviewVotesInput,
 } from '@libs/contract';
-import { BaseRepo } from '../domain/base-repo';
-import { logger } from '../logger';
+import { BaseRepo } from '../../domain/base-repo';
+import { logger } from '../../logger';
 
 export type TRecipeReviewVote = RecipeReviewVote;
 

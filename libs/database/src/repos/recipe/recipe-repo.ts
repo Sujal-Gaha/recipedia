@@ -8,7 +8,7 @@ import {
   TRecipe,
   TUpdateRecipeRepoInput,
 } from '@libs/quasar';
-import { db } from '../prisma/client';
+import { db } from '../../prisma/client';
 import slugify from 'react-slugify';
 import { Prisma } from '@prisma/client';
 import { TGetAllRecipesOutput } from '@libs/contract';
