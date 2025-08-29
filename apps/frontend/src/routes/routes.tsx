@@ -8,6 +8,7 @@ import { HomePage } from '../pages/HomePage';
 import { UserLayout } from '../pages/layout/UserLayout';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { Outlet, RouteObject } from 'react-router-dom';
+import IngredientsPage from '../pages/user/IngredientsPage';
 
 const authRoutes: RouteObject[] = [
   {
@@ -44,6 +45,10 @@ export const routes: RouteObject[] = [
       {
         path: _FULL_ROUTES.HOME,
         element: <HomePage />,
+      },
+      {
+        path: _FULL_ROUTES.INGREDIENTS,
+        element: <IngredientsPage />,
       },
       {
         path: '/dev',
