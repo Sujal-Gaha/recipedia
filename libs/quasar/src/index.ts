@@ -5,6 +5,10 @@ export * from './zod-utils';
 export * from './multer';
 export * from './image-processor';
 
+export * from './repos/ingredient/ingredient-repo';
+export * from './repos/ingredient/ingredient-variant-repo';
+export * from './repos/ingredient/ingredient-variant-image-repo';
+
 export * from './repos/file-repo';
 export * from './repos/recipe/recipe-favourite-repo';
 export * from './repos/recipe/recipe-image-repo';

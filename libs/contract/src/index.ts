@@ -1,3 +1,7 @@
+export * from './ingredient/ingredient/schema';
+export * from './ingredient/ingredient-variant/schema';
+export * from './ingredient/ingredient-variant-image/schema';
+
 export * from './lib/contract';
 export * from './lib/schema';
 
