@@ -23,7 +23,7 @@ export const CTASection = () => {
                 <Link to={_FULL_ROUTES.REGISTER}>Start Cooking Today</Link>
               </Button>
               <Button size="lg" variant="outline" className="px-12 py-4 text-lg font-medium" asChild>
-                <Link to={_FULL_ROUTES.RECIPES}>Explore Recipes</Link>
+                <Link to={_FULL_ROUTES.RECIPE}>Explore Recipes</Link>
               </Button>
             </div>
           </CardContent>

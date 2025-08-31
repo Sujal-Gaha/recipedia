@@ -1,5 +1,6 @@
 import { ChefHat, Menu } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { _FULL_ROUTES } from '../../constants/routes';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -8,7 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from '../../../../components/ui/navigation-menu';
+} from '../../components/ui/navigation-menu';
 import {
   Sheet,
   SheetContent,
@@ -16,29 +17,28 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '../../../../components/ui/sheet';
-import { Button } from '../../../../components/ui/button';
-import { _FULL_ROUTES } from '../../../../constants/routes';
+} from '../../components/ui/sheet';
+import { Button } from '../../components/ui/button';
 
 const navigationItems = [
   {
     title: 'All Recipes',
-    href: '/recipes',
+    href: _FULL_ROUTES.RECIPE,
     description: 'Browse our complete collection of recipes from the community.',
   },
   {
     title: 'Ingredient Filter',
-    href: '/ingredients',
+    href: _FULL_ROUTES.INGREDIENT,
     description: 'Find recipes based on ingredients you have available.',
   },
   {
     title: 'Create Recipe',
-    href: '/create',
+    href: _FULL_ROUTES.CREATE_RECIPE,
     description: 'Share your own recipe with the community.',
   },
   {
     title: 'Profile',
-    href: '/profile',
+    href: _FULL_ROUTES.PROFILE,
     description: 'Manage your recipes and view your cooking activity.',
   },
 ];
@@ -75,7 +75,7 @@ export const Navbar = () => {
                     <li>
                       <NavigationMenuLink asChild>
                         <Link
-                          to="/recipes"
+                          to={`${_FULL_ROUTES.RECIPE}`}
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                         >
                           <div className="text-sm font-medium leading-none">All Recipes</div>
@@ -88,7 +88,7 @@ export const Navbar = () => {
                     <li>
                       <NavigationMenuLink asChild>
                         <Link
-                          to="/recipes?difficulty=easy"
+                          to={`${_FULL_ROUTES.RECIPE}?difficulty=easy`}
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                         >
                           <div className="text-sm font-medium leading-none">Easy Recipes</div>
@@ -101,7 +101,7 @@ export const Navbar = () => {
                     <li>
                       <NavigationMenuLink asChild>
                         <Link
-                          to="/recipes?sort=popular"
+                          to={`${_FULL_ROUTES.RECIPE}?sort=popular`}
                           className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                         >
                           <div className="text-sm font-medium leading-none">Popular Recipes</div>
@@ -115,12 +115,12 @@ export const Navbar = () => {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link to="/ingredients">
+                <Link to={_FULL_ROUTES.INGREDIENT}>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>Ingredient Filter</NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link to="/create">
+                <Link to={_FULL_ROUTES.CREATE_RECIPE}>
                   <NavigationMenuLink className={navigationMenuTriggerStyle()}>Create Recipe</NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>

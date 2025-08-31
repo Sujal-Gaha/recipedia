@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Input } from '../../components/ui/input';
 import { Checkbox } from '../../components/ui/checkbox';
 import { Button } from '../../components/ui/button';
+import { _FULL_ROUTES } from '../../constants/routes';
 
 interface Ingredient {
   id: string;
@@ -358,7 +359,7 @@ export default function IngredientsPage() {
                       </div>
                     </div>
                     <Button className="w-full" asChild>
-                      <Link to={`/recipes/${recipe.id}`}>View Recipe</Link>
+                      <Link to={`${_FULL_ROUTES.RECIPE}/${recipe.id}`}>View Recipe</Link>
                     </Button>
                   </CardContent>
                 </Card>

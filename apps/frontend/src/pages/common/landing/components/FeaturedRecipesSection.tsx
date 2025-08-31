@@ -3,6 +3,7 @@ import { Button } from '../../../../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
 import { Badge } from '../../../../components/ui/badge';
 import { Clock, Heart, Star, TrendingUp } from 'lucide-react';
+import { _FULL_ROUTES } from '../../../../constants/routes';
 
 const featuredRecipes = [
   {
@@ -58,7 +59,7 @@ export const FeaturedRecipesSection = () => {
             <p className="text-xl text-muted-foreground">Handpicked by our culinary experts</p>
           </div>
           <Button variant="outline" asChild>
-            <Link to="/recipes">View All Recipes</Link>
+            <Link to={_FULL_ROUTES.RECIPE}>View All Recipes</Link>
           </Button>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
@@ -136,7 +137,7 @@ export const FeaturedRecipesSection = () => {
                 </div>
 
                 <Button className="w-full" asChild>
-                  <Link to={`/recipes/${recipe.id}`}>View Recipe</Link>
+                  <Link to={`${_FULL_ROUTES.RECIPE}/${recipe.id}`}>View Recipe</Link>
                 </Button>
               </CardContent>
             </Card>

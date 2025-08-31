@@ -7,6 +7,7 @@ import { Button } from '../../components/ui/button';
 import { Link } from 'react-router-dom';
 import { Input } from '../../components/ui/input';
 import { BackgroundPattern } from './components/background-pattern';
+import { _FULL_ROUTES } from '../../constants/routes';
 
 export const VerifyOTPPage = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -154,7 +155,7 @@ export const VerifyOTPPage = () => {
         {/* Back button */}
         <div className="mb-8">
           <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
-            <Link to="/auth/signin" className="flex items-center">
+            <Link to={_FULL_ROUTES.LOGIN} className="flex items-center">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Sign In
             </Link>
@@ -290,7 +291,7 @@ export const VerifyOTPPage = () => {
         <div className="mt-8 text-center">
           <p className="text-xs text-muted-foreground">
             Wrong phone number?{' '}
-            <Link to="/auth/signup" className="text-primary hover:underline">
+            <Link to={_FULL_ROUTES.REGISTER} className="text-primary hover:underline">
               Update your details
             </Link>
           </p>

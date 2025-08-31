@@ -1,5 +1,6 @@
 import { ChefHat } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { _FULL_ROUTES } from '../../constants/routes';
 
 export const Footer = () => {
   return (
@@ -19,17 +20,20 @@ export const Footer = () => {
             <h3 className="font-semibold mb-6 text-lg">Recipes</h3>
             <ul className="space-y-3 text-muted-foreground">
               <li>
-                <Link to="/recipes?difficulty=easy" className="hover:text-foreground transition-colors">
+                <Link to={`${_FULL_ROUTES.RECIPE}?difficulty=easy`} className="hover:text-foreground transition-colors">
                   Easy Recipes
                 </Link>
               </li>
               <li>
-                <Link to="/recipes?difficulty=medium" className="hover:text-foreground transition-colors">
+                <Link
+                  to={`${_FULL_ROUTES.RECIPE}?difficulty=medium`}
+                  className="hover:text-foreground transition-colors"
+                >
                   Medium Recipes
                 </Link>
               </li>
               <li>
-                <Link to="/recipes?difficulty=hard" className="hover:text-foreground transition-colors">
+                <Link to={`${_FULL_ROUTES.RECIPE}?difficulty=hard`} className="hover:text-foreground transition-colors">
                   Hard Recipes
                 </Link>
               </li>
@@ -39,7 +43,7 @@ export const Footer = () => {
             <h3 className="font-semibold mb-6 text-lg">Community</h3>
             <ul className="space-y-3 text-muted-foreground">
               <li>
-                <Link to="/create" className="hover:text-foreground transition-colors">
+                <Link to={_FULL_ROUTES.CREATE_RECIPE} className="hover:text-foreground transition-colors">
                   Share Recipe
                 </Link>
               </li>

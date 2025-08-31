@@ -9,6 +9,7 @@ import { Outlet, RouteObject } from 'react-router-dom';
 import IngredientsPage from '../pages/user/IngredientsPage';
 import { HomePage } from '../pages/common/landing/HomePage';
 import { NotFoundPage } from '../pages/common/NotFoundPage';
+import { RecipesPage } from '../pages/user/recipe/RecipePage';
 
 const authRoutes: RouteObject[] = [
   {
@@ -47,8 +48,12 @@ export const routes: RouteObject[] = [
         element: <HomePage />,
       },
       {
-        path: _FULL_ROUTES.INGREDIENTS,
+        path: _FULL_ROUTES.INGREDIENT,
         element: <IngredientsPage />,
+      },
+      {
+        path: _FULL_ROUTES.RECIPE,
+        element: <RecipesPage />,
       },
       {
         path: '/dev',

@@ -4,6 +4,7 @@ import { AlertCircle, ArrowLeft, CheckCircle, Clock, Mail, RefreshCw } from 'luc
 import { Button } from '../../components/ui/button';
 import { Link } from 'react-router-dom';
 import { BackgroundPattern } from './components/background-pattern';
+import { _FULL_ROUTES } from '../../constants/routes';
 
 export const VerifyEmailPage = () => {
   const [isVerified, setIsVerified] = useState(false);
@@ -70,10 +71,10 @@ export const VerifyEmailPage = () => {
 
               <div className="space-y-3">
                 <Button asChild className="w-full h-12 text-lg font-medium">
-                  <Link to="/profile">Complete Your Profile</Link>
+                  <Link to={_FULL_ROUTES.PROFILE}>Complete Your Profile</Link>
                 </Button>
                 <Button variant="outline" asChild className="w-full h-12 bg-transparent">
-                  <Link to="/recipes">Start Exploring Recipes</Link>
+                  <Link to={_FULL_ROUTES.RECIPE}>Start Exploring Recipes</Link>
                 </Button>
               </div>
 
@@ -98,7 +99,7 @@ export const VerifyEmailPage = () => {
         {/* Back to Sign In */}
         <div className="mb-8">
           <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
-            <Link to="/auth/signin" className="flex items-center">
+            <Link to={_FULL_ROUTES.LOGIN} className="flex items-center">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Sign In
             </Link>
@@ -199,7 +200,7 @@ export const VerifyEmailPage = () => {
         <div className="mt-8 text-center">
           <p className="text-xs text-muted-foreground">
             Wrong email address?{' '}
-            <Link to="/auth/signup" className="text-primary hover:underline">
+            <Link to={_FULL_ROUTES.REGISTER} className="text-primary hover:underline">
               Sign up again
             </Link>
           </p>

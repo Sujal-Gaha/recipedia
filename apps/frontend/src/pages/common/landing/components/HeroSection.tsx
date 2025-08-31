@@ -3,6 +3,7 @@ import { Card, CardContent } from '../../../../components/ui/card';
 import { Badge } from '../../../../components/ui/badge';
 import { Button } from '../../../../components/ui/button';
 import { Link } from 'react-router-dom';
+import { _FULL_ROUTES } from '../../../../constants/routes';
 
 export const HeroSection = () => {
   return (
@@ -96,13 +97,13 @@ export const HeroSection = () => {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" className="px-8 py-4 text-lg font-medium" asChild>
-            <Link to="/ingredients">
+            <Link to={_FULL_ROUTES.INGREDIENT}>
               <Search className="mr-3 h-5 w-5" />
               Find Recipes by Ingredients
             </Link>
           </Button>
           <Button size="lg" variant="outline" className="px-8 py-4 text-lg font-medium" asChild>
-            <Link to="/recipes">
+            <Link to={_FULL_ROUTES.RECIPE}>
               <BookOpen className="mr-3 h-5 w-5" />
               Browse All Recipes
             </Link>
