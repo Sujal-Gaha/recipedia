@@ -178,7 +178,6 @@ export const CreateRecipePage = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* Create Tab */}
           <TabsContent value="create">
             <CreateRecipe
               formData={formData}

@@ -1,0 +1,48 @@
+import { IIngredient } from '../types/ingredient';
+
+export const ingredients: IIngredient[] = [
+  {
+    id: '1',
+    name: 'Tomatoes',
+    category: 'Vegetables',
+    status: 'active',
+    usageCount: 156,
+    variants: ['Cherry tomatoes', 'Roma tomatoes', 'Beefsteak tomatoes'],
+    image: '/placeholder.svg?height=200&width=200',
+    description: 'Fresh, ripe tomatoes perfect for cooking',
+    createdAt: '2023-06-15',
+  },
+  {
+    id: '2',
+    name: 'Chicken Breast',
+    category: 'Meat',
+    status: 'active',
+    usageCount: 234,
+    variants: ['Boneless', 'Bone-in', 'Organic'],
+    image: '/placeholder.svg?height=200&width=200',
+    description: 'Lean protein source, versatile for many dishes',
+    createdAt: '2023-06-10',
+  },
+  {
+    id: '3',
+    name: 'Basil',
+    category: 'Herbs',
+    status: 'active',
+    usageCount: 89,
+    variants: ['Fresh basil', 'Dried basil', 'Thai basil'],
+    image: '/placeholder.svg?height=200&width=200',
+    description: 'Aromatic herb commonly used in Italian cuisine',
+    createdAt: '2023-07-01',
+  },
+  {
+    id: '4',
+    name: 'Deprecated Ingredient',
+    category: 'Other',
+    status: 'inactive',
+    usageCount: 2,
+    variants: [],
+    image: '/placeholder.svg?height=200&width=200',
+    description: 'This ingredient is no longer recommended',
+    createdAt: '2023-05-01',
+  },
+];

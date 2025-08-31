@@ -5,6 +5,8 @@ import { AdminLayout } from '../pages/admin/layout/AdminLayout';
 import { AdminIngredientPage } from '../pages/admin/dashboard/ingredient/AdminIngredientPage';
 import { AdminRecipePage } from '../pages/admin/dashboard/recipe/AdminRecipePage';
 import { AdminUserPage } from '../pages/admin/dashboard/user/AdminUserPage';
+import { AdminCreateIngredientPage } from '../pages/admin/dashboard/ingredient/create/CreateIngredientPage';
+import { AdminIngredientDetailPage } from '../pages/admin/detail/ingredient/AdminIngredientDetailPage';
 
 export const adminRoutes: RouteObject[] = [
   {
@@ -15,6 +17,7 @@ export const adminRoutes: RouteObject[] = [
       </AdminLayout>
     ),
     children: [
+      // Dashboard
       {
         path: _FULL_ROUTES.ADMIN_DASHBOARD,
         element: <AdminDashboardPage />,
@@ -30,6 +33,25 @@ export const adminRoutes: RouteObject[] = [
       {
         path: _FULL_ROUTES.ADMIN_DASHBOARD_USER,
         element: <AdminUserPage />,
+      },
+      {
+        path: _FULL_ROUTES.ADMIN_DASHBOARD_INGREDIENT_CREATE,
+        element: <AdminCreateIngredientPage />,
+      },
+    ],
+  },
+
+  {
+    path: _FULL_ROUTES.ADMIN_DETAIL,
+    element: (
+      <AdminLayout>
+        <Outlet />
+      </AdminLayout>
+    ),
+    children: [
+      {
+        path: _FULL_ROUTES.ADMIN_DETAIL_INGREDIENT,
+        element: <AdminIngredientDetailPage />,
       },
     ],
   },
