@@ -8,14 +8,12 @@ import { TrendingIngredientsSection } from '../components/landing/TrendingIngred
 export const HomePage = () => {
   return (
     <div>
-      {/* <Navbar /> */}
       <HeroSection />
       <TrendingIngredientsSection />
       <FeaturesSection />
       <FeaturedRecipesSection />
       <StatsSection />
       <CTASection />
-      {/* <Footer /> */}
     </div>
   );
 };

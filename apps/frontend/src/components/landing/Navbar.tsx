@@ -11,6 +11,7 @@ import {
 } from '../ui/navigation-menu';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
 import { Button } from '../ui/button';
+import { _FULL_ROUTES } from '../../constants/routes';
 
 const navigationItems = [
   {
@@ -163,10 +164,10 @@ export const Navbar = () => {
           </div>
           <nav className="flex items-center space-x-2">
             <Button variant="ghost" asChild>
-              <Link to="/auth/signin">Sign In</Link>
+              <Link to={_FULL_ROUTES.LOGIN}>Sign In</Link>
             </Button>
             <Button asChild>
-              <Link to="/auth/signup">Get Started</Link>
+              <Link to={_FULL_ROUTES.REGISTER}>Get Started</Link>
             </Button>
           </nav>
         </div>

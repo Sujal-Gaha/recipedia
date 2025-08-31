@@ -77,12 +77,12 @@ export const HeroSection = () => {
       </div>
 
       <div className="container mx-auto text-center max-w-4xl relative z-10">
-        <div className="mb-8">
+        {/* <div className="mb-8">
           <Badge variant="secondary" className="mb-6">
             <Sparkles className="mr-2 h-4 w-4" />
             New: AI-Powered Recipe Suggestions
           </Badge>
-        </div>
+        </div> */}
         <h1 className="text-6xl md:text-7xl font-bold mb-8 leading-tight">
           <span className="text-foreground">Cook, Share &</span>
           <br />
