@@ -33,4 +33,4 @@ function enhanceRoutes(routes: RouteObject[]): RouteObject[] {
   });
 }
 
-export const router = createBrowserRouter(enhanceRoutes(routes));
+export const enhancedRouter = createBrowserRouter(enhanceRoutes(routes));

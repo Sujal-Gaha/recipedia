@@ -1,13 +1,11 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { routes } from '../routes/routes';
+import { RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from '../components/theme-provider';
-
-const router = createBrowserRouter(routes);
+import { enhancedRouter } from '../routes/router';
 
 function App() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <RouterProvider router={router} />
+      <RouterProvider router={enhancedRouter} />
     </ThemeProvider>
   );
 }

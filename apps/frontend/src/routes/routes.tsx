@@ -10,6 +10,7 @@ import IngredientsPage from '../pages/user/IngredientsPage';
 import { HomePage } from '../pages/common/landing/HomePage';
 import { NotFoundPage } from '../pages/common/NotFoundPage';
 import { RecipesPage } from '../pages/user/recipe/RecipePage';
+import { CreateRecipePage } from '../pages/user/recipe/create/CreateRecipePage';
 
 const authRoutes: RouteObject[] = [
   {
@@ -54,7 +55,18 @@ export const routes: RouteObject[] = [
       {
         path: _FULL_ROUTES.RECIPE,
         element: <RecipesPage />,
+        children: [
+          {
+            path: ':id',
+            element: <RecipesPage />,
+          },
+        ],
       },
+      {
+        path: _FULL_ROUTES.CREATE_RECIPE,
+        element: <CreateRecipePage />,
+      },
+
       {
         path: '/dev',
         element: <div>This is test page for devs</div>,
