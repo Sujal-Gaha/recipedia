@@ -159,56 +159,54 @@ export const CreateRecipePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-6 py-8 max-w-7xl">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-4">Create New Recipe</h1>
-          <p className="text-xl text-muted-foreground">Share your culinary creation with the Recipedia community</p>
-        </div>
-
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-2 h-14">
-            <TabsTrigger value="create" className="text-lg font-medium">
-              <Edit className="mr-2 h-5 w-5" />
-              Create Recipe
-            </TabsTrigger>
-            <TabsTrigger value="preview" className="text-lg font-medium">
-              <Eye className="mr-2 h-5 w-5" />
-              Preview
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="create">
-            <CreateRecipe
-              formData={formData}
-              handleSubmit={handleSubmit}
-              updateFormData={updateFormData}
-              handleDrop={handleDrop}
-              addIngredient={addIngredient}
-              addStep={addStep}
-              removeIngredient={removeIngredient}
-              removeStep={removeStep}
-              updateIngredient={updateIngredient}
-              updateStep={updateStep}
-              moveStep={moveStep}
-              handleDragOver={handleDragOver}
-              handleDragStart={handleDragStart}
-              draggedStep={draggedStep}
-              setActiveTab={setActiveTab}
-            />
-          </TabsContent>
-
-          <TabsContent value="preview">
-            <PreviewRecipe
-              toggleStep={toggleStep}
-              completedSteps={completedSteps}
-              formData={formData}
-              handleSubmit={handleSubmit}
-              setActiveTab={setActiveTab}
-            />
-          </TabsContent>
-        </Tabs>
+    <div className="container mx-auto px-6 py-8 max-w-7xl">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold mb-4">Create New Recipe</h1>
+        <p className="text-xl text-muted-foreground">Share your culinary creation with the Recipedia community</p>
       </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
+        <TabsList className="grid w-full grid-cols-2 h-14">
+          <TabsTrigger value="create" className="text-lg font-medium">
+            <Edit className="mr-2 h-5 w-5" />
+            Create Recipe
+          </TabsTrigger>
+          <TabsTrigger value="preview" className="text-lg font-medium">
+            <Eye className="mr-2 h-5 w-5" />
+            Preview
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="create">
+          <CreateRecipe
+            formData={formData}
+            handleSubmit={handleSubmit}
+            updateFormData={updateFormData}
+            handleDrop={handleDrop}
+            addIngredient={addIngredient}
+            addStep={addStep}
+            removeIngredient={removeIngredient}
+            removeStep={removeStep}
+            updateIngredient={updateIngredient}
+            updateStep={updateStep}
+            moveStep={moveStep}
+            handleDragOver={handleDragOver}
+            handleDragStart={handleDragStart}
+            draggedStep={draggedStep}
+            setActiveTab={setActiveTab}
+          />
+        </TabsContent>
+
+        <TabsContent value="preview">
+          <PreviewRecipe
+            toggleStep={toggleStep}
+            completedSteps={completedSteps}
+            formData={formData}
+            handleSubmit={handleSubmit}
+            setActiveTab={setActiveTab}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
