@@ -34,7 +34,7 @@ interface Recipe {
   ingredients: string[];
 }
 
-export default function IngredientsPage() {
+export const IngredientsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedIngredients, setSelectedIngredients] = useState<string[]>([]);
   const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
@@ -381,4 +381,4 @@ export default function IngredientsPage() {
       )}
     </div>
   );
-}
+};

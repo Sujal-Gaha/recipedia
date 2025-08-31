@@ -1,81 +1,15 @@
-import { _FULL_ROUTES } from '../constants/routes';
-import { ForgotPasswordPage } from '../pages/auth/ForgotPasswordPage';
-import { LoginPage } from '../pages/auth/LoginPage';
-import { RegisterPage } from '../pages/auth/RegisterPage';
-import { VerifyEmailPage } from '../pages/auth/VerifyEmailPage';
-import { VerifyOTPPage } from '../pages/auth/VerifyOtpPage';
-import { UserLayout } from '../pages/layout/UserLayout';
-import { Outlet, RouteObject } from 'react-router-dom';
-import IngredientsPage from '../pages/user/IngredientsPage';
-import { HomePage } from '../pages/common/landing/HomePage';
+import { RouteObject } from 'react-router-dom';
 import { NotFoundPage } from '../pages/common/NotFoundPage';
-import { RecipesPage } from '../pages/user/recipe/RecipePage';
-import { CreateRecipePage } from '../pages/user/recipe/create/CreateRecipePage';
-
-const authRoutes: RouteObject[] = [
-  {
-    path: _FULL_ROUTES.LOGIN,
-    element: <LoginPage />,
-  },
-  {
-    path: _FULL_ROUTES.REGISTER,
-    element: <RegisterPage />,
-  },
-  {
-    path: _FULL_ROUTES.FORGOT_PASSWORD,
-    element: <ForgotPasswordPage />,
-  },
-  {
-    path: _FULL_ROUTES.VERIFY_EMAIL,
-    element: <VerifyEmailPage />,
-  },
-  {
-    path: _FULL_ROUTES.VERIFY_OTP,
-    element: <VerifyOTPPage />,
-  },
-];
+import { authRoutes } from './auth-routes';
+import { adminRoutes } from './admin-routes';
+import { userRoutes } from './user-routes';
 
 export const routes: RouteObject[] = [
-  {
-    path: _FULL_ROUTES.HOME,
-    element: (
-      <UserLayout>
-        <Outlet />
-      </UserLayout>
-    ),
-    children: [
-      {
-        path: _FULL_ROUTES.HOME,
-        element: <HomePage />,
-      },
-      {
-        path: _FULL_ROUTES.INGREDIENT,
-        element: <IngredientsPage />,
-      },
-      {
-        path: _FULL_ROUTES.RECIPE,
-        element: <RecipesPage />,
-        children: [
-          {
-            path: ':id',
-            element: <RecipesPage />,
-          },
-        ],
-      },
-      {
-        path: _FULL_ROUTES.CREATE_RECIPE,
-        element: <CreateRecipePage />,
-      },
-
-      {
-        path: '/dev',
-        element: <div>This is test page for devs</div>,
-      },
-    ],
-  },
+  ...authRoutes,
+  ...userRoutes,
+  ...adminRoutes,
   {
     path: '*',
     element: <NotFoundPage />,
   },
-  ...authRoutes,
 ];
