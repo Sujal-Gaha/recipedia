@@ -8,10 +8,17 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from '../ui/navigation-menu';
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '../ui/sheet';
-import { Button } from '../ui/button';
-import { _FULL_ROUTES } from '../../constants/routes';
+} from '../../../../components/ui/navigation-menu';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '../../../../components/ui/sheet';
+import { Button } from '../../../../components/ui/button';
+import { _FULL_ROUTES } from '../../../../constants/routes';
 
 const navigationItems = [
   {

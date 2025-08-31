@@ -5,7 +5,7 @@ import { ArrowLeft, CheckCircle, ChefHat, Mail } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Label } from '../../components/ui/label';
 import { Input } from '../../components/ui/input';
-import { BackgroundPattern } from '../../components/auth/background-pattern';
+import { BackgroundPattern } from './components/background-pattern';
 import { _FULL_ROUTES } from '../../constants/routes';
 
 export const ForgotPasswordPage = () => {

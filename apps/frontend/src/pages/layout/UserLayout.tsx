@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { Navbar } from '../../components/landing/Navbar';
-import { Footer } from '../../components/landing/Footer';
+import { Navbar } from '../common/landing/components/Navbar';
+import { Footer } from '../common/landing/components/Footer';
 
 export const UserLayout = ({ children }: { children: ReactNode }) => {
   return (

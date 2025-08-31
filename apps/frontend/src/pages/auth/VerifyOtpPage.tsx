@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { Button } from '../../components/ui/button';
 import { Link } from 'react-router-dom';
 import { Input } from '../../components/ui/input';
-import { BackgroundPattern } from '../../components/auth/background-pattern';
+import { BackgroundPattern } from './components/background-pattern';
 
 export const VerifyOTPPage = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);

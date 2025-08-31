@@ -10,7 +10,7 @@ import { Checkbox } from '../../components/ui/checkbox';
 import { ChefHat, Eye, EyeOff, Mail, Lock, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { _FULL_ROUTES } from '../../constants/routes';
-import { BackgroundPattern } from '../../components/auth/background-pattern';
+import { BackgroundPattern } from './components/background-pattern';
 
 const isGoogleAndFacebookLoginProviderEnabled = false;
 

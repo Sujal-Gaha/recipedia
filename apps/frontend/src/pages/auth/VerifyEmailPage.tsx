@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { AlertCircle, ArrowLeft, CheckCircle, Clock, Mail, RefreshCw } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Link } from 'react-router-dom';
-import { BackgroundPattern } from '../../components/auth/background-pattern';
+import { BackgroundPattern } from './components/background-pattern';
 
 export const VerifyEmailPage = () => {
   const [isVerified, setIsVerified] = useState(false);

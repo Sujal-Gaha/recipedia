@@ -4,11 +4,11 @@ import { LoginPage } from '../pages/auth/LoginPage';
 import { RegisterPage } from '../pages/auth/RegisterPage';
 import { VerifyEmailPage } from '../pages/auth/VerifyEmailPage';
 import { VerifyOTPPage } from '../pages/auth/VerifyOtpPage';
-import { HomePage } from '../pages/HomePage';
 import { UserLayout } from '../pages/layout/UserLayout';
-import { NotFoundPage } from '../pages/NotFoundPage';
 import { Outlet, RouteObject } from 'react-router-dom';
 import IngredientsPage from '../pages/user/IngredientsPage';
+import { HomePage } from '../pages/common/landing/HomePage';
+import { NotFoundPage } from '../pages/common/NotFoundPage';
 
 const authRoutes: RouteObject[] = [
   {

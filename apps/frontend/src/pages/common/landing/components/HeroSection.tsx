@@ -1,7 +1,7 @@
 import { BookOpen, ChefHat, Clock, Heart, Search, Sparkles, Star, Utensils } from 'lucide-react';
-import { Card, CardContent } from '../ui/card';
-import { Badge } from '../ui/badge';
-import { Button } from '../ui/button';
+import { Card, CardContent } from '../../../../components/ui/card';
+import { Badge } from '../../../../components/ui/badge';
+import { Button } from '../../../../components/ui/button';
 import { Link } from 'react-router-dom';
 
 export const HeroSection = () => {

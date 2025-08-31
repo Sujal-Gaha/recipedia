@@ -1,7 +1,8 @@
 import { Zap } from 'lucide-react';
-import { Card, CardContent } from '../ui/card';
-import { Button } from '../ui/button';
+import { Card, CardContent } from '../../../../components/ui/card';
+import { Button } from '../../../../components/ui/button';
 import { Link } from 'react-router-dom';
+import { _FULL_ROUTES } from '../../../../constants/routes';
 
 export const CTASection = () => {
   return (
@@ -19,10 +20,10 @@ export const CTASection = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="px-12 py-4 text-lg font-medium" asChild>
-                <Link to="/auth/signup">Start Cooking Today</Link>
+                <Link to={_FULL_ROUTES.REGISTER}>Start Cooking Today</Link>
               </Button>
               <Button size="lg" variant="outline" className="px-12 py-4 text-lg font-medium" asChild>
-                <Link to="/recipes">Explore Recipes</Link>
+                <Link to={_FULL_ROUTES.RECIPES}>Explore Recipes</Link>
               </Button>
             </div>
           </CardContent>

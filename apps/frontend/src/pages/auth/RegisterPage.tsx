@@ -8,7 +8,7 @@ import { Input } from '../../components/ui/input';
 import { Checkbox } from '../../components/ui/checkbox';
 import { Separator } from '../../components/ui/separator';
 import { _FULL_ROUTES } from '../../constants/routes';
-import { BackgroundPattern } from '../../components/auth/background-pattern';
+import { BackgroundPattern } from './components/background-pattern';
 
 const isGoogleAndFacebookLoginProviderEnabled = false;
 
