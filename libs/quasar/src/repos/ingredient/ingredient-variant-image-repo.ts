@@ -1,6 +1,7 @@
 import {
   IngredientVariantImage,
   TCreateIngredientVariantImageInput,
+  TCreateManyIngredientVariantImagesInput,
   TDeleteIngredientVariantImageInput,
   TGetAllIngredientVariantImagesInput,
   TGetAllIngredientVariantImagesOutput,
@@ -39,6 +40,10 @@ export type TFindManyIngredientVariantImagesRepoOutput = {
   pagination: TPaginationOutput;
 };
 
+export type TCreateManyIngredientVariantImagesRepoInput = {
+  data: TCreateManyIngredientVariantImagesInput;
+};
+
 export abstract class IngredientVariantImageRepo implements BaseRepo {
   log(): void {
     logger.info('Ingredient Variant Image Repo initialized...');
@@ -51,4 +56,5 @@ export abstract class IngredientVariantImageRepo implements BaseRepo {
   abstract findMany(
     input: TFindManyIngredientVariantImagesRepoInput
   ): Promise<TFindManyIngredientVariantImagesRepoOutput>;
+  abstract createMany(input: TCreateManyIngredientVariantImagesRepoInput): Promise<TIngredientVariantImage[]>;
 }

@@ -1,6 +1,7 @@
 import {
   IngredientVariant,
   TCreateIngredientVariantInput,
+  TCreateManyIngredientVariantsInput,
   TDeleteIngredientVariantInput,
   TGetAllIngredientVariantsInput,
   TGetAllIngredientVariantsOutput,
@@ -39,6 +40,10 @@ export type TFindManyIngredientVariantsRepoOutput = {
   pagination: TPaginationOutput;
 };
 
+export type TCreateManyIngredientVariantsRepoInput = {
+  data: TCreateManyIngredientVariantsInput;
+};
+
 export abstract class IngredientVariantRepo implements BaseRepo {
   log(): void {
     logger.info('Ingredient Variant Repo initialized...');
@@ -49,4 +54,5 @@ export abstract class IngredientVariantRepo implements BaseRepo {
   abstract update(input: TUpdateIngredientVariantRepoInput): Promise<TIngredientVariant>;
   abstract findById(input: TFindIngredientVariantByIdRepoInput): Promise<TIngredientVariant | null>;
   abstract findMany(input: TFindManyIngredientVariantsRepoInput): Promise<TFindManyIngredientVariantsRepoOutput>;
+  abstract createMany(input: TCreateManyIngredientVariantsRepoInput): Promise<TIngredientVariant[]>;
 }

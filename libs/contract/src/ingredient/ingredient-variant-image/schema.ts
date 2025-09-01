@@ -18,6 +18,23 @@ export const CreateIngredientVariantImageResponseSchema = SuccessSchema.extend({
 });
 export type TCreateIngredientVariantImageResponse = z.infer<typeof CreateIngredientVariantImageResponseSchema>;
 
+/** -------- Create Many Ingredient Variant Images -------- */
+export const CreateManyIngredientVariantImagesInputSchema = z.array(
+  IngredientVariantImageSchema.pick({
+    ingredient_variant_id: true,
+    is_primary: true,
+    url: true,
+  })
+);
+export type TCreateManyIngredientVariantImagesInput = z.infer<typeof CreateManyIngredientVariantImagesInputSchema>;
+
+export const CreateManyIngredientVariantImagesResponseSchema = SuccessSchema.extend({
+  data: z.array(IngredientVariantImageSchema),
+});
+export type TCreateManyIngredientVariantImagesResponse = z.infer<
+  typeof CreateManyIngredientVariantImagesResponseSchema
+>;
+
 /** -------- Get Ingredient Variant Image By Id -------- */
 export const GetIngredientVariantImageByIdInputSchema = IngredientVariantImageSchema.pick({
   id: true,

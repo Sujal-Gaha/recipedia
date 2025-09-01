@@ -1,6 +1,7 @@
 import {
   IngredientVariantImageRepo,
   TCreateIngredientVariantImageRepoInput,
+  TCreateManyIngredientVariantImagesRepoInput,
   TDeleteIngredientVariantImageRepoInput,
   TFindIngredientVariantImageByIdRepoInput,
   TFindManyIngredientVariantImagesRepoInput,
@@ -66,7 +67,7 @@ export class PrismaIngredientVariantImageRepo extends IngredientVariantImageRepo
         created_at: 'desc',
       },
     });
-    const count = await db.file.count();
+    const count = await db.ingredientVariantImage.count();
 
     return {
       data: ingredientVariantImages,
@@ -77,5 +78,15 @@ export class PrismaIngredientVariantImageRepo extends IngredientVariantImageRepo
         totalPages: Math.ceil(count / perPage),
       },
     };
+  }
+
+  override async createMany({ data }: TCreateManyIngredientVariantImagesRepoInput): Promise<TIngredientVariantImage[]> {
+    return await db.ingredientVariantImage.createManyAndReturn({
+      data: data.map((ingredientVariantImage) => ({
+        url: ingredientVariantImage.url,
+        is_primary: ingredientVariantImage.is_primary,
+        ingredient_variant_id: ingredientVariantImage.ingredient_variant_id,
+      })),
+    });
   }
 }

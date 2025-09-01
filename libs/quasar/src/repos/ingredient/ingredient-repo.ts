@@ -3,9 +3,9 @@ import {
   TCreateIngredientInput,
   TDeleteIngredientInput,
   TGetAllIngredientsInput,
-  TGetAllIngredientsOutput,
   TGetIngredientByIdInput,
   TGetIngredientBySlugInput,
+  TIngredientWithVariantsAndImages,
   TPaginationOutput,
   TUpdateIngredientInput,
 } from '@libs/contract';
@@ -31,6 +31,10 @@ export type TFindIngredientByIdRepoInput = {
   data: TGetIngredientByIdInput;
 };
 
+export type TFindIngredientByIdRepoOutput = {
+  data: TIngredientWithVariantsAndImages;
+};
+
 export type TFindIngredientBySlugRepoInput = {
   data: TGetIngredientBySlugInput;
 };
@@ -40,7 +44,7 @@ export type TFindManyIngredientsRepoInput = {
 };
 
 export type TFindManyIngredientsRepoOutput = {
-  data: TGetAllIngredientsOutput[];
+  data: TIngredientWithVariantsAndImages[];
   pagination: TPaginationOutput;
 };
 
@@ -52,7 +56,7 @@ export abstract class IngredientRepo implements BaseRepo {
   abstract create(input: TCreateIngredientRepoInput): Promise<TIngredient>;
   abstract delete(input: TDeleteIngredientRepoInput): Promise<TIngredient>;
   abstract update(input: TUpdateIngredientRepoInput): Promise<TIngredient>;
-  abstract findById(input: TFindIngredientByIdRepoInput): Promise<TIngredient | null>;
+  abstract findById(input: TFindIngredientByIdRepoInput): Promise<TFindIngredientByIdRepoOutput | null>;
   abstract findBySlug(input: TFindIngredientBySlugRepoInput): Promise<TIngredient | null>;
   abstract findMany(input: TFindManyIngredientsRepoInput): Promise<TFindManyIngredientsRepoOutput>;
 }

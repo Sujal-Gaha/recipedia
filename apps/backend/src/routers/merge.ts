@@ -1,9 +1,10 @@
-import { fileContract, todoContract } from '@libs/contract';
+import { fileContract, ingredientContract, todoContract } from '@libs/contract';
 import { todoRouter } from './todo-route';
 import { createExpressEndpoints } from '@ts-rest/express';
 import { logger } from '@libs/quasar';
 import { fileRouter } from './file-router';
 import type { Express } from 'express';
+import { ingredientRouter } from './ingredient-router';
 
 const routers = [
   {
@@ -13,6 +14,10 @@ const routers = [
   {
     contract: fileContract,
     router: fileRouter,
+  },
+  {
+    contract: ingredientContract,
+    router: ingredientRouter,
   },
 ];
 

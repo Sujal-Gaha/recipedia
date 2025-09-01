@@ -17,6 +17,23 @@ export const CreateIngredientVariantResponseSchema = SuccessSchema.extend({
 });
 export type TCreateIngredientVariantResponse = z.infer<typeof CreateIngredientVariantResponseSchema>;
 
+/** -------- Create Many Ingredient Variant -------- */
+export const CreateManyIngredientVariantsInputSchema = z.array(
+  IngredientVariantSchema.pick({
+    ingredient_id: true,
+    name: true,
+  })
+);
+export type TCreateManyIngredientVariantsInput = z.infer<typeof CreateManyIngredientVariantsInputSchema>;
+
+export const CreateManyIngredientVariantsOutputSchema = z.array(IngredientVariantSchema);
+export type TCreateManyIngredientVariantsOutput = z.infer<typeof CreateManyIngredientVariantsOutputSchema>;
+
+export const CreateManyIngredientVariantsResponseSchema = SuccessSchema.extend({
+  data: CreateManyIngredientVariantsOutputSchema,
+});
+export type TCreateManyIngredientVariantsResponse = z.infer<typeof CreateManyIngredientVariantsResponseSchema>;
+
 /** -------- Get Ingredient Variant By Id -------- */
 export const GetIngredientVariantByIdInputSchema = IngredientVariantSchema.pick({
   id: true,
@@ -35,6 +52,7 @@ export type TGetIngredientVariantByIdResponse = z.infer<typeof GetIngredientVari
 export const GetAllIngredientVariantsInputSchema = z.object({
   page: z.number(),
   perPage: z.number(),
+  ingredient_id: z.string().optional(),
 });
 export type TGetAllIngredientVariantsInput = z.infer<typeof GetAllIngredientVariantsInputSchema>;
 

@@ -3,6 +3,7 @@ import {
   TCreateIngredientRepoInput,
   TDeleteIngredientRepoInput,
   TFindIngredientByIdRepoInput,
+  TFindIngredientByIdRepoOutput,
   TFindIngredientBySlugRepoInput,
   TFindManyIngredientsRepoInput,
   TFindManyIngredientsRepoOutput,
@@ -37,12 +38,42 @@ export class PrismaIngredientRepo extends IngredientRepo {
     });
   }
 
-  override async findById({ data: { id } }: TFindIngredientByIdRepoInput): Promise<TIngredient | null> {
-    return await db.ingredient.findUnique({
+  override async findById({
+    data: { id },
+  }: TFindIngredientByIdRepoInput): Promise<TFindIngredientByIdRepoOutput | null> {
+    const ingredient = await db.ingredient.findUnique({
       where: {
         id,
       },
+      include: {
+        variants: {
+          include: {
+            images: true,
+          },
+        },
+      },
     });
+
+    if (!ingredient) return null;
+
+    return {
+      data: {
+        name: ingredient.name,
+        image: ingredient.image,
+        slug: ingredient.slug,
+        ingredient_variants: ingredient.variants
+          ? ingredient.variants.map((variant) => ({
+              name: variant.name,
+              ingredient_variant_images: variant.images
+                ? variant.images.map((image) => ({
+                    url: image.url,
+                    is_primary: image.is_primary,
+                  }))
+                : [],
+            }))
+          : [],
+      },
+    };
   }
 
   override async findBySlug({ data: { slug } }: TFindIngredientBySlugRepoInput): Promise<TIngredient | null> {
@@ -62,11 +93,33 @@ export class PrismaIngredientRepo extends IngredientRepo {
       orderBy: {
         created_at: 'desc',
       },
+      include: {
+        variants: {
+          include: {
+            images: true,
+          },
+        },
+      },
     });
-    const count = await db.file.count();
+    const count = await db.ingredient.count();
 
     return {
-      data: ingredients,
+      data: ingredients.map((ingredient) => ({
+        name: ingredient.name,
+        slug: ingredient.slug,
+        image: ingredient.image,
+        ingredient_variants: ingredient.variants
+          ? ingredient.variants.map((variant) => ({
+              name: variant.name,
+              ingredient_variant_images: variant.images
+                ? variant.images.map((image) => ({
+                    url: image.url,
+                    is_primary: image.is_primary,
+                  }))
+                : [],
+            }))
+          : [],
+      })),
       pagination: {
         page,
         perPage,

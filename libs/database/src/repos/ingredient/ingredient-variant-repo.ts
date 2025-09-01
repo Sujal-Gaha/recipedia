@@ -1,6 +1,7 @@
 import {
   IngredientVariantRepo,
   TCreateIngredientVariantRepoInput,
+  TCreateManyIngredientVariantsRepoInput,
   TDeleteIngredientVariantRepoInput,
   TFindIngredientVariantByIdRepoInput,
   TFindManyIngredientVariantsRepoInput,
@@ -50,7 +51,7 @@ export class PrismaIngredientVariantRepo extends IngredientVariantRepo {
   }
 
   override async findMany({
-    data: { page, perPage },
+    data: { page, perPage, ingredient_id },
   }: TFindManyIngredientVariantsRepoInput): Promise<TFindManyIngredientVariantsRepoOutput> {
     const ingredientVariants = await db.ingredientVariant.findMany({
       skip: (page - 1) * perPage,
@@ -58,8 +59,24 @@ export class PrismaIngredientVariantRepo extends IngredientVariantRepo {
       orderBy: {
         created_at: 'desc',
       },
+      where: {
+        ...(ingredient_id
+          ? {
+              ingredient_id,
+            }
+          : null),
+      },
     });
-    const count = await db.file.count();
+
+    const count = await db.ingredientVariant.count({
+      where: {
+        ...(ingredient_id
+          ? {
+              ingredient_id,
+            }
+          : null),
+      },
+    });
 
     return {
       data: ingredientVariants,
@@ -70,5 +87,14 @@ export class PrismaIngredientVariantRepo extends IngredientVariantRepo {
         totalPages: Math.ceil(count / perPage),
       },
     };
+  }
+
+  override async createMany({ data }: TCreateManyIngredientVariantsRepoInput): Promise<TIngredientVariant[]> {
+    return await db.ingredientVariant.createManyAndReturn({
+      data: data.map((ingredientVariant) => ({
+        name: ingredientVariant.name,
+        ingredient_id: ingredientVariant.ingredient_id,
+      })),
+    });
   }
 }
