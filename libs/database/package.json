@@ -18,6 +18,10 @@
     "name": "database"
   },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "@prisma/client": "^6.9.0",
+    "@libs/quasar": "0.0.1",
+    "react-slugify": "^4.0.1",
+    "@libs/contract": "0.0.1"
   }
 }

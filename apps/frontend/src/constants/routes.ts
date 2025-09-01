@@ -55,10 +55,6 @@ export const _ROUTER_NESTED_PATHS = {
 };
 
 const createFullRoutes = () => {
-  console.log({
-    test: `${_ROUTER_NESTED_PATHS.ADMIN.BASE}/${_ROUTER_NESTED_PATHS.ADMIN.DETAIL}/${_ROUTER_NESTED_PATHS.ADMIN.INGREDIENT}`,
-  });
-
   return {
     HOME: _ROUTER_NESTED_PATHS.USER.BASE,
 
