@@ -47,6 +47,6 @@ export abstract class RecipeRepo implements BaseRepo {
   abstract create(input: TCreateRecipeRepoInput): Promise<TRecipe>;
   abstract delete(input: TDeleteRecipeRepoInput): Promise<TRecipe>;
   abstract update(input: TUpdateRecipeRepoInput): Promise<TRecipe>;
-  abstract findBySlug(input: TFindRecipeBySlugRepoInput): Promise<TRecipe | null>;
+  abstract findBySlug(input: TFindRecipeBySlugRepoInput): Promise<TGetAllRecipesOutput | null>;
   abstract findMany(input: TFindManyRecipesRepoInput): Promise<TFindManyRecipesRepoOutput>;
 }

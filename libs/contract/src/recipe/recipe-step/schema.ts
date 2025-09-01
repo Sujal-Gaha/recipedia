@@ -15,6 +15,15 @@ export const CreateRecipeStepResponseSchema = SuccessSchema.extend({
 });
 export type TCreateRecipeStepResponse = z.infer<typeof CreateRecipeStepResponseSchema>;
 
+/** -------- Create Many Recipe Steps -------- */
+export const CreateManyRecipeStepsInputSchema = z.array(CreateRecipeStepInputSchema);
+export type TCreateManyRecipeStepsInput = z.infer<typeof CreateManyRecipeStepsInputSchema>;
+
+export const CreateManyRecipeStepsResponseSchema = SuccessSchema.extend({
+  data: z.array(RecipeStepSchema),
+});
+export type TCreateManyRecipeStepsResponse = z.infer<typeof CreateManyRecipeStepsResponseSchema>;
+
 /** -------- Get Recipe Step By Id -------- */
 export const GetRecipeStepByIdInputSchema = RecipeStepSchema.pick({
   id: true,

@@ -12,6 +12,7 @@ export * from './repos/ingredient/ingredient-variant-image-repo';
 
 export * from './repos/recipe/recipe-favourite-repo';
 export * from './repos/recipe/recipe-image-repo';
+export * from './repos/recipe/recipe-ingredient-repo';
 export * from './repos/recipe/recipe-repo';
 export * from './repos/recipe/recipe-review-repo';
 export * from './repos/recipe/recipe-review-vote-repo';

@@ -1,5 +1,6 @@
 import {
   RecipeStepRepo,
+  TCreateManyRecipeStepsRepoInput,
   TCreateRecipeStepRepoInput,
   TDeleteManyRecipeStepsRepoOuput,
   TDeleteRecipeStepRepoInput,
@@ -58,5 +59,15 @@ export class PrismaRecipeStepRepo extends RecipeStepRepo {
     });
 
     return steps;
+  }
+
+  override async createMany({ data }: TCreateManyRecipeStepsRepoInput): Promise<TRecipeStep[]> {
+    return await db.recipeStep.createManyAndReturn({
+      data: data.map((recipeStep) => ({
+        recipe_id: recipeStep.recipe_id,
+        content: recipeStep.content,
+        step_no: recipeStep.step_no,
+      })),
+    });
   }
 }

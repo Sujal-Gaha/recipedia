@@ -1,5 +1,6 @@
 import {
   RecipeImageRepo,
+  TCreateManyRecipeImagesRepoInput,
   TCreateRecipeImageRepoInput,
   TDeleteManyRecipeImagesRepoOuput,
   TDeleteRecipeImageRepoInput,
@@ -58,5 +59,15 @@ export class PrismaRecipeImageRepo extends RecipeImageRepo {
     });
 
     return images;
+  }
+
+  override async createMany({ data }: TCreateManyRecipeImagesRepoInput): Promise<TRecipeImage[]> {
+    return await db.recipeImage.createManyAndReturn({
+      data: data.map((recipeImage) => ({
+        recipe_id: recipeImage.recipe_id,
+        url: recipeImage.url,
+        is_primary: recipeImage.is_primary,
+      })),
+    });
   }
 }

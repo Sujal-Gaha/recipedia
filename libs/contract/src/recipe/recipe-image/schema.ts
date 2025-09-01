@@ -15,6 +15,21 @@ export const CreateRecipeImageResponseSchema = SuccessSchema.extend({
 });
 export type TCreateRecipeImageResponse = z.infer<typeof CreateRecipeImageResponseSchema>;
 
+/** -------- Create Many Recipe Images -------- */
+export const CreateManyRecipeImagesInputSchema = z.array(
+  RecipeImageSchema.pick({
+    recipe_id: true,
+    is_primary: true,
+    url: true,
+  })
+);
+export type TCreateManyRecipeImagesInput = z.infer<typeof CreateManyRecipeImagesInputSchema>;
+
+export const CreateManyRecipeImagesResponseSchema = SuccessSchema.extend({
+  data: z.array(RecipeImageSchema),
+});
+export type TCreateManyRecipeImagesResponse = z.infer<typeof CreateManyRecipeImagesResponseSchema>;
+
 /** -------- Get Recipe Image By Id -------- */
 export const GetRecipeImageByIdInputSchema = RecipeImageSchema.pick({
   id: true,

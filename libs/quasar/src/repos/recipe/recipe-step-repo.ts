@@ -5,6 +5,7 @@ import {
   TGetAllRecipeStepsInput,
   TGetRecipeStepByIdInput,
   TDeleteManyRecipeStepsInput,
+  TCreateManyRecipeStepsInput,
 } from '@libs/contract';
 import { BaseRepo } from '../../domain/base-repo';
 import { logger } from '../../logger';
@@ -13,6 +14,10 @@ export type TRecipeStep = RecipeStep;
 
 export type TCreateRecipeStepRepoInput = {
   data: TCreateRecipeStepInput;
+};
+
+export type TCreateManyRecipeStepsRepoInput = {
+  data: TCreateManyRecipeStepsInput;
 };
 
 export type TDeleteRecipeStepRepoInput = {
@@ -42,4 +47,5 @@ export abstract class RecipeStepRepo implements BaseRepo {
   abstract findMany(input: TFindManyRecipeStepsRepoInput): Promise<TRecipeStep[]>;
 
   abstract deleteMany(input: TDeleteManyRecipeStepsRepoOuput): Promise<TRecipeStep[]>;
+  abstract createMany(input: TCreateManyRecipeStepsRepoInput): Promise<TRecipeStep[]>;
 }

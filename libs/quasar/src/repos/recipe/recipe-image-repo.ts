@@ -5,6 +5,7 @@ import {
   TGetAllRecipeImagesInput,
   TGetRecipeImageByIdInput,
   TDeleteManyRecipeImagesInput,
+  TCreateManyRecipeImagesInput,
 } from '@libs/contract';
 import { BaseRepo } from '../../domain/base-repo';
 import { logger } from '../../logger';
@@ -13,6 +14,10 @@ export type TRecipeImage = RecipeImage;
 
 export type TCreateRecipeImageRepoInput = {
   data: TCreateRecipeImageInput;
+};
+
+export type TCreateManyRecipeImagesRepoInput = {
+  data: TCreateManyRecipeImagesInput;
 };
 
 export type TDeleteRecipeImageRepoInput = {
@@ -42,4 +47,5 @@ export abstract class RecipeImageRepo implements BaseRepo {
   abstract findMany(input: TFindManyRecipeImagesRepoInput): Promise<TRecipeImage[]>;
 
   abstract deleteMany(input: TDeleteManyRecipeImagesRepoOuput): Promise<TRecipeImage[]>;
+  abstract createMany(input: TCreateManyRecipeImagesRepoInput): Promise<TRecipeImage[]>;
 }

@@ -2,13 +2,14 @@ import { z } from 'zod';
 import {
   RecipeDifficultySchema,
   RecipeImageSchema,
+  RecipeIngredientSchema,
   RecipeReviewSchema,
   RecipeSchema,
   RecipeStatusSchema,
   RecipeStepSchema,
   UserSchema,
 } from '../../__generated__';
-import { SuccessSchema, TrueOrFalseInputSchema } from '../../lib/schema';
+import { PaginationOutputSchema, SuccessSchema, TrueOrFalseInputSchema } from '../../lib/schema';
 
 /** -------- Create Recipe -------- */
 export const CreateRecipeInputSchema = RecipeSchema.pick({
@@ -47,6 +48,8 @@ export const GetAllRecipesInputSchema = z.object({
   difficulty: RecipeDifficultySchema.optional(),
   status: RecipeStatusSchema.optional(),
   is_flagged: TrueOrFalseInputSchema.optional(),
+  global_filter: z.string().optional(),
+  recipe_ingredients_ids: z.array(z.string()).optional(),
 });
 export type TGetAllRecipesInput = z.infer<typeof GetAllRecipesInputSchema>;
 
@@ -59,11 +62,15 @@ export const GetAllRecipesOutputSchema = RecipeSchema.extend({
     image: true,
     is_email_verified: true,
   }),
-  recipe_images: z.array(RecipeImageSchema),
-  recipe_upvotes: z.object({
+  ingredients: z.array(RecipeIngredientSchema),
+  images: z.array(RecipeImageSchema),
+  upvotes: z.object({
     total_votes: z.number(),
   }),
-  recipe_review: z.object({
+  favourites: z.object({
+    total_favourites: z.number(),
+  }),
+  review: z.object({
     average_rating: z.number(),
     total_reviews: z.number(),
     total_ratings: z.number(),
@@ -79,18 +86,13 @@ export const GetAllRecipesOutputSchema = RecipeSchema.extend({
       })
     ),
   }),
-  recipe_steps: z.array(RecipeStepSchema),
+  steps: z.array(RecipeStepSchema),
 });
 export type TGetAllRecipesOutput = z.infer<typeof GetAllRecipesOutputSchema>;
 
 export const GetAllRecipesResponseSchema = SuccessSchema.extend({
   data: z.array(GetAllRecipesOutputSchema),
-  pagination: z.object({
-    page: z.number(),
-    perPage: z.number(),
-    total: z.number(),
-    totalPages: z.number(),
-  }),
+  pagination: PaginationOutputSchema,
 });
 export type TGetAllRecipesResponse = z.infer<typeof GetAllRecipesResponseSchema>;
 
