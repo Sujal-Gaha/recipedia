@@ -27,3 +27,5 @@ export * from './file/contract';
 export * from './user/schema';
 
 export * from './__generated__';
+
+export * from './auth';

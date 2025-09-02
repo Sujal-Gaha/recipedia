@@ -2,10 +2,10 @@ import { fileContract, ingredientContract, recipeContract, todoContract } from '
 import { todoRouter } from './todo-route';
 import { createExpressEndpoints } from '@ts-rest/express';
 import { logger } from '@libs/quasar';
-import { fileRouter } from './file-router';
+import { fileRouter } from './file-route';
 import type { Express } from 'express';
-import { ingredientRouter } from './ingredient-router';
-import { recipeRouter } from './recipe-router';
+import { ingredientRouter } from './ingredient-route';
+import { recipeRouter } from './recipe-route';
 
 const routers = [
   {
