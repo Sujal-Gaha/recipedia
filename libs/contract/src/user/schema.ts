@@ -42,5 +42,7 @@ export type TGetUserByEmailInput = z.infer<typeof GetUserByEmailInputSchema>;
 
 export const VerifyEmailInputSchema = UserSchema.pick({
   email: true,
+}).extend({
+  otp: z.string().min(6),
 });
 export type TVerifyEmailInput = z.infer<typeof VerifyEmailInputSchema>;

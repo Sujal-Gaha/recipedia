@@ -1,20 +1,19 @@
 import { toast, ExternalToast } from 'sonner';
 
 const toastData: ExternalToast = {
-  position: 'bottom-center',
+  position: 'top-right',
   dismissible: true,
-  duration: 3000,
-  className: 'bg-green-500 text-white',
+  duration: 5000,
 };
 
-export function toastSuccess(message: string) {
+export const toastSuccess = (message: string) => {
   toast.success(message, toastData);
-}
+};
 
-export function toastError(message: string) {
+export const toastError = (message: string) => {
   toast.error(message, toastData);
-}
+};
 
-export function toastInfo(message: string) {
+export const toastInfo = (message: string) => {
   toast(message, toastData);
-}
+};

@@ -11,6 +11,7 @@ import {
   TVerifyEmailResponseCodes,
 } from '@libs/contract';
 import { env } from '../../lib/env';
+import { z } from 'zod';
 
 export type TSignUpInput = {
   email: string;
@@ -22,7 +23,7 @@ export type TSignUpOutput = {
   code: TSignUpResponseCodes;
 };
 export async function signUp(input: TSignUpInput): Promise<TSignUpOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/v1/auth/signup`, {
+  const res = await fetch(`${env.VITE_BACKEND_URL}/v1/auth/signup`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -37,19 +38,24 @@ export async function signUp(input: TSignUpInput): Promise<TSignUpOutput> {
 
   const data = await res.json();
 
+  if (!res.ok) {
+    throw new Error(data.message);
+  }
+
   return data;
 }
 
-export type TLoginInput = {
-  email: string;
-  password: string;
-};
+export const TLoginInputSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+export type TLoginInput = z.infer<typeof TLoginInputSchema>;
 export type TLoginOutput = {
   message: string;
   code: TLoginResponseCodes;
 };
 export async function login(input: TLoginInput): Promise<TLoginOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/v1/auth/login`, {
+  const res = await fetch(`${env.VITE_BACKEND_URL}/v1/auth/login`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -62,6 +68,10 @@ export async function login(input: TLoginInput): Promise<TLoginOutput> {
   });
 
   const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message);
+  }
 
   return data;
 }
@@ -85,7 +95,7 @@ export type TMeOutput = {
 };
 
 export async function me(): Promise<TMeOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/v1/auth/me`, {
+  const res = await fetch(`${env.VITE_BACKEND_URL}/v1/auth/me`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -94,6 +104,10 @@ export async function me(): Promise<TMeOutput> {
   });
 
   const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message);
+  }
 
   return data;
 }
@@ -104,7 +118,7 @@ export type TLogoutOutput = {
 };
 
 export async function logout(): Promise<TLogoutOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/v1/auth/logout`, {
+  const res = await fetch(`${env.VITE_BACKEND_URL}/v1/auth/logout`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -113,6 +127,10 @@ export async function logout(): Promise<TLogoutOutput> {
   });
 
   const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message);
+  }
 
   return data;
 }
@@ -126,7 +144,7 @@ export type TSendOtpOutput = {
 };
 
 export async function sendOtp(input: TSendOtpInput): Promise<TSendOtpOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/v1/auth/send-otp`, {
+  const res = await fetch(`${env.VITE_BACKEND_URL}/v1/auth/send-otp`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -139,9 +157,17 @@ export async function sendOtp(input: TSendOtpInput): Promise<TSendOtpOutput> {
 
   const data = await res.json();
 
+  if (!res.ok) {
+    throw new Error(data.message);
+  }
+
   return data;
 }
 
+export const VerifyEmailInputSchema = z.object({
+  email: z.string(),
+  otp: z.string().min(6),
+});
 export type TVerifyEmailInput = {
   email: string;
   otp: string;
@@ -151,7 +177,7 @@ export type TVerifyEmailOutput = {
   code: TVerifyEmailResponseCodes;
 };
 export async function verifyEmail(input: TVerifyEmailInput): Promise<TVerifyEmailOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/v1/auth/verify-email`, {
+  const res = await fetch(`${env.VITE_BACKEND_URL}/v1/auth/verify-email`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -164,6 +190,10 @@ export async function verifyEmail(input: TVerifyEmailInput): Promise<TVerifyEmai
   });
 
   const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message);
+  }
 
   return data;
 }
@@ -178,7 +208,7 @@ export type TForgotPasswordOutput = {
   code: TForgotPasswordResponseCodes;
 };
 export async function forgotPassword(input: TForgotPasswordInput): Promise<TForgotPasswordOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/v1/auth/forgot-password`, {
+  const res = await fetch(`${env.VITE_BACKEND_URL}/v1/auth/forgot-password`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -193,6 +223,10 @@ export async function forgotPassword(input: TForgotPasswordInput): Promise<TForg
 
   const data = await res.json();
 
+  if (!res.ok) {
+    throw new Error(data.message);
+  }
+
   return data;
 }
 
@@ -202,7 +236,7 @@ export type TRefreshTokenOutput = {
 };
 
 export async function refreshToken(): Promise<TRefreshTokenOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/v1/auth/refresh`, {
+  const res = await fetch(`${env.VITE_BACKEND_URL}/v1/auth/refresh`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -211,6 +245,10 @@ export async function refreshToken(): Promise<TRefreshTokenOutput> {
   });
 
   const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message);
+  }
 
   return data;
 }
@@ -226,7 +264,7 @@ export type TResetPasswordOutput = {
 };
 
 export async function resetPassword(input: TResetPasswordInput): Promise<TResetPasswordOutput> {
-  const res = await fetch(`${env.BACKEND_URL}/v1/auth/reset`, {
+  const res = await fetch(`${env.VITE_BACKEND_URL}/v1/auth/reset`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -239,6 +277,10 @@ export async function resetPassword(input: TResetPasswordInput): Promise<TResetP
   });
 
   const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message);
+  }
 
   return data;
 }

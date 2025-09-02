@@ -10,6 +10,7 @@ import {
   ISendOtpHandler,
 } from '@baijanstack/express-auth';
 import { PrismaUserRepo } from '@libs/database';
+import { logger } from '@libs/quasar';
 import { UserType } from '@prisma/client';
 
 export type TUser = {
@@ -62,6 +63,14 @@ export class LoginHandler implements ILoginHandler {
     const user = await prismaUserRepo.findByEmail({ data: { email } });
 
     if (!user) {
+      logger.error(
+        {
+          message: 'User not found',
+          user,
+        },
+        'LoginHandler - getUserByEmail'
+      );
+
       return null;
     }
 
@@ -141,11 +150,11 @@ export class MeRouteHandler implements IMeRouteHandler {
     }
 
     return {
-      id: user?.id,
-      user_type: user?.user_type,
-      is_email_verified: user?.is_email_verified,
-      name: user?.name,
-      email: user?.email,
+      id: user.id,
+      user_type: user.user_type,
+      is_email_verified: user.is_email_verified,
+      name: user.name,
+      email: user.email,
     };
   };
 }

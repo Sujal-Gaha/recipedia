@@ -25,7 +25,7 @@ import {
   TVerifyEmailOutput,
   verifyEmail,
 } from './fetcher';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { toastError } from '../../components/toaster';
 
 // for register api
@@ -54,27 +54,31 @@ export function useRefreshTokenMutation() {
 export function useMeQuery() {
   const retryRef = useRef(0);
   const refreshToken = useRefreshTokenMutation();
-  return useQuery<TMeOutput, Error>({
+  const query = useQuery<TMeOutput, Error>({
     queryKey: ['me', retryRef.current],
     queryFn: me,
     retry: false,
-    // async onSuccess(data) {
-    //   if (data.code === 'INVALID_TOKEN' || data.code === 'MISSING_TOKEN') {
-    //     await refreshToken.mutateAsync(
-    //       {},
-    //       {
-    //         onSuccess: (res) => {
-    //           if (res.code !== 'REFRESH_SUCCESS') {
-    //             toastError(res.message ?? 'Refreshing token failed! You will be logged out!');
-    //             return;
-    //           }
-    //           retryRef.current += 1;
-    //         },
-    //       }
-    //     );
-    //   }
-    // },
   });
+
+  useEffect(() => {
+    if (!query.data) return;
+
+    if (query.data.code === 'INVALID_TOKEN' || query.data.code === 'MISSING_TOKEN') {
+      refreshToken.mutateAsync(
+        {},
+        {
+          onSuccess: (res) => {
+            if (res.code !== 'REFRESH_SUCCESS') {
+              toastError(res.message ?? 'Refreshing token failed! You will be logged out!');
+            }
+            retryRef.current += 1;
+          },
+        }
+      );
+    }
+  }, [query.data, refreshToken]);
+
+  return query;
 }
 
 // for logout api

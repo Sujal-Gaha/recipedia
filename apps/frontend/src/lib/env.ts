@@ -1,5 +1,5 @@
 export const env = {
-  BACKEND_URL: import.meta.env.BACKEND_URL || '',
-  FRONTEND_URL: import.meta.env.FRONTEND_URL || '',
-  FEATURE_FLAGS: import.meta.env.FEATURE_FLAGS || '',
+  VITE_BACKEND_URL: import.meta.env.VITE_BACKEND_URL || '',
+  VITE_FRONTEND_URL: import.meta.env.VITE_FRONTEND_URL || '',
+  VITE_FEATURE_FLAGS: import.meta.env.VITE_FEATURE_FLAGS || '',
 } as const;

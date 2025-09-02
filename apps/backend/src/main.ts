@@ -4,6 +4,7 @@ import { generateEndPoints } from './routers/merge';
 import { errorHandler, logger, loggerMiddleware, notFoundHandler, env } from '@libs/quasar';
 import compression from 'compression';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 
 import * as swaggerUi from 'swagger-ui-express';
 import { openApiDocument } from './utils/swagger';
@@ -32,6 +33,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(loggerMiddleware);
 

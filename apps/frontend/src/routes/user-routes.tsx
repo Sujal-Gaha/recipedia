@@ -5,14 +5,17 @@ import { IngredientsPage } from '../pages/user/IngredientsPage';
 import { RecipesPage } from '../pages/user/recipe/RecipePage';
 import { CreateRecipePage } from '../pages/user/recipe/create/CreateRecipePage';
 import { UserLayout } from '../pages/user/layout/UserLayout';
+import { WithAuth } from '../components/auth';
 
 export const userRoutes: RouteObject[] = [
   {
     path: _FULL_ROUTES.HOME,
     element: (
-      <UserLayout>
-        <Outlet />
-      </UserLayout>
+      <WithAuth>
+        <UserLayout>
+          <Outlet />
+        </UserLayout>
+      </WithAuth>
     ),
     children: [
       {

@@ -80,7 +80,7 @@ export const PageLoader = () => {
           initial="initial"
           animate="animate"
         >
-          Loading simulation...
+          Loading...
         </motion.p>
       </motion.div>
     </div>

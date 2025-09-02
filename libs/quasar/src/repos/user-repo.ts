@@ -5,7 +5,6 @@ import {
   TSignUpUserInput,
   TUpdateUserByEmailInput,
   TUpdateUserByIdInput,
-  TVerifyEmailInput,
   User,
 } from '@libs/contract';
 import { BaseRepo } from '../domain/base-repo';
@@ -39,7 +38,9 @@ export type TFindUserByEmailRepoInput = {
 };
 
 export type TVerifyEmailRepoInput = {
-  data: TVerifyEmailInput;
+  data: {
+    email: string;
+  };
 };
 
 export abstract class UserRepo implements BaseRepo {
