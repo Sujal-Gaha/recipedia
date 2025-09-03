@@ -1,4 +1,4 @@
-import { getFilePath, handleApiErrorAndRespond, ImageProcessor } from '@libs/quasar';
+import { env, getFilePath, handleApiErrorAndRespond, ImageProcessor } from '@libs/quasar';
 import { db } from '@libs/database';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { fileContract } from '@libs/contract';
@@ -18,10 +18,14 @@ export const createFile: AppRouteImplementation<typeof fileContract.createFile> 
     const { originalname, path, size, mimetype } = req.file;
 
     if (mimetype === 'application/pdf') {
+      const staticPath = getFilePath(path);
+
+      const fullUrl = `${env.BACKEND_URL}${staticPath}`;
+
       const createdFile = await db.file.create({
         data: {
           file_name: originalname,
-          file_path: path,
+          file_path: fullUrl,
           file_size_in_bytes: size,
         },
       });
@@ -41,7 +45,7 @@ export const createFile: AppRouteImplementation<typeof fileContract.createFile> 
     const { compressedFilePath } = await imageProcessor.compress({
       width: 500,
       height: 500,
-      quality: 90,
+      quality: 100,
       resizeOptions: {
         fit: 'cover',
         position: 'center',
@@ -50,10 +54,12 @@ export const createFile: AppRouteImplementation<typeof fileContract.createFile> 
 
     const staticPath = getFilePath(compressedFilePath);
 
+    const fullUrl = `${env.BACKEND_URL}${staticPath}`;
+
     const createdFile = await db.file.create({
       data: {
         file_name: originalname,
-        file_path: staticPath,
+        file_path: fullUrl,
         file_size_in_bytes: size,
       },
     });

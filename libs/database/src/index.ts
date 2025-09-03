@@ -8,7 +8,6 @@ export * from './repos/user-repo';
 
 export * from './repos/ingredient/ingredient-repo';
 export * from './repos/ingredient/ingredient-variant-repo';
-export * from './repos/ingredient/ingredient-variant-image-repo';
 
 export * from './repos/recipe/recipe-favourite-repo';
 export * from './repos/recipe/recipe-image-repo';

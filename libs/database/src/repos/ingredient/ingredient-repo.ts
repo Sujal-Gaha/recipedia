@@ -11,14 +11,31 @@ import {
   TUpdateIngredientRepoInput,
 } from '@libs/quasar';
 import { db } from '../../prisma/client';
+import slugify from 'react-slugify';
 
 export class PrismaIngredientRepo extends IngredientRepo {
-  override async create({ data: { image, name, slug } }: TCreateIngredientRepoInput): Promise<TIngredient> {
+  private getSlugForIngredient({ name }: { name: string }) {
+    return slugify(name);
+  }
+
+  override async create({
+    data: { image, name, category, description, calories, carbohydrates, fat, fiber, protein, sugar },
+  }: TCreateIngredientRepoInput): Promise<TIngredient> {
+    const slug = this.getSlugForIngredient({ name });
+
     return await db.ingredient.create({
       data: {
         image,
         name,
         slug,
+        category,
+        description,
+        calories,
+        carbohydrates,
+        fat,
+        fiber,
+        protein,
+        sugar,
       },
     });
   }
@@ -46,11 +63,7 @@ export class PrismaIngredientRepo extends IngredientRepo {
         id,
       },
       include: {
-        variants: {
-          include: {
-            images: true,
-          },
-        },
+        variants: true,
       },
     });
 
@@ -58,18 +71,24 @@ export class PrismaIngredientRepo extends IngredientRepo {
 
     return {
       data: {
+        id: ingredient.id,
         name: ingredient.name,
         image: ingredient.image,
         slug: ingredient.slug,
+        category: ingredient.category,
+        description: ingredient.description,
+        calories: ingredient.calories,
+        carbohydrates: ingredient.carbohydrates,
+        fat: ingredient.fat,
+        protein: ingredient.protein,
+        fiber: ingredient.fiber,
+        sugar: ingredient.sugar,
+        created_at: ingredient.created_at,
+        updated_at: ingredient.updated_at,
         ingredient_variants: ingredient.variants
           ? ingredient.variants.map((variant) => ({
               name: variant.name,
-              ingredient_variant_images: variant.images
-                ? variant.images.map((image) => ({
-                    url: image.url,
-                    is_primary: image.is_primary,
-                  }))
-                : [],
+              image: variant.image,
             }))
           : [],
       },
@@ -94,11 +113,7 @@ export class PrismaIngredientRepo extends IngredientRepo {
         created_at: 'desc',
       },
       include: {
-        variants: {
-          include: {
-            images: true,
-          },
-        },
+        variants: true,
       },
     });
     const count = await db.ingredient.count();
@@ -108,15 +123,18 @@ export class PrismaIngredientRepo extends IngredientRepo {
         name: ingredient.name,
         slug: ingredient.slug,
         image: ingredient.image,
+        category: ingredient.category,
+        calories: ingredient.calories,
+        carbohydrates: ingredient.carbohydrates,
+        fat: ingredient.fat,
+        fiber: ingredient.fiber,
+        protein: ingredient.protein,
+        sugar: ingredient.sugar,
+        description: ingredient.description,
         ingredient_variants: ingredient.variants
           ? ingredient.variants.map((variant) => ({
               name: variant.name,
-              ingredient_variant_images: variant.images
-                ? variant.images.map((image) => ({
-                    url: image.url,
-                    is_primary: image.is_primary,
-                  }))
-                : [],
+              image: variant.image,
             }))
           : [],
       })),

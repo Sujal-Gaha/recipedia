@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, X, Upload, Save, ArrowLeft, Carrot, Info, Camera } from 'lucide-react';
+import { Plus, X, Save, ArrowLeft, Carrot, Info } from 'lucide-react';
 import { Button } from '../../../../../components/ui/button';
 import { Link } from 'react-router-dom';
 import { _FULL_ROUTES } from '../../../../../constants/routes';
@@ -9,29 +9,38 @@ import { Input } from '../../../../../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../../components/ui/select';
 import { Textarea } from '../../../../../components/ui/textarea';
 import { Badge } from '../../../../../components/ui/badge';
+import { ingredientApi } from '../../../../../apis/ingredient-api';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import {
+  CreateIngredientWithVariantsAndImagesInputSchema,
+  TCreateIngredientWithVariantsAndImagesInput,
+} from '@libs/contract';
+// import { AdditionalInformation } from './components/AdditionalInformations';
+import { toastError, toastSuccess } from '../../../../../components/toaster';
+import { FileUpload } from '../../../../../components/file-upload';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export const AdminCreateIngredientPage = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    category: '',
-    description: '',
+  const [addedVariant, setAddedVariant] = useState({
     image: '',
-    nutritionalInfo: {
-      calories: '',
-      protein: '',
-      carbs: '',
-      fat: '',
-      fiber: '',
-    },
-    variants: [] as string[],
-    tags: [] as string[],
-    seasonality: '',
-    storageInstructions: '',
-    preparationTips: '',
+    name: '',
   });
 
-  const [newVariant, setNewVariant] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const createIngredientMtn = ingredientApi.createIngredient.useMutation();
+
+  const { register, setValue, watch, handleSubmit } = useForm<TCreateIngredientWithVariantsAndImagesInput>({
+    defaultValues: {
+      ingredient_variants: [
+        {
+          image: 'test',
+          name: '',
+        },
+      ],
+    },
+    resolver: zodResolver(CreateIngredientWithVariantsAndImagesInputSchema),
+  });
+
+  const { category, ingredient_variants } = watch();
 
   const categories = [
     'Vegetables',
@@ -50,99 +59,62 @@ export const AdminCreateIngredientPage = () => {
     'Other',
   ];
 
-  const seasonalityOptions = ['Year-round', 'Spring', 'Summer', 'Fall', 'Winter', 'Spring/Summer', 'Fall/Winter'];
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const handleNutritionalChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      nutritionalInfo: {
-        ...prev.nutritionalInfo,
-        [field]: value,
-      },
-    }));
-  };
-
   const addVariant = () => {
-    if (newVariant.trim() && !formData.variants.includes(newVariant.trim())) {
-      setFormData((prev) => ({
-        ...prev,
-        variants: [...prev.variants, newVariant.trim()],
-      }));
-      setNewVariant('');
+    if (!ingredient_variants[0].name) {
+      setValue('ingredient_variants.0', addedVariant);
+    } else {
+      setValue('ingredient_variants', [...ingredient_variants, addedVariant]);
     }
+    setAddedVariant({
+      image: '',
+      name: '',
+    });
   };
 
-  const removeVariant = (variant: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      variants: prev.variants.filter((v) => v !== variant),
-    }));
+  const removeVariant = (variant_name: string) => {
+    setValue(
+      'ingredient_variants',
+      ingredient_variants.filter((v) => v.name !== variant_name)
+    );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Show success notification
-      //   showToast({
-      //     type: 'success',
-      //     title: 'Ingredient Added',
-      //     message: `${formData.name} has been successfully added to the database`,
-      //     duration: 5000,
-      //   });
-
-      // Add notification for admins
-      //   addNotification({
-      //     type: 'info',
-      //     title: 'New Ingredient Added',
-      //     message: `A new ingredient "${formData.name}" has been added to the database`,
-      //     priority: 'low',
-      //     category: 'system',
-      //     actionUrl: `/ingredients/${formData.name.toLowerCase().replace(/\s+/g, '-')}`,
-      //     actionLabel: 'View Ingredient',
-      //   });
-
-      // Reset form
-      setFormData({
-        name: '',
-        category: '',
-        description: '',
-        image: '',
-        nutritionalInfo: {
-          calories: '',
-          protein: '',
-          carbs: '',
-          fat: '',
-          fiber: '',
+  const createIngredient: SubmitHandler<TCreateIngredientWithVariantsAndImagesInput> = async (input) => {
+    await createIngredientMtn.mutateAsync(
+      {
+        body: {
+          image: input.image,
+          name: input.name,
+          category: input.category,
+          description: input.description,
+          calories: input.calories,
+          protein: input.protein,
+          fat: input.fat,
+          fiber: input.fiber,
+          carbohydrates: input.carbohydrates,
+          sugar: input.sugar,
+          ingredient_variants: input.ingredient_variants.map((variant) => ({
+            name: variant.name,
+            image: input.image,
+          })),
         },
-        variants: [],
-        tags: [],
-        seasonality: '',
-        storageInstructions: '',
-        preparationTips: '',
-      });
-    } catch (error) {
-      console.log({ error });
-      //   showToast({
-      //     type: 'error',
-      //     title: 'Error',
-      //     message: 'Failed to add ingredient. Please try again.',
-      //     duration: 5000,
-      //   });
-    } finally {
-      setIsSubmitting(false);
-    }
+      },
+      {
+        onSuccess: (data) => {
+          toastSuccess(data.body.message);
+        },
+        onError: (error) => {
+          if (error.status === 400 || error.status === 500) {
+            toastError(error.body.message);
+          } else {
+            toastError('Something went wrong! Please try again later.');
+          }
+        },
+      }
+    );
+  };
+
+  const onFileUpload = (url: string) => {
+    setValue('image', url);
   };
 
   return (
@@ -167,7 +139,7 @@ export const AdminCreateIngredientPage = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit(createIngredient)} className="space-y-8">
         <Card>
           <CardHeader>
             <CardTitle>Basic Information</CardTitle>
@@ -176,18 +148,16 @@ export const AdminCreateIngredientPage = () => {
           <CardContent className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="name">Ingredient Name *</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  placeholder="e.g., Roma Tomatoes"
-                  required
-                />
+                <Label htmlFor="name">
+                  Ingredient Name <span className="text-red-500">*</span>
+                </Label>
+                <Input id="name" required placeholder="e.g., Roma Tomatoes" {...register('name')} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="category">Category *</Label>
-                <Select value={formData.category} onValueChange={(value) => handleInputChange('category', value)}>
+                <Label htmlFor="category">
+                  Category <span className="text-red-500">*</span>
+                </Label>
+                <Select value={category} onValueChange={(value) => setValue('category', value)}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
@@ -203,54 +173,21 @@ export const AdminCreateIngredientPage = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description *</Label>
+              <Label htmlFor="description">
+                Description <span className="text-red-500">*</span>
+              </Label>
               <Textarea
                 id="description"
-                value={formData.description}
-                onChange={(e) => handleInputChange('description', e.target.value)}
-                placeholder="Describe the ingredient, its characteristics, and common uses..."
                 rows={4}
                 required
+                placeholder="Describe the ingredient, its characteristics, and common uses..."
+                {...register('description')}
               />
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="seasonality">Seasonality</Label>
-              <Select value={formData.seasonality} onValueChange={(value) => handleInputChange('seasonality', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="When is this ingredient in season?" />
-                </SelectTrigger>
-                <SelectContent>
-                  {seasonalityOptions.map((season) => (
-                    <SelectItem key={season} value={season}>
-                      {season}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-2xl flex items-center">
-              <Camera className="mr-3 h-6 w-6 text-primary" />
-              Images
-            </CardTitle>
-            <CardDescription className="text-lg">Add a high-quality image of the ingredient</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="border-2 border-dashed border-muted-foreground/25 rounded-xl p-12 text-center hover:border-primary/50 transition-colors">
-              <Upload className="mx-auto h-16 w-16 text-muted-foreground mb-6" />
-              <p className="text-lg text-muted-foreground mb-3">Click to upload or drag and drop</p>
-              <p className="text-muted-foreground">PNG, JPG, GIF up to 10MB</p>
-              <Button type="button" variant="outline" className="mt-6 h-12 px-8 bg-transparent">
-                Choose Files
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        <FileUpload onFileUpload={onFileUpload} />
 
         <Card>
           <CardHeader>
@@ -260,23 +197,24 @@ export const AdminCreateIngredientPage = () => {
           <CardContent className="space-y-4">
             <div className="flex space-x-2">
               <Input
-                value={newVariant}
-                onChange={(e) => setNewVariant(e.target.value)}
                 placeholder="e.g., Fresh, Dried, Canned"
-                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addVariant())}
+                value={addedVariant.name}
+                onChange={(e) => {
+                  setAddedVariant({ ...addedVariant, name: e.target.value });
+                }}
               />
               <Button type="button" onClick={addVariant}>
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
-            {formData.variants.length > 0 && (
+            {ingredient_variants.length > 0 && !!ingredient_variants[0].name && (
               <div className="flex flex-wrap gap-2">
-                {formData.variants.map((variant) => (
-                  <Badge key={variant} variant="secondary" className="px-3 py-1">
-                    {variant}
+                {ingredient_variants.map((variant) => (
+                  <Badge key={variant.name} variant="secondary" className="px-3 py-1">
+                    {variant.name}
                     <button
                       type="button"
-                      onClick={() => removeVariant(variant)}
+                      onClick={() => removeVariant(variant.name)}
                       className="ml-2 hover:text-destructive"
                     >
                       <X className="h-3 w-3" />
@@ -300,9 +238,8 @@ export const AdminCreateIngredientPage = () => {
                 <Input
                   id="calories"
                   type="number"
-                  value={formData.nutritionalInfo.calories}
-                  onChange={(e) => handleNutritionalChange('calories', e.target.value)}
                   placeholder="kcal"
+                  {...register('calories', { valueAsNumber: true })}
                 />
               </div>
               <div className="space-y-2">
@@ -311,9 +248,8 @@ export const AdminCreateIngredientPage = () => {
                   id="protein"
                   type="number"
                   step="0.1"
-                  value={formData.nutritionalInfo.protein}
-                  onChange={(e) => handleNutritionalChange('protein', e.target.value)}
                   placeholder="g"
+                  {...register('protein', { valueAsNumber: true })}
                 />
               </div>
               <div className="space-y-2">
@@ -322,9 +258,8 @@ export const AdminCreateIngredientPage = () => {
                   id="carbs"
                   type="number"
                   step="0.1"
-                  value={formData.nutritionalInfo.carbs}
-                  onChange={(e) => handleNutritionalChange('carbs', e.target.value)}
                   placeholder="g"
+                  {...register('carbohydrates', { valueAsNumber: true })}
                 />
               </div>
               <div className="space-y-2">
@@ -333,9 +268,8 @@ export const AdminCreateIngredientPage = () => {
                   id="fat"
                   type="number"
                   step="0.1"
-                  value={formData.nutritionalInfo.fat}
-                  onChange={(e) => handleNutritionalChange('fat', e.target.value)}
                   placeholder="g"
+                  {...register('fat', { valueAsNumber: true })}
                 />
               </div>
               <div className="space-y-2">
@@ -344,43 +278,26 @@ export const AdminCreateIngredientPage = () => {
                   id="fiber"
                   type="number"
                   step="0.1"
-                  value={formData.nutritionalInfo.fiber}
-                  onChange={(e) => handleNutritionalChange('fiber', e.target.value)}
                   placeholder="g"
+                  {...register('fiber', { valueAsNumber: true })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="sugar">Sugar</Label>
+                <Input
+                  id="sugar"
+                  type="number"
+                  step="0.1"
+                  placeholder="g"
+                  {...register('sugar', { valueAsNumber: true })}
                 />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Additional Information</CardTitle>
-            <CardDescription>Storage and preparation tips</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="storage">Storage Instructions</Label>
-              <Textarea
-                id="storage"
-                value={formData.storageInstructions}
-                onChange={(e) => handleInputChange('storageInstructions', e.target.value)}
-                placeholder="How should this ingredient be stored for optimal freshness?"
-                rows={3}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="preparation">Preparation Tips</Label>
-              <Textarea
-                id="preparation"
-                value={formData.preparationTips}
-                onChange={(e) => handleInputChange('preparationTips', e.target.value)}
-                placeholder="Any special preparation techniques or tips for using this ingredient?"
-                rows={3}
-              />
-            </div>
-          </CardContent>
-        </Card>
+        {/* !BACKLOG_FEATURE */}
+        {/* <AdditionalInformation /> */}
 
         <div className="flex items-center justify-between pt-6 border-t">
           <div className="flex items-center space-x-2 text-sm text-muted-foreground">
@@ -391,11 +308,8 @@ export const AdminCreateIngredientPage = () => {
             <Button type="button" variant="outline" asChild>
               <Link to={_FULL_ROUTES.ADMIN_DASHBOARD_INGREDIENT}>Cancel</Link>
             </Button>
-            <Button
-              type="submit"
-              disabled={isSubmitting || !formData.name || !formData.category || !formData.description}
-            >
-              {isSubmitting ? (
+            <Button type="submit" disabled={createIngredientMtn.isPending}>
+              {createIngredientMtn.isPending ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                   Adding...

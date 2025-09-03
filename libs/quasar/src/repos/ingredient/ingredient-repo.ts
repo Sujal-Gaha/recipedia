@@ -4,6 +4,7 @@ import {
   TDeleteIngredientInput,
   TGetAllIngredientsInput,
   TGetIngredientByIdInput,
+  TGetIngredientByIdWithVariantsAndImagesOutput,
   TGetIngredientBySlugInput,
   TIngredientWithVariantsAndImages,
   TPaginationOutput,
@@ -32,7 +33,7 @@ export type TFindIngredientByIdRepoInput = {
 };
 
 export type TFindIngredientByIdRepoOutput = {
-  data: TIngredientWithVariantsAndImages;
+  data: TGetIngredientByIdWithVariantsAndImagesOutput;
 };
 
 export type TFindIngredientBySlugRepoInput = {

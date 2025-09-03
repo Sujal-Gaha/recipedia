@@ -6,6 +6,7 @@ import { PaginationOutputSchema, SuccessSchema } from '../../lib/schema';
 export const CreateIngredientVariantInputSchema = IngredientVariantSchema.pick({
   ingredient_id: true,
   name: true,
+  image: true,
 });
 export type TCreateIngredientVariantInput = z.infer<typeof CreateIngredientVariantInputSchema>;
 
@@ -22,6 +23,7 @@ export const CreateManyIngredientVariantsInputSchema = z.array(
   IngredientVariantSchema.pick({
     ingredient_id: true,
     name: true,
+    image: true,
   })
 );
 export type TCreateManyIngredientVariantsInput = z.infer<typeof CreateManyIngredientVariantsInputSchema>;

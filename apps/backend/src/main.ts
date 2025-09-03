@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { generateEndPoints } from './routers/merge';
-import { errorHandler, logger, loggerMiddleware, notFoundHandler, env } from '@libs/quasar';
+import { errorHandler, logger, loggerMiddleware, notFoundHandler, env, __STATIC_PATH } from '@libs/quasar';
 import compression from 'compression';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
@@ -56,6 +56,31 @@ app.use('/api-docs.json', (req, res) => {
   res.send(openApiDocument);
   res.end();
 });
+
+/**
+ * serve the static files
+ * url sample is: http://localhost:4000/static/1739891107482-1913365.webp
+ */
+app.use(
+  '/static',
+  (req, res, next) => {
+    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    res.setHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+    next();
+  },
+  express.static(__STATIC_PATH),
+  cors({
+    origin: function (origin, callback) {
+      logger.debug(`Origin: ${origin}`);
+      if (!origin || env.WHITELISTED_ORIGINS.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
+);
 
 generateEndPoints(app);
 

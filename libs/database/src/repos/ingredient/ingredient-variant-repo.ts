@@ -13,12 +13,13 @@ import { db } from '../../prisma/client';
 
 export class PrismaIngredientVariantRepo extends IngredientVariantRepo {
   override async create({
-    data: { ingredient_id, name },
+    data: { ingredient_id, name, image },
   }: TCreateIngredientVariantRepoInput): Promise<TIngredientVariant> {
     return await db.ingredientVariant.create({
       data: {
         ingredient_id,
         name,
+        image,
       },
     });
   }
@@ -94,6 +95,7 @@ export class PrismaIngredientVariantRepo extends IngredientVariantRepo {
       data: data.map((ingredientVariant) => ({
         name: ingredientVariant.name,
         ingredient_id: ingredientVariant.ingredient_id,
+        image: ingredientVariant.image,
       })),
     });
   }

@@ -5,8 +5,15 @@ import { PaginationOutputSchema, SuccessSchema } from '../../lib/schema';
 /** -------- Create Ingredient -------- */
 export const CreateIngredientInputSchema = IngredientSchema.pick({
   name: true,
-  slug: true,
   image: true,
+  category: true,
+  description: true,
+  calories: true,
+  carbohydrates: true,
+  fat: true,
+  protein: true,
+  fiber: true,
+  sugar: true,
 });
 export type TCreateIngredientInput = z.infer<typeof CreateIngredientInputSchema>;
 

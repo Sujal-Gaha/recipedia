@@ -1,21 +1,24 @@
 import { z } from 'zod';
-import { CreateIngredientInputSchema } from './ingredient/schema';
 import { CreateIngredientVariantInputSchema } from './ingredient-variant/schema';
-import { CreateIngredientVariantImageInputSchema } from './ingredient-variant-image/schema';
 import { PaginationOutputSchema, SuccessSchema } from '../lib/schema';
 import { IngredientSchema } from '../__generated__';
 
-const IngredientWithVariantsAndImagesSchema = CreateIngredientInputSchema.extend({
+const IngredientWithVariantsAndImagesSchema = IngredientSchema.pick({
+  name: true,
+  image: true,
+  category: true,
+  description: true,
+  calories: true,
+  carbohydrates: true,
+  fat: true,
+  protein: true,
+  sugar: true,
+  fiber: true,
+}).extend({
   ingredient_variants: z.array(
     CreateIngredientVariantInputSchema.pick({
       name: true,
-    }).extend({
-      ingredient_variant_images: z.array(
-        CreateIngredientVariantImageInputSchema.pick({
-          is_primary: true,
-          url: true,
-        })
-      ),
+      image: true,
     })
   ),
 });
@@ -42,8 +45,35 @@ export type TGetIngredientByIdWithVariantsAndImagesInput = z.infer<
   typeof GetIngredientByIdWithVariantsAndImagesInputSchema
 >;
 
+export const GetIngredientByIdWithVariantsAndImagesOutputSchema = IngredientSchema.pick({
+  id: true,
+  category: true,
+  created_at: true,
+  image: true,
+  name: true,
+  slug: true,
+  description: true,
+  updated_at: true,
+  calories: true,
+  carbohydrates: true,
+  fat: true,
+  protein: true,
+  fiber: true,
+  sugar: true,
+}).extend({
+  ingredient_variants: z.array(
+    CreateIngredientVariantInputSchema.pick({
+      name: true,
+      image: true,
+    })
+  ),
+});
+export type TGetIngredientByIdWithVariantsAndImagesOutput = z.infer<
+  typeof GetIngredientByIdWithVariantsAndImagesOutputSchema
+>;
+
 export const GetIngredientByIdWithVariantsAndImagesResponseSchema = SuccessSchema.extend({
-  data: IngredientWithVariantsAndImagesSchema,
+  data: GetIngredientByIdWithVariantsAndImagesOutputSchema,
 });
 export type TGetIngredientByIdWithVariantsAndImagesResponse = z.infer<
   typeof GetIngredientByIdWithVariantsAndImagesResponseSchema

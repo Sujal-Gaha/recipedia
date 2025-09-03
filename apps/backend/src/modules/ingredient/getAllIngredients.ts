@@ -1,5 +1,5 @@
 import { ingredientContract } from '@libs/contract';
-import { PrismaIngredientRepo, PrismaIngredientVariantImageRepo, PrismaIngredientVariantRepo } from '@libs/database';
+import { PrismaIngredientRepo, PrismaIngredientVariantRepo } from '@libs/database';
 import { handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { IngredientService } from '../../services/ingredient-service';
@@ -12,9 +12,8 @@ export const getAllIngredients: AppRouteImplementation<typeof ingredientContract
   try {
     const ingredientRepo = new PrismaIngredientRepo();
     const ingredientVariantRepo = new PrismaIngredientVariantRepo();
-    const ingredientVariantImageRepo = new PrismaIngredientVariantImageRepo();
 
-    const ingredientService = new IngredientService(ingredientRepo, ingredientVariantRepo, ingredientVariantImageRepo);
+    const ingredientService = new IngredientService(ingredientRepo, ingredientVariantRepo);
 
     const ingredients = await ingredientService.findManyIngredientsWithVariantsAndImages({
       page: query.page,

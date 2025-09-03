@@ -1,11 +1,11 @@
-import { ingredientContract } from '@libs/contract';
 import { initQueryClient } from '@ts-rest/react-query';
 import { env } from '../lib/env';
+import { ingredientContract } from '@libs/contract';
 
 export const ingredientApi = initQueryClient(ingredientContract, {
-  baseUrl: env.BACKEND_URL,
+  baseUrl: env.VITE_BACKEND_URL,
   baseHeaders: {
-    'content-type': 'application/json',
+    'Content-Type': 'application/json',
   },
   credentials: 'include',
 });

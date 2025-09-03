@@ -2,17 +2,17 @@ import {
   TCreateIngredientWithVariantsAndImagesInput,
   TGetAllIngredientsWithVariantsAndImagesInput,
   TGetIngredientByIdWithVariantsAndImagesInput,
+  TGetIngredientByIdWithVariantsAndImagesOutput,
   TIngredientWithVariantsAndImages,
   TPaginationOutput,
 } from '@libs/contract';
-import { PrismaIngredientRepo, PrismaIngredientVariantImageRepo, PrismaIngredientVariantRepo } from '@libs/database';
+import { PrismaIngredientRepo, PrismaIngredientVariantRepo } from '@libs/database';
 import { getNumFromString, logger } from '@libs/quasar';
 
 export class IngredientService {
   constructor(
     private readonly ingredientRepo: PrismaIngredientRepo,
-    private readonly ingredientVariantRepo: PrismaIngredientVariantRepo,
-    private readonly ingredientVariantImageRepo: PrismaIngredientVariantImageRepo
+    private readonly ingredientVariantRepo: PrismaIngredientVariantRepo
   ) {
     logger.info('Ingredient Service initialized...');
   }
@@ -24,7 +24,14 @@ export class IngredientService {
       data: {
         image: input.image,
         name: input.name,
-        slug: input.slug,
+        category: input.category,
+        description: input.description,
+        calories: input.calories,
+        carbohydrates: input.carbohydrates,
+        protein: input.protein,
+        fat: input.fat,
+        sugar: input.sugar,
+        fiber: input.fiber,
       },
     });
 
@@ -37,21 +44,12 @@ export class IngredientService {
         data: {
           ingredient_id: ingredient.id,
           name: ingredient_variant.name,
+          image: ingredient_variant.image,
         },
       });
 
       if (!createdVariant) {
         throw new Error('Failed to create ingredient variant');
-      }
-
-      for (const ingredient_variant_image of ingredient_variant.ingredient_variant_images) {
-        await this.ingredientVariantImageRepo.create({
-          data: {
-            url: ingredient_variant_image.url,
-            is_primary: ingredient_variant_image.is_primary,
-            ingredient_variant_id: createdVariant.id,
-          },
-        });
       }
     }
 
@@ -92,7 +90,7 @@ export class IngredientService {
 
   public findIngredientByIdWithVariantsAndImages = async ({
     id,
-  }: TGetIngredientByIdWithVariantsAndImagesInput): Promise<TIngredientWithVariantsAndImages> => {
+  }: TGetIngredientByIdWithVariantsAndImagesInput): Promise<TGetIngredientByIdWithVariantsAndImagesOutput> => {
     const ingredient = await this.ingredientRepo.findById({
       data: {
         id,

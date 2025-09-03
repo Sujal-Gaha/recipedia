@@ -2,7 +2,7 @@ import { ingredientContract } from '@libs/contract';
 import { handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { IngredientService } from '../../services/ingredient-service';
-import { PrismaIngredientRepo, PrismaIngredientVariantImageRepo, PrismaIngredientVariantRepo } from '@libs/database';
+import { PrismaIngredientRepo, PrismaIngredientVariantRepo } from '@libs/database';
 import { StatusCodes } from 'http-status-codes';
 
 export const createIngredient: AppRouteImplementation<typeof ingredientContract.createIngredient> = async ({
@@ -12,14 +12,20 @@ export const createIngredient: AppRouteImplementation<typeof ingredientContract.
   try {
     const ingredientRepo = new PrismaIngredientRepo();
     const ingredientVariantRepo = new PrismaIngredientVariantRepo();
-    const ingredientVariantImageRepo = new PrismaIngredientVariantImageRepo();
 
-    const ingredientService = new IngredientService(ingredientRepo, ingredientVariantRepo, ingredientVariantImageRepo);
+    const ingredientService = new IngredientService(ingredientRepo, ingredientVariantRepo);
 
     const data = await ingredientService.createIngredientWithVariantsAndImages({
       image: body.image,
       name: body.name,
-      slug: body.slug,
+      category: body.category,
+      description: body.description,
+      calories: body.calories,
+      carbohydrates: body.carbohydrates,
+      fat: body.fat,
+      fiber: body.fiber,
+      protein: body.protein,
+      sugar: body.sugar,
       ingredient_variants: body.ingredient_variants,
     });
 

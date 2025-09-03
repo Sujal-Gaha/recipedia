@@ -11,11 +11,11 @@ export const userRoutes: RouteObject[] = [
   {
     path: _FULL_ROUTES.HOME,
     element: (
-      <WithAuth>
-        <UserLayout>
-          <Outlet />
-        </UserLayout>
-      </WithAuth>
+      // <WithAuth>
+      <UserLayout>
+        <Outlet />
+      </UserLayout>
+      // </WithAuth>
     ),
     children: [
       {

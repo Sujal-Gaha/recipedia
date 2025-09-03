@@ -235,10 +235,19 @@ model RecipeStep {
 }
 
 model Ingredient {
-  id    String @id @default(cuid())
-  name  String
-  slug  String @unique
-  image String
+  id          String @id @default(cuid())
+  name        String
+  slug        String @unique
+  image       String
+  category    String
+  description String
+
+  calories      Float @default(0) // in kcal
+  protein       Float @default(0) // in gram
+  carbohydrates Float @default(0) // in gram
+  fat           Float @default(0) // in gram
+  sugar         Float @default(0) // in gram
+  fiber         Float @default(0) // in gram
 
   variants IngredientVariant[] @relation("ingredient_variant")
 
@@ -252,29 +261,16 @@ model IngredientVariant {
   id            String @id @default(cuid())
   name          String
   ingredient_id String
+  image         String
 
   ingredient Ingredient @relation("ingredient_variant", fields: [ingredient_id], references: [id])
 
-  images            IngredientVariantImage[] @relation("ingredient_variant_image")
-  recipeIngredients RecipeIngredient[]       @relation("recipe_ingredient_variant")
+  recipeIngredients RecipeIngredient[] @relation("recipe_ingredient_variant")
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   @@map("ingredient_variants")
-}
-
-model IngredientVariantImage {
-  id                    String  @id @default(cuid())
-  url                   String
-  is_primary            Boolean @default(false)
-  ingredient_variant_id String
-
-  ingredient_variant IngredientVariant @relation("ingredient_variant_image", fields: [ingredient_variant_id], references: [id])
-
-  created_at DateTime @default(now())
-
-  @@map("ingredient_variant_images")
 }
 
 model RecipeIngredient {

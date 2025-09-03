@@ -1,6 +1,5 @@
 export * from './ingredient/ingredient/schema';
 export * from './ingredient/ingredient-variant/schema';
-export * from './ingredient/ingredient-variant-image/schema';
 export * from './ingredient/schema';
 export * from './ingredient/contract';
 
@@ -27,5 +26,3 @@ export * from './file/contract';
 export * from './user/schema';
 
 export * from './__generated__';
-
-export * from './auth';
