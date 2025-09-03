@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouteObject } from 'react-router-dom';
-import { routes } from './routes';
+import { routes } from './merge-routes';
 import { PageLoader } from '../components/PageLoader';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { Suspense, ReactNode, JSX } from 'react';
