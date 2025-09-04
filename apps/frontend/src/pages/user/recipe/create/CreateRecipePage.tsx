@@ -2,138 +2,133 @@ import { DragEvent, useState } from 'react';
 import { Eye, Edit } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../../components/ui/tabs';
 import { PreviewRecipe } from './components/PreviewRecipe';
-import { RecipeFormData, RecipeIngredient, RecipeStep } from './types/recipe';
+import { RecipeIngredient, RecipeStep } from './types/recipe';
 import { CreateRecipe } from './components/CreateRecipe';
+import { recipeApi } from '../../../../apis/recipe-api';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { TCreateRecipeWithAllFieldsInput } from '@libs/contract';
+import { toastError, toastSuccess } from '../../../../components/toaster';
+import { ingredientApi } from '../../../../apis/ingredient-api';
 
 export const CreateRecipePage = () => {
   const [activeTab, setActiveTab] = useState('create');
-  const [formData, setFormData] = useState<RecipeFormData>({
-    title: '',
-    description: '',
-    prepTime: '',
-    cookTime: '',
-    difficulty: '',
-    servings: '',
-    ingredients: [{ id: '1', ingredient: '', quantity: '', unit: '' }],
-    steps: [{ id: '1', stepNumber: 1, content: '' }],
-    tags: [],
-    image: '/placeholder.svg?height=400&width=600',
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const [draggedStep, setDraggedStep] = useState<number | null>(null);
+
+  const recipeMtn = recipeApi.createRecipe.useMutation();
+
+  const { data: getAllIngredientVariants } = ingredientApi.getAllIngredientVariants.useQuery(
+    ['getAllIngredientVariants'],
+    {
+      query: {
+        page: '1',
+        perPage: '100',
+      },
+    }
+  );
+
+  const fetchedIngredientVariants = getAllIngredientVariants?.status === 200 ? getAllIngredientVariants.body.data : [];
+
+  const { register, handleSubmit, setValue, watch } = useForm<TCreateRecipeWithAllFieldsInput>({
+    defaultValues: {
+      user_id: '',
+      ingredients: [
+        {
+          ingredient_variant_id: '',
+          note: '',
+          quantity: 0,
+          unit: '',
+        },
+      ],
+      steps: [
+        {
+          step_no: 1,
+          content: '',
+        },
+      ],
+      images: [],
+    },
   });
-  const [completedSteps, setCompletedSteps] = useState<string[]>([]);
-  const [draggedStep, setDraggedStep] = useState<string | null>(null);
+
+  const { ingredients, steps, difficulty, images } = watch();
 
   const addIngredient = () => {
     const newIngredient: RecipeIngredient = {
-      id: Date.now().toString(),
-      ingredient: '',
-      quantity: '',
+      ingredient_variant_id: Date.now().toString(),
+      note: '',
+      quantity: 0,
       unit: '',
     };
-    setFormData((prev) => ({
-      ...prev,
-      ingredients: [...prev.ingredients, newIngredient],
-    }));
+
+    setValue('ingredients', [...ingredients, newIngredient]);
   };
 
-  const removeIngredient = (id: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      ingredients: prev.ingredients.filter((ing) => ing.id !== id),
-    }));
-  };
-
-  const updateIngredient = (id: string, field: keyof RecipeIngredient, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      ingredients: prev.ingredients.map((ing) => (ing.id === id ? { ...ing, [field]: value } : ing)),
-    }));
+  const removeIngredient = (index: number) => {
+    setValue(
+      'ingredients',
+      ingredients.filter((_, i) => i !== index)
+    );
   };
 
   const addStep = () => {
     const newStep: RecipeStep = {
-      id: Date.now().toString(),
-      stepNumber: formData.steps.length + 1,
+      step_no: steps.length + 1,
       content: '',
     };
-    setFormData((prev) => ({
-      ...prev,
-      steps: [...prev.steps, newStep],
-    }));
+    setValue('steps', [...steps, newStep]);
   };
 
-  const removeStep = (id: string) => {
-    const updatedSteps = formData.steps.filter((step) => step.id !== id);
+  const removeStep = (step_no: number) => {
+    const updatedSteps = steps.filter((step) => step.step_no !== step_no);
     const renumberedSteps = updatedSteps.map((step, index) => ({
       ...step,
-      stepNumber: index + 1,
+      step_no: index + 1,
     }));
-    setFormData((prev) => ({
-      ...prev,
-      steps: renumberedSteps,
-    }));
+    setValue('steps', renumberedSteps);
   };
 
-  const updateStep = (id: string, content: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      steps: prev.steps.map((step) => (step.id === id ? { ...step, content } : step)),
-    }));
-  };
-
-  const moveStep = (stepId: string, direction: 'up' | 'down') => {
-    const currentIndex = formData.steps.findIndex((step) => step.id === stepId);
-    if (
-      (direction === 'up' && currentIndex === 0) ||
-      (direction === 'down' && currentIndex === formData.steps.length - 1)
-    ) {
+  const moveStep = (step_no: number, direction: 'up' | 'down') => {
+    const currentIndex = steps.findIndex((step) => step.step_no === step_no);
+    if ((direction === 'up' && currentIndex === 0) || (direction === 'down' && currentIndex === steps.length - 1)) {
       return;
     }
 
-    const newSteps = [...formData.steps];
+    const newSteps = [...steps];
     const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
 
-    // Swap the steps
     [newSteps[currentIndex], newSteps[targetIndex]] = [newSteps[targetIndex], newSteps[currentIndex]];
 
-    // Renumber all steps
     const renumberedSteps = newSteps.map((step, index) => ({
       ...step,
-      stepNumber: index + 1,
+      step_no: index + 1,
     }));
 
-    setFormData((prev) => ({
-      ...prev,
-      steps: renumberedSteps,
-    }));
+    setValue('steps', [...renumberedSteps]);
   };
 
-  const handleDrop = (e: DragEvent, targetStepId: string) => {
+  const handleDrop = (e: DragEvent, target_step_no: number) => {
     e.preventDefault();
-    if (!draggedStep || draggedStep === targetStepId) return;
+    if (!draggedStep || draggedStep === target_step_no) return;
 
-    const draggedIndex = formData.steps.findIndex((step) => step.id === draggedStep);
-    const targetIndex = formData.steps.findIndex((step) => step.id === targetStepId);
+    const draggedIndex = steps.findIndex((step) => step.step_no === draggedStep);
+    const targetIndex = steps.findIndex((step) => step.step_no === target_step_no);
 
-    const newSteps = [...formData.steps];
+    const newSteps = [...steps];
     const [draggedItem] = newSteps.splice(draggedIndex, 1);
     newSteps.splice(targetIndex, 0, draggedItem);
 
-    // Renumber all steps
     const renumberedSteps = newSteps.map((step, index) => ({
       ...step,
-      stepNumber: index + 1,
+      step_no: index + 1,
     }));
 
-    setFormData((prev) => ({
-      ...prev,
-      steps: renumberedSteps,
-    }));
+    setValue('steps', renumberedSteps);
 
     setDraggedStep(null);
   };
 
-  const handleDragStart = (e: DragEvent, stepId: string) => {
-    setDraggedStep(stepId);
+  const handleDragStart = (e: DragEvent, step_no: number) => {
+    setDraggedStep(step_no);
     e.dataTransfer.effectAllowed = 'move';
   };
 
@@ -142,21 +137,79 @@ export const CreateRecipePage = () => {
     e.dataTransfer.dropEffect = 'move';
   };
 
-  const updateFormData = (field: keyof RecipeFormData, value: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  const toggleStep = (step_no: number) => {
+    setCompletedSteps((prev) =>
+      prev.includes(step_no) ? prev.filter((stepNo) => stepNo !== step_no) : [...prev, step_no]
+    );
   };
 
-  const toggleStep = (stepId: string) => {
-    setCompletedSteps((prev) => (prev.includes(stepId) ? prev.filter((id) => id !== stepId) : [...prev, stepId]));
+  const createRecipe: SubmitHandler<TCreateRecipeWithAllFieldsInput> = async (input) => {
+    await recipeMtn.mutateAsync(
+      {
+        body: {
+          cook_time: input.cook_time,
+          description: input.description,
+          difficulty: input.difficulty,
+          preparation_time: input.preparation_time,
+          title: input.title,
+          user_id: input.user_id,
+          images: input.images.map((img) => ({
+            is_primary: img.is_primary,
+            url: img.url,
+          })),
+          ingredients: input.ingredients.map((ing) => ({
+            ingredient_variant_id: ing.ingredient_variant_id,
+            note: ing.note,
+            quantity: ing.quantity,
+            unit: ing.unit,
+          })),
+          steps: input.steps.map((step) => ({
+            content: step.content,
+            step_no: step.step_no,
+          })),
+        },
+      },
+      {
+        onSuccess: (data) => {
+          toastSuccess(data.body.message);
+        },
+        onError: (error) => {
+          if (error.status === 400 || error.status === 500) {
+            toastError(error.body.message);
+          } else {
+            toastError('Something went wrong! Please try again later.');
+          }
+          console.log(error);
+        },
+      }
+    );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Recipe submitted:', formData);
+  const onFileUpload = (url: string) => {
+    setValue('images', [
+      ...images,
+      {
+        is_primary: false,
+        url,
+      },
+    ]);
   };
+
+  const onFileRemove = (url: string) => {
+    setValue(
+      'images',
+      images.filter((img) => img.url !== url)
+    );
+  };
+
+  const onSelectPrimary = (url: string) => {
+    setValue(
+      'images',
+      images.map((img) => ({ ...img, is_primary: img.url === url }))
+    );
+  };
+
+  console.log({ images });
 
   return (
     <div className="container mx-auto px-6 py-8 max-w-7xl">
@@ -179,31 +232,40 @@ export const CreateRecipePage = () => {
 
         <TabsContent value="create">
           <CreateRecipe
-            formData={formData}
-            handleSubmit={handleSubmit}
-            updateFormData={updateFormData}
+            fetchedIngredientVariants={fetchedIngredientVariants}
+            onFileUpload={onFileUpload}
+            onFileRemove={onFileRemove}
+            onSelectPrimary={onSelectPrimary}
+            images={images}
+            difficulty={difficulty}
+            ingredients={ingredients}
+            steps={steps}
             handleDrop={handleDrop}
             addIngredient={addIngredient}
             addStep={addStep}
             removeIngredient={removeIngredient}
             removeStep={removeStep}
-            updateIngredient={updateIngredient}
-            updateStep={updateStep}
             moveStep={moveStep}
             handleDragOver={handleDragOver}
             handleDragStart={handleDragStart}
             draggedStep={draggedStep}
             setActiveTab={setActiveTab}
+            setValue={setValue}
+            register={register}
+            handleSubmit={handleSubmit}
+            createRecipe={createRecipe}
           />
         </TabsContent>
 
         <TabsContent value="preview">
           <PreviewRecipe
+            fetchedIngredientVariants={fetchedIngredientVariants}
             toggleStep={toggleStep}
             completedSteps={completedSteps}
-            formData={formData}
-            handleSubmit={handleSubmit}
             setActiveTab={setActiveTab}
+            handleSubmit={handleSubmit}
+            createRecipe={createRecipe}
+            watch={watch}
           />
         </TabsContent>
       </Tabs>

@@ -30,11 +30,34 @@ export const CreateRecipeWithAllFieldsInputSchema = RecipeWithAllFieldsInputSche
   preparation_time: true,
   title: true,
   user_id: true,
-  status: true,
-  images: true,
-  steps: true,
   ingredients: true,
-});
+})
+  .extend({
+    images: z.array(
+      RecipeImageSchema.pick({
+        is_primary: true,
+        url: true,
+      })
+    ),
+  })
+  .extend({
+    steps: z.array(
+      RecipeStepSchema.pick({
+        content: true,
+        step_no: true,
+      })
+    ),
+  })
+  .extend({
+    ingredients: z.array(
+      RecipeIngredientSchema.pick({
+        quantity: true,
+        unit: true,
+        note: true,
+        ingredient_variant_id: true,
+      })
+    ),
+  });
 export type TCreateRecipeWithAllFieldsInput = z.infer<typeof CreateRecipeWithAllFieldsInputSchema>;
 
 export const CreateRecipeWithAllFieldsOutputSchema = RecipeWithAllFieldsInputSchema.pick({

@@ -1,16 +1,12 @@
 export interface RecipeIngredient {
-  id: string;
-  ingredient: string;
-  quantity: string;
-  unit: string;
-  notes?: string;
+  ingredient_variant_id: string;
+  note: string | null;
+  quantity: number;
+  unit: string | null;
 }
-
 export interface RecipeStep {
-  id: string;
-  stepNumber: number;
+  step_no: number;
   content: string;
-  image?: string;
 }
 
 export interface RecipeFormData {

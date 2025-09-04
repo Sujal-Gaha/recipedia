@@ -4,7 +4,6 @@ import {
   CreateRecipeWithAllFieldsInputSchema,
   CreateRecipeWithAllFieldsResponseSchema,
   GetAllRecipesWithAllFieldsInputSchema,
-  GetRecipeBySlugWithAllFieldsResponseSchema,
 } from './schema';
 import { GetAllRecipesResponseSchema, GetRecipeBySlugResponseSchema } from './recipe/schema';
 

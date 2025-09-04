@@ -19,7 +19,7 @@ export class PrismaRecipeRepo extends RecipeRepo {
   }
 
   override async create({
-    data: { cook_time, description, difficulty, preparation_time, status, title, user_id },
+    data: { cook_time, description, difficulty, preparation_time, title, user_id },
   }: TCreateRecipeRepoInput): Promise<TRecipe> {
     const slug = this.getSlugForRecipe({ title });
 
@@ -31,7 +31,6 @@ export class PrismaRecipeRepo extends RecipeRepo {
         preparation_time,
         cook_time,
         difficulty,
-        status,
         slug,
       },
     });

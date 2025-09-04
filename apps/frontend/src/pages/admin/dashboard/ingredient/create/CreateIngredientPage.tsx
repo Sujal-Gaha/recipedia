@@ -187,7 +187,7 @@ export const AdminCreateIngredientPage = () => {
           </CardContent>
         </Card>
 
-        <FileUpload onFileUpload={onFileUpload} />
+        <FileUpload onFileUpload={onFileUpload} cardDescription="Add a high-quality image of the ingredient" />
 
         <Card>
           <CardHeader>

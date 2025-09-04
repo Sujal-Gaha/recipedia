@@ -1,17 +1,31 @@
-import { Dispatch, DragEvent, FormEvent, SetStateAction } from 'react';
+import { Dispatch, DragEvent, SetStateAction } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../../components/ui/card';
-import { Camera, ChefHat, Clock, Eye, GripVertical, MoveDown, MoveUp, Plus, Upload, Users, X } from 'lucide-react';
+import { ChefHat, Clock, Eye, GripVertical, MoveDown, MoveUp, Plus, X } from 'lucide-react';
 import { Label } from '../../../../../components/ui/label';
 import { Input } from '../../../../../components/ui/input';
-import { RecipeFormData, RecipeIngredient } from '../types/recipe';
+import { RecipeIngredient, RecipeStep } from '../types/recipe';
 import { Textarea } from '../../../../../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../../components/ui/select';
 import { Button } from '../../../../../components/ui/button';
+import { SubmitHandler, UseFormHandleSubmit, UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import {
+  RecipeDifficultySchema,
+  RecipeDifficultyType,
+  RecipeImage,
+  TCreateRecipeWithAllFieldsInput,
+  TGetAllIngredientVariantsOutput,
+} from '@libs/contract';
+import { FileUpload } from '../../../../../components/file-upload';
 
 export const CreateRecipe = ({
-  formData,
-  handleSubmit,
-  updateFormData,
+  fetchedIngredientVariants,
+  images,
+  difficulty,
+  ingredients,
+  steps,
+  onFileUpload,
+  onFileRemove,
+  onSelectPrimary,
   handleDrop,
   addIngredient,
   addStep,
@@ -21,29 +35,37 @@ export const CreateRecipe = ({
   removeIngredient,
   removeStep,
   draggedStep,
-  updateIngredient,
-  updateStep,
   setActiveTab,
+  handleSubmit,
+  createRecipe,
+  register,
+  setValue,
 }: {
-  formData: RecipeFormData;
-  handleSubmit: (e: FormEvent) => void;
-  updateFormData: (field: keyof RecipeFormData, value: any) => void;
-  handleDrop: (e: DragEvent, targetStepId: string) => void;
+  fetchedIngredientVariants: TGetAllIngredientVariantsOutput[];
+  images: Pick<RecipeImage, 'is_primary' | 'url'>[];
+  difficulty: RecipeDifficultyType;
+  ingredients: RecipeIngredient[];
+  steps: RecipeStep[];
+  onFileUpload: (url: string) => void;
+  onFileRemove: (url: string) => void;
+  onSelectPrimary: (url: string) => void;
+  handleDrop: (e: DragEvent, target_step_no: number) => void;
   addIngredient: () => void;
-  removeIngredient: (id: string) => void;
-  updateIngredient: (id: string, field: keyof RecipeIngredient, value: string) => void;
+  removeIngredient: (index: number) => void;
   addStep: () => void;
-  draggedStep: string | null;
-  removeStep: (id: string) => void;
-  updateStep: (id: string, content: string) => void;
-  moveStep: (stepId: string, direction: 'up' | 'down') => void;
+  draggedStep: number | null;
+  removeStep: (step_no: number) => void;
+  moveStep: (step_no: number, direction: 'up' | 'down') => void;
   handleDragOver: (e: DragEvent) => void;
-  handleDragStart: (e: DragEvent, stepId: string) => void;
+  handleDragStart: (e: DragEvent, step_no: number) => void;
   setActiveTab: Dispatch<SetStateAction<string>>;
+  handleSubmit: UseFormHandleSubmit<TCreateRecipeWithAllFieldsInput>;
+  createRecipe: SubmitHandler<TCreateRecipeWithAllFieldsInput>;
+  register: UseFormRegister<TCreateRecipeWithAllFieldsInput>;
+  setValue: UseFormSetValue<TCreateRecipeWithAllFieldsInput>;
 }) => {
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
-      {/* Basic Information */}
+    <form onSubmit={handleSubmit(createRecipe)} className="space-y-8">
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl flex items-center">
@@ -55,100 +77,79 @@ export const CreateRecipe = ({
         <CardContent className="space-y-6">
           <div>
             <Label htmlFor="title" className="text-base font-medium">
-              Recipe Title *
+              Recipe Title <span className="text-red-500">*</span>
             </Label>
             <Input
               id="title"
-              value={formData.title}
-              onChange={(e) => updateFormData('title', e.target.value)}
-              placeholder="e.g., Grandma's Famous Chocolate Chip Cookies"
+              {...register('title')}
               className="h-12 text-lg mt-2"
-              required
+              placeholder="e.g., Grandma's Famous Chocolate Chip Cookies"
             />
           </div>
 
           <div>
             <Label htmlFor="description" className="text-base font-medium">
-              Description *
+              Description <span className="text-red-500">*</span>
             </Label>
             <Textarea
               id="description"
-              value={formData.description}
-              onChange={(e) => updateFormData('description', e.target.value)}
-              placeholder="Describe your recipe, what makes it special, and any tips for success..."
               rows={4}
+              {...register('description')}
               className="text-lg mt-2"
-              required
+              placeholder="Describe your recipe, what makes it special, and any tips for success..."
             />
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             <div>
               <Label htmlFor="prepTime" className="text-base font-medium">
-                Prep Time (minutes) *
+                Prep Time (minutes) <span className="text-red-500">*</span>
               </Label>
               <div className="relative mt-2">
                 <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
                 <Input
                   id="prepTime"
                   type="number"
-                  value={formData.prepTime}
-                  onChange={(e) => updateFormData('prepTime', e.target.value)}
                   placeholder="15"
                   className="pl-12 h-12 text-lg"
-                  required
+                  {...register('preparation_time')}
                 />
               </div>
             </div>
 
             <div>
               <Label htmlFor="cookTime" className="text-base font-medium">
-                Cook Time (minutes) *
+                Cook Time (minutes) <span className="text-red-500">*</span>
               </Label>
               <div className="relative mt-2">
                 <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
                 <Input
                   id="cookTime"
                   type="number"
-                  value={formData.cookTime}
-                  onChange={(e) => updateFormData('cookTime', e.target.value)}
                   placeholder="30"
                   className="pl-12 h-12 text-lg"
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <Label htmlFor="servings" className="text-base font-medium">
-                Servings *
-              </Label>
-              <div className="relative mt-2">
-                <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-                <Input
-                  id="servings"
-                  type="number"
-                  value={formData.servings}
-                  onChange={(e) => updateFormData('servings', e.target.value)}
-                  placeholder="4"
-                  className="pl-12 h-12 text-lg"
-                  required
+                  {...register('cook_time')}
                 />
               </div>
             </div>
 
             <div>
               <Label htmlFor="difficulty" className="text-base font-medium">
-                Difficulty *
+                Difficulty <span className="text-red-500">*</span>
               </Label>
-              <Select value={formData.difficulty} onValueChange={(value) => updateFormData('difficulty', value)}>
-                <SelectTrigger className="h-12 text-lg mt-2">
+              <Select
+                value={difficulty}
+                onValueChange={(value) => {
+                  setValue('difficulty', value as RecipeDifficultyType);
+                }}
+              >
+                <SelectTrigger className="!h-12 mt-2 w-full">
                   <SelectValue placeholder="Select difficulty" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="EASY">Easy</SelectItem>
-                  <SelectItem value="MEDIUM">Medium</SelectItem>
-                  <SelectItem value="HARD">Hard</SelectItem>
+                  <SelectItem value={RecipeDifficultySchema.Enum.EASY}>Easy</SelectItem>
+                  <SelectItem value={RecipeDifficultySchema.Enum.MEDIUM}>Medium</SelectItem>
+                  <SelectItem value={RecipeDifficultySchema.Enum.HARD}>Hard</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -156,28 +157,16 @@ export const CreateRecipe = ({
         </CardContent>
       </Card>
 
-      {/* Recipe Image */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl flex items-center">
-            <Camera className="mr-3 h-6 w-6 text-primary" />
-            Recipe Images
-          </CardTitle>
-          <CardDescription className="text-lg">Add photos to make your recipe more appealing</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="border-2 border-dashed border-muted-foreground/25 rounded-xl p-12 text-center hover:border-primary/50 transition-colors">
-            <Upload className="mx-auto h-16 w-16 text-muted-foreground mb-6" />
-            <p className="text-lg text-muted-foreground mb-3">Click to upload or drag and drop</p>
-            <p className="text-muted-foreground">PNG, JPG, GIF up to 10MB</p>
-            <Button type="button" variant="outline" className="mt-6 h-12 px-8 bg-transparent">
-              Choose Files
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <FileUpload
+        defaultPreviewUrls={images.map((image) => image.url)}
+        defaultPrimaryUrl={images.find((image) => image.is_primary)?.url}
+        onFileUpload={onFileUpload}
+        onFileRemove={onFileRemove}
+        onSelectPrimary={onSelectPrimary}
+        cardTitle="Recipe Images"
+        cardDescription="Add a high-quality image of the recipe"
+      />
 
-      {/* Ingredients */}
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Ingredients</CardTitle>
@@ -185,54 +174,61 @@ export const CreateRecipe = ({
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {formData.ingredients.map((ingredient, index) => (
-              <div key={ingredient.id} className="grid md:grid-cols-12 gap-4 items-end p-4 bg-muted/30 rounded-lg">
+            {ingredients.map((ingredient, index) => (
+              <div
+                key={(ingredient.ingredient_variant_id, index)}
+                className="grid md:grid-cols-8 gap-4 items-end p-4 bg-muted/30 rounded-lg"
+              >
                 <div className="md:col-span-1">
                   <Label className="text-base font-medium">{index + 1}.</Label>
                 </div>
                 <div className="md:col-span-2">
-                  <Label htmlFor={`quantity-${ingredient.id}`} className="text-sm font-medium">
+                  <Label htmlFor={`quantity-${index}`} className="text-sm font-medium">
                     Quantity
                   </Label>
                   <Input
-                    id={`quantity-${ingredient.id}`}
-                    value={ingredient.quantity}
-                    onChange={(e) => updateIngredient(ingredient.id, 'quantity', e.target.value)}
+                    id={`quantity-${index}`}
                     placeholder="1"
                     className="h-10 mt-1"
+                    {...register(`ingredients.${index}.quantity`, { valueAsNumber: true })}
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <Label htmlFor={`unit-${ingredient.id}`} className="text-sm font-medium">
+                  <Label htmlFor={`unit-${index}`} className="text-sm font-medium">
                     Unit
                   </Label>
                   <Input
-                    id={`unit-${ingredient.id}`}
-                    value={ingredient.unit}
-                    onChange={(e) => updateIngredient(ingredient.id, 'unit', e.target.value)}
+                    id={`unit-${index}`}
                     placeholder="cup"
                     className="h-10 mt-1"
-                  />
-                </div>
-                <div className="md:col-span-5">
-                  <Label htmlFor={`ingredient-${ingredient.id}`} className="text-sm font-medium">
-                    Ingredient
-                  </Label>
-                  <Input
-                    id={`ingredient-${ingredient.id}`}
-                    value={ingredient.ingredient}
-                    onChange={(e) => updateIngredient(ingredient.id, 'ingredient', e.target.value)}
-                    placeholder="all-purpose flour"
-                    className="h-10 mt-1"
+                    {...register(`ingredients.${index}.unit`)}
                   />
                 </div>
                 <div className="md:col-span-2">
+                  <Label htmlFor={`ingredient-${index}`} className="text-sm font-medium">
+                    Ingredient
+                  </Label>
+                  <Select onValueChange={(value) => setValue(`ingredients.${index}.ingredient_variant_id`, value)}>
+                    <SelectTrigger id={`ingredient-${index}`} className="w-full">
+                      <SelectValue placeholder="Select an ingredient" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {fetchedIngredientVariants.map((ingredient) => (
+                        <SelectItem key={ingredient.id} value={ingredient.id}>
+                          {ingredient.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="md:col-span-1">
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => removeIngredient(ingredient.id)}
-                    disabled={formData.ingredients.length === 1}
+                    disabled={ingredients.length === 1}
+                    onClick={() => removeIngredient(index)}
                     className="h-10 w-full"
                   >
                     <X className="h-4 w-4" />
@@ -248,7 +244,6 @@ export const CreateRecipe = ({
         </CardContent>
       </Card>
 
-      {/* Instructions with Drag & Drop */}
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Instructions</CardTitle>
@@ -258,20 +253,19 @@ export const CreateRecipe = ({
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {formData.steps.map((step, index) => (
+            {steps.map((step, index) => (
               <div
-                key={step.id}
+                key={(step.step_no, index)}
                 draggable
-                onDragStart={(e) => handleDragStart(e, step.id)}
+                onDragStart={(e) => handleDragStart(e, step.step_no)}
                 onDragOver={handleDragOver}
-                onDrop={(e) => handleDrop(e, step.id)}
+                onDrop={(e) => handleDrop(e, step.step_no)}
                 className={`flex gap-4 p-4 bg-muted/30 rounded-lg border-2 transition-all cursor-move ${
-                  draggedStep === step.id
+                  draggedStep === step.step_no
                     ? 'border-primary bg-primary/5 shadow-lg'
                     : 'border-transparent hover:border-primary/30'
                 }`}
               >
-                {/* Drag Handle */}
                 <div className="flex flex-col items-center justify-center space-y-2">
                   <GripVertical className="h-5 w-5 text-muted-foreground" />
                   <div className="flex flex-col space-y-1">
@@ -279,7 +273,7 @@ export const CreateRecipe = ({
                       type="button"
                       variant="ghost"
                       size="sm"
-                      onClick={() => moveStep(step.id, 'up')}
+                      onClick={() => moveStep(step.step_no, 'up')}
                       disabled={index === 0}
                       className="h-6 w-6 p-0"
                     >
@@ -289,8 +283,8 @@ export const CreateRecipe = ({
                       type="button"
                       variant="ghost"
                       size="sm"
-                      onClick={() => moveStep(step.id, 'down')}
-                      disabled={index === formData.steps.length - 1}
+                      onClick={() => moveStep(step.step_no, 'down')}
+                      disabled={index === steps.length - 1}
                       className="h-6 w-6 p-0"
                     >
                       <MoveDown className="h-3 w-3" />
@@ -298,29 +292,25 @@ export const CreateRecipe = ({
                   </div>
                 </div>
 
-                {/* Step Number */}
                 <div className="flex-shrink-0 w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-lg font-semibold">
-                  {step.stepNumber}
+                  {step.step_no}
                 </div>
 
-                {/* Step Content */}
                 <div className="flex-1">
                   <Textarea
-                    value={step.content}
-                    onChange={(e) => updateStep(step.id, e.target.value)}
                     placeholder="Describe this step in detail..."
                     rows={3}
                     className="text-base"
+                    {...register(`steps.${index}.content`)}
                   />
                 </div>
 
-                {/* Remove Button */}
                 <Button
                   type="button"
                   variant="outline"
                   size="sm"
-                  onClick={() => removeStep(step.id)}
-                  disabled={formData.steps.length === 1}
+                  onClick={() => removeStep(step.step_no)}
+                  disabled={steps.length === 1}
                   className="h-10 w-10 p-0 self-start"
                 >
                   <X className="h-4 w-4" />
@@ -335,11 +325,11 @@ export const CreateRecipe = ({
         </CardContent>
       </Card>
 
-      {/* Submit */}
       <div className="flex gap-4 justify-end">
-        <Button type="button" variant="outline" className="h-12 px-8 text-base bg-transparent">
+        {/* BACKLOG_FEATURE */}
+        {/* <Button type="button" variant="outline" className="h-12 px-8 text-base bg-transparent">
           Save as Draft
-        </Button>
+        </Button> */}
         <Button
           type="button"
           onClick={() => setActiveTab('preview')}

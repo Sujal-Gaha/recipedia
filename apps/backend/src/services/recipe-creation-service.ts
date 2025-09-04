@@ -25,7 +25,6 @@ export class RecipeCreationService {
         description: input.description,
         difficulty: input.difficulty,
         preparation_time: input.preparation_time,
-        status: input.status,
         title: input.title,
       },
     });

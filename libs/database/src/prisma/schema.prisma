@@ -109,7 +109,7 @@ model Recipe {
   preparation_time Int // In minutes
   cook_time        Int // In minutes
   difficulty       RecipeDifficulty @default(EASY)
-  status           RecipeStatus     @default(DRAFT)
+  status           RecipeStatus     @default(PUBLISHED)
   is_flagged       Boolean          @default(false)
   is_deleted       Boolean          @default(false)
 

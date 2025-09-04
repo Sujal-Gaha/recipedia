@@ -19,7 +19,6 @@ export const CreateRecipeInputSchema = RecipeSchema.pick({
   preparation_time: true,
   cook_time: true,
   difficulty: true,
-  status: true,
 });
 export type TCreateRecipeInput = z.infer<typeof CreateRecipeInputSchema>;
 

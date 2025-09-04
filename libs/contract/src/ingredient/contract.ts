@@ -8,6 +8,11 @@ import {
   GetIngredientByIdWithVariantsAndImagesInputSchema,
   GetIngredientByIdWithVariantsAndImagesResponseSchema,
 } from './schema';
+import {
+  GetAllIngredientVariantsInputSchema,
+  GetAllIngredientVariantsResponseSchema,
+} from './ingredient-variant/schema';
+import { z } from 'zod';
 
 const c = initContract();
 
@@ -48,5 +53,22 @@ export const ingredientContract = c.router({
       500: ErrorSchema,
     },
     summary: 'Get all ingredients',
+  },
+
+  getAllIngredientVariants: {
+    method: 'GET',
+    path: `${BASE_API_PATH}/ingredient/getAllIngredientVariants`,
+    query: z.object({
+      page: z.string(),
+      perPage: z.string(),
+      ingredient_id: z.string().optional(),
+    }),
+    responses: {
+      200: GetAllIngredientVariantsResponseSchema,
+      400: ErrorSchema,
+      404: ErrorSchema,
+      500: ErrorSchema,
+    },
+    summary: 'Get all ingredient variants',
   },
 });
