@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, DragEvent } from 'react';
-import { Camera, Upload, X, FileImage, AlertCircle, Crown, Star, StarIcon } from 'lucide-react';
+import { Camera, Upload, X, FileImage, AlertCircle, Star } from 'lucide-react';
 import { toastError, toastInfo, toastSuccess } from './toaster';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';

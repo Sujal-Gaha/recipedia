@@ -142,21 +142,24 @@ export class ResetPasswordHandler implements IResetPasswordHandler {
 }
 
 export class MeRouteHandler implements IMeRouteHandler {
-  getMeByEmail: (email: string) => Promise<{ email: string; name: string } | null> = async (email) => {
-    const user = await prismaUserRepo.findByEmail({ data: { email } });
+  getMeByEmail: (
+    email: string
+  ) => Promise<{ id: string; user_type: UserType; email: string; name: string; is_email_verified: boolean } | null> =
+    async (email) => {
+      const user = await prismaUserRepo.findByEmail({ data: { email } });
 
-    if (!user) {
-      return null;
-    }
+      if (!user) {
+        return null;
+      }
 
-    return {
-      id: user.id,
-      user_type: user.user_type,
-      is_email_verified: user.is_email_verified,
-      name: user.name,
-      email: user.email,
+      return {
+        id: user.id,
+        user_type: user.user_type,
+        is_email_verified: user.is_email_verified,
+        name: user.name,
+        email: user.email,
+      };
     };
-  };
 }
 
 export class VerifyEmailHandler implements IVerifyEmailHandler {

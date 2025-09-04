@@ -48,7 +48,7 @@ export const LoginPage = () => {
           }
 
           toastSuccess('Login successful!');
-          navigate(_FULL_ROUTES.HOME);
+          navigate(_FULL_ROUTES.CALLBACK);
         },
         onError: (error) => {
           toastError(error.message ?? 'Login failed');

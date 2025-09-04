@@ -1,5 +1,5 @@
+import { UserTypeType } from '@libs/contract';
 import {
-  TForgotPasswordResponseCodes,
   TLoginResponseCodes,
   TLogoutResponseCodes,
   TMeResponseCodes,
@@ -9,7 +9,7 @@ import {
   TSignUpResponseCodes,
   TValidateTokenResponseCodes,
   TVerifyEmailResponseCodes,
-} from '@libs/contract';
+} from '@libs/auth';
 import { env } from '../../lib/env';
 import { z } from 'zod';
 
@@ -82,8 +82,10 @@ export type TMeOutput = {
   accessToken: string;
   data: {
     me: {
+      id: string;
       name: string;
       email: string;
+      user_type: UserTypeType;
     };
     token: {
       name: string;
@@ -205,7 +207,6 @@ export type TForgotPasswordInput = {
 };
 export type TForgotPasswordOutput = {
   message: string;
-  code: TForgotPasswordResponseCodes;
 };
 export async function forgotPassword(input: TForgotPasswordInput): Promise<TForgotPasswordOutput> {
   const res = await fetch(`${env.VITE_BACKEND_URL}/v1/auth/forgot-password`, {

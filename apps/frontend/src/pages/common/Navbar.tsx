@@ -48,7 +48,7 @@ export const Navbar = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 lg:flex lg:justify-center">
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
-          <Link to="/" className="mr-6 flex items-center space-x-2">
+          <Link to={_FULL_ROUTES.HOME} className="mr-6 flex items-center space-x-2">
             <ChefHat className="h-6 w-6 text-primary" />
             <span className="hidden font-bold sm:inline-block">Recipedia</span>
           </Link>
@@ -59,70 +59,59 @@ export const Navbar = () => {
                 <NavigationMenuContent>
                   <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                     <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <Link
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                          to="/"
-                        >
-                          <ChefHat className="h-6 w-6" />
-                          <div className="mb-2 mt-4 text-lg font-medium">Recipedia</div>
-                          <p className="text-sm leading-tight text-muted-foreground">
-                            Discover amazing recipes from our community of home cooks and professional chefs.
-                          </p>
-                        </Link>
+                      <NavigationMenuLink href={_FULL_ROUTES.HOME}>
+                        <ChefHat className="h-6 w-6" />
+                        <div className="mb-2 mt-4 text-lg font-medium">Recipedia</div>
+                        <p className="text-sm leading-tight text-muted-foreground">
+                          Discover amazing recipes from our community of home cooks and professional chefs.
+                        </p>
                       </NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          to={`${_FULL_ROUTES.RECIPE}`}
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none">All Recipes</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Browse our complete collection of recipes.
-                          </p>
-                        </Link>
+                      <NavigationMenuLink
+                        href={_FULL_ROUTES.RECIPE}
+                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      >
+                        <div className="text-sm font-medium leading-none">All Recipes</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Browse our complete collection of recipes.
+                        </p>
                       </NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          to={`${_FULL_ROUTES.RECIPE}?difficulty=easy`}
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none">Easy Recipes</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Quick and simple recipes for beginners.
-                          </p>
-                        </Link>
+                      <NavigationMenuLink
+                        href={`${_FULL_ROUTES.RECIPE}?difficulty=easy`}
+                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      >
+                        <div className="text-sm font-medium leading-none">Easy Recipes</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Quick and simple recipes for beginners.
+                        </p>
                       </NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          to={`${_FULL_ROUTES.RECIPE}?sort=popular`}
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none">Popular Recipes</div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            Most loved recipes by our community.
-                          </p>
-                        </Link>
+                      <NavigationMenuLink
+                        href={`${_FULL_ROUTES.RECIPE}?sort=popular`}
+                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      >
+                        <div className="text-sm font-medium leading-none">Popular Recipes</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Most loved recipes by our community.
+                        </p>
                       </NavigationMenuLink>
                     </li>
                   </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link to={_FULL_ROUTES.INGREDIENT}>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Ingredient Filter</NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink href={_FULL_ROUTES.INGREDIENT} className={navigationMenuTriggerStyle()}>
+                  Ingredient Filter
+                </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link to={_FULL_ROUTES.CREATE_RECIPE}>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>Create Recipe</NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink href={_FULL_ROUTES.CREATE_RECIPE} className={navigationMenuTriggerStyle()}>
+                  Create Recipe
+                </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
