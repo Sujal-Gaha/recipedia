@@ -14,6 +14,7 @@ export const getRecipeBySlug: AppRouteImplementation<typeof recipeContract.getRe
     const data = await recipeRepo.findBySlug({
       data: {
         slug: params.slug,
+        user_id: params.user_id,
       },
     });
 

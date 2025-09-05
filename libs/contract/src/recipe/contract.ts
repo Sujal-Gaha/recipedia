@@ -44,7 +44,7 @@ export const recipeContract = c.router({
 
   getRecipeBySlug: {
     method: 'GET',
-    path: `${BASE_API_PATH}/recipe/getRecipeBySlug/:slug`,
+    path: `${BASE_API_PATH}/recipe/getRecipeBySlug/:slug/:user_id`,
     responses: {
       200: GetRecipeBySlugResponseSchema,
       400: ErrorSchema,
