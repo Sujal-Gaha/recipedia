@@ -87,6 +87,8 @@ export const GetRecipeBySlugOutputSchema = RecipeSchema.extend({
       })
     ),
   }),
+  user_favourite_id: z.string().nullable(),
+  user_upvote_id: z.string().nullable(),
   steps: z.array(RecipeStepSchema),
   tips: z.array(RecipeTipSchema),
   is_favourited: z.boolean(),
@@ -150,6 +152,8 @@ export const GetAllRecipesOutputSchema = RecipeSchema.extend({
   steps: z.array(RecipeStepSchema),
   is_favourited: z.boolean(),
   is_upvoted: z.boolean(),
+  user_favourite_id: z.string().nullable(),
+  user_upvote_id: z.string().nullable(),
 });
 export type TGetAllRecipesOutput = z.infer<typeof GetAllRecipesOutputSchema>;
 

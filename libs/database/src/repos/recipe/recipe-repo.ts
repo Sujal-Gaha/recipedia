@@ -120,22 +120,22 @@ export class PrismaRecipeRepo extends RecipeRepo {
     const total_votes = recipe.upvotes.length;
     const total_favourites = recipe.favourites.length;
 
-    const favourites = await db.recipeFavourite.findFirst({
+    const userFavourite = await db.recipeFavourite.findFirst({
       where: {
         recipe_id: recipe.id,
         user_id,
       },
     });
 
-    const upvotes = await db.recipeUpvote.findFirst({
+    const userUpvote = await db.recipeUpvote.findFirst({
       where: {
         recipe_id: recipe.id,
         user_id,
       },
     });
 
-    const is_favourited = !!favourites;
-    const is_upvoted = !!upvotes;
+    const is_favourited = !!userFavourite;
+    const is_upvoted = !!userUpvote;
 
     return {
       data: {
@@ -209,6 +209,8 @@ export class PrismaRecipeRepo extends RecipeRepo {
           image: recipe.user.image,
           is_email_verified: recipe.user.is_email_verified,
         },
+        user_favourite_id: recipe.favourites.find((favourite) => favourite.user_id === user_id)?.id || null,
+        user_upvote_id: recipe.upvotes.find((upvote) => upvote.user_id === user_id)?.id || null,
         tips: recipe.tips,
         is_favourited,
         is_upvoted,
@@ -306,22 +308,22 @@ export class PrismaRecipeRepo extends RecipeRepo {
           },
         });
 
-        const favourites = await db.recipeFavourite.findFirst({
+        const userFavourite = await db.recipeFavourite.findFirst({
           where: {
             recipe_id: recipe.id,
             user_id,
           },
         });
 
-        const upvotes = await db.recipeUpvote.findFirst({
+        const userUpvote = await db.recipeUpvote.findFirst({
           where: {
             recipe_id: recipe.id,
             user_id,
           },
         });
 
-        const is_favourited = !!favourites;
-        const is_upvoted = !!upvotes;
+        const is_favourited = !!userFavourite;
+        const is_upvoted = !!userUpvote;
 
         return {
           id: recipe.id,
@@ -397,6 +399,8 @@ export class PrismaRecipeRepo extends RecipeRepo {
           })),
           is_favourited,
           is_upvoted,
+          user_favourite_id: is_favourited ? userFavourite.id : null,
+          user_upvote_id: is_upvoted ? userUpvote.id : null,
         };
       })
     );

@@ -4,8 +4,18 @@ import { CreateRecipeWithAllFieldsInputSchema, CreateRecipeWithAllFieldsResponse
 import { GetAllRecipesResponseSchema, GetRecipeBySlugResponseSchema } from './recipe/schema';
 import { z } from 'zod';
 import { RecipeDifficultySchema, RecipeStatusSchema } from '../__generated__';
-import { CreateRecipeFavouriteInputSchema, CreateRecipeFavouriteResponseSchema } from './recipe-favourite/schema';
-import { CreateRecipeUpvoteInputSchema, CreateRecipeUpvoteResponseSchema } from './recipe-upvote/schema';
+import {
+  CreateRecipeFavouriteInputSchema,
+  CreateRecipeFavouriteResponseSchema,
+  DeleteRecipeFavouriteInputSchema,
+  DeleteRecipeFavouriteResponseSchema,
+} from './recipe-favourite/schema';
+import {
+  CreateRecipeUpvoteInputSchema,
+  CreateRecipeUpvoteResponseSchema,
+  DeleteRecipeUpvoteInputSchema,
+  DeleteRecipeUpvoteResponseSchema,
+} from './recipe-upvote/schema';
 
 const c = initContract();
 
@@ -35,6 +45,7 @@ export const recipeContract = c.router({
       is_flagged: TrueOrFalseInputSchema.optional(),
       global_filter: z.string().optional(),
       recipe_ingredients_ids: z.array(z.string()).optional(),
+      user_id: z.string().optional(),
     }),
     responses: {
       200: GetAllRecipesResponseSchema,
@@ -68,6 +79,18 @@ export const recipeContract = c.router({
     summary: 'Create a recipe favourite',
   },
 
+  deleteRecipeFavourite: {
+    method: 'POST',
+    path: `${BASE_API_PATH}/recipe/deleteRecipeFavourite`,
+    body: DeleteRecipeFavouriteInputSchema,
+    responses: {
+      200: DeleteRecipeFavouriteResponseSchema,
+      400: ErrorSchema,
+      500: ErrorSchema,
+    },
+    summary: 'Delete a recipe favourite',
+  },
+
   createRecipeUpvote: {
     method: 'POST',
     path: `${BASE_API_PATH}/recipe/createRecipeUpvote`,
@@ -78,5 +101,17 @@ export const recipeContract = c.router({
       500: ErrorSchema,
     },
     summary: 'Create a recipe upvote',
+  },
+
+  deleteRecipeUpvote: {
+    method: 'POST',
+    path: `${BASE_API_PATH}/recipe/deleteRecipeUpvote`,
+    body: DeleteRecipeUpvoteInputSchema,
+    responses: {
+      200: DeleteRecipeUpvoteResponseSchema,
+      400: ErrorSchema,
+      500: ErrorSchema,
+    },
+    summary: 'Delete a recipe favourite',
   },
 });

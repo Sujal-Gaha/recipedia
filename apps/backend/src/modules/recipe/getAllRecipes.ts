@@ -22,6 +22,7 @@ export const getAllRecipes: AppRouteImplementation<typeof recipeContract.getAllR
         global_filter: query.global_filter,
         status: query.status,
         recipe_ingredients_ids: query.recipe_ingredients_ids,
+        user_id: query.user_id,
       },
     });
 

@@ -51,6 +51,7 @@ export const CreateRecipePage = () => {
         },
       ],
       images: [],
+      tips: [],
     },
   });
 
@@ -172,6 +173,9 @@ export const CreateRecipePage = () => {
             content: step.content,
             step_no: step.step_no,
             title: step.title,
+          })),
+          tips: input.tips.map((tip) => ({
+            content: tip.content,
           })),
         },
       },

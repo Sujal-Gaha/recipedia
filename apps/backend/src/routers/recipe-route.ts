@@ -6,6 +6,8 @@ import { getAllRecipes } from '../modules/recipe/getAllRecipes';
 import { getRecipeBySlug } from '../modules/recipe/getRecipeBySlug';
 import { createRecipeFavourite } from '../modules/recipe/createRecipeFavourite';
 import { createRecipeUpvote } from '../modules/recipe/createRecipeUpvote';
+import { deleteRecipeFavourite } from '../modules/recipe/deleteRecipeFavourite';
+import { deleteRecipeUpvote } from '../modules/recipe/deleteRecipeUpvote';
 
 const s = initServer();
 
@@ -26,8 +28,16 @@ export const recipeRouter = s.router(recipeContract, {
     middleware: [validateAccessToken],
     handler: createRecipeFavourite,
   },
+  deleteRecipeFavourite: {
+    middleware: [validateAccessToken],
+    handler: deleteRecipeFavourite,
+  },
   createRecipeUpvote: {
     middleware: [validateAccessToken],
     handler: createRecipeUpvote,
+  },
+  deleteRecipeUpvote: {
+    middleware: [validateAccessToken],
+    handler: deleteRecipeUpvote,
   },
 });
