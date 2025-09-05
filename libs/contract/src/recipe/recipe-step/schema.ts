@@ -7,6 +7,7 @@ export const CreateRecipeStepInputSchema = RecipeStepSchema.pick({
   recipe_id: true,
   content: true,
   step_no: true,
+  title: true,
 });
 export type TCreateRecipeStepInput = z.infer<typeof CreateRecipeStepInputSchema>;
 

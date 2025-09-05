@@ -166,7 +166,7 @@ export const RecipesPage = () => {
                 </div>
 
                 <Button className="w-full font-medium" asChild>
-                  <Link to={`${_FULL_ROUTES.RECIPE}/${recipe.id}`}>View Recipe</Link>
+                  <Link to={`${_FULL_ROUTES.RECIPE}/${recipe.slug}`}>View Recipe</Link>
                 </Button>
               </CardContent>
             </Card>

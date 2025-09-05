@@ -8,6 +8,7 @@ import {
   RecipeSchema,
   RecipeStatusSchema,
   RecipeStepSchema,
+  RecipeTipSchema,
   RecipeUpvoteSchema,
 } from '../__generated__';
 import { PaginationOutputSchema, SuccessSchema, TrueOrFalseInputSchema } from '../lib/schema';
@@ -19,6 +20,7 @@ export const RecipeWithAllFieldsInputSchema = RecipeSchema.extend({
   favourites: z.array(RecipeFavouriteSchema),
   reviews: z.array(RecipeReviewSchema),
   steps: z.array(RecipeStepSchema),
+  tips: z.array(RecipeTipSchema),
 });
 export type TRecipeWithAllFieldsInput = z.infer<typeof RecipeWithAllFieldsInputSchema>;
 
@@ -45,6 +47,7 @@ export const CreateRecipeWithAllFieldsInputSchema = RecipeWithAllFieldsInputSche
       RecipeStepSchema.pick({
         content: true,
         step_no: true,
+        title: true,
       })
     ),
   })
@@ -55,6 +58,13 @@ export const CreateRecipeWithAllFieldsInputSchema = RecipeWithAllFieldsInputSche
         unit: true,
         note: true,
         ingredient_variant_id: true,
+      })
+    ),
+  })
+  .extend({
+    tips: z.array(
+      RecipeTipSchema.pick({
+        content: true,
       })
     ),
   });
@@ -71,6 +81,7 @@ export const CreateRecipeWithAllFieldsOutputSchema = RecipeWithAllFieldsInputSch
   ingredients: true,
   images: true,
   steps: true,
+  tips: true,
   slug: true,
   created_at: true,
   updated_at: true,

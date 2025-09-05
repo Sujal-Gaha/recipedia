@@ -6,6 +6,7 @@ import { RecipesPage } from '../pages/user/recipe/RecipePage';
 import { CreateRecipePage } from '../pages/user/recipe/create/CreateRecipePage';
 import { UserLayout } from '../pages/user/layout/UserLayout';
 import { WithAuth } from '../components/auth';
+import RecipeDetailPage from '../pages/user/recipe/RecipeDetailPage';
 
 export const userRoutes: RouteObject[] = [
   {
@@ -29,12 +30,10 @@ export const userRoutes: RouteObject[] = [
       {
         path: _FULL_ROUTES.RECIPE,
         element: <RecipesPage />,
-        children: [
-          {
-            path: ':id',
-            element: <RecipesPage />,
-          },
-        ],
+      },
+      {
+        path: `${_FULL_ROUTES.RECIPE}/:slug`,
+        element: <RecipeDetailPage />,
       },
       {
         path: _FULL_ROUTES.CREATE_RECIPE,

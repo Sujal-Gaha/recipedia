@@ -5,6 +5,7 @@ import {
   TFindManyRecipesRepoInput,
   TFindManyRecipesRepoOutput,
   TFindRecipeBySlugRepoInput,
+  TFindRecipeBySlugRepoOutput,
   TRecipe,
   TUpdateRecipeRepoInput,
 } from '@libs/quasar';
@@ -70,7 +71,7 @@ export class PrismaRecipeRepo extends RecipeRepo {
 
   override async findBySlug({
     data: { slug, user_id },
-  }: TFindRecipeBySlugRepoInput): Promise<TGetAllRecipesOutput | null> {
+  }: TFindRecipeBySlugRepoInput): Promise<TFindRecipeBySlugRepoOutput | null> {
     const recipe = await db.recipe.findUnique({
       where: {
         slug,
@@ -79,12 +80,21 @@ export class PrismaRecipeRepo extends RecipeRepo {
         user: true,
         images: true,
         steps: true,
-        ingredients: true,
+        ingredients: {
+          include: {
+            ingredient_variant: {
+              include: {
+                ingredient: true,
+              },
+            },
+          },
+        },
         reviews: {
           include: {
             votes: true,
           },
         },
+        tips: true,
         upvotes: true,
         favourites: true,
       },
@@ -128,56 +138,81 @@ export class PrismaRecipeRepo extends RecipeRepo {
     const is_upvoted = !!upvotes;
 
     return {
-      cook_time: recipe.cook_time,
-      description: recipe.description,
-      difficulty: recipe.difficulty,
-      preparation_time: recipe.preparation_time,
-      status: recipe.status,
-      title: recipe.title,
-      id: recipe.id,
-      slug: recipe.slug,
-      is_flagged: recipe.is_flagged,
-      created_at: recipe.created_at,
-      updated_at: recipe.updated_at,
-      user_id: recipe.user_id,
-      images: recipe.images,
-      steps: recipe.steps,
-      ingredients: recipe.ingredients,
-      deleted_at: recipe.deleted_at,
-      favourites: {
-        total_favourites,
-      },
-      is_deleted: recipe.is_deleted,
-      review: {
-        average_rating,
-        total_reviews,
-        total_ratings,
-        reviews: recipeReviews.map((review) => ({
-          id: review.id,
-          comment: review.comment,
-          created_at: review.created_at,
-          rating: review.rating,
-          updated_at: review.updated_at,
-          total_votes: review.votes.reduce((total, vote) => {
-            if (vote.type === 'UPVOTE') return (total += 1);
-            if (vote.type === 'DOWNVOTE') return (total -= 1);
-            return total;
-          }, 0),
+      data: {
+        cook_time: recipe.cook_time,
+        description: recipe.description,
+        difficulty: recipe.difficulty,
+        preparation_time: recipe.preparation_time,
+        status: recipe.status,
+        title: recipe.title,
+        id: recipe.id,
+        slug: recipe.slug,
+        is_flagged: recipe.is_flagged,
+        created_at: recipe.created_at,
+        updated_at: recipe.updated_at,
+        user_id: recipe.user_id,
+        images: recipe.images,
+        steps: recipe.steps,
+        ingredients: recipe.ingredients.map((ing) => ({
+          id: ing.id,
+          quantity: ing.quantity,
+          unit: ing.unit,
+          ingredient_variant_id: ing.ingredient_variant_id,
+          note: ing.note,
+          recipe_id: ing.recipe_id,
+          updated_at: ing.updated_at,
+          created_at: ing.created_at,
+          ingredient_variant: {
+            id: ing.ingredient_variant.id,
+            name: ing.ingredient_variant.name,
+            image: ing.ingredient_variant.image,
+            ingredient: {
+              calories: ing.ingredient_variant.ingredient.calories,
+              carbohydrates: ing.ingredient_variant.ingredient.carbohydrates,
+              fat: ing.ingredient_variant.ingredient.fat,
+              fiber: ing.ingredient_variant.ingredient.fiber,
+              protein: ing.ingredient_variant.ingredient.protein,
+              sugar: ing.ingredient_variant.ingredient.sugar,
+            },
+          },
         })),
+        deleted_at: recipe.deleted_at,
+        favourites: {
+          total_favourites,
+        },
+        is_deleted: recipe.is_deleted,
+        review: {
+          average_rating,
+          total_reviews,
+          total_ratings,
+          reviews: recipeReviews.map((review) => ({
+            id: review.id,
+            comment: review.comment,
+            created_at: review.created_at,
+            rating: review.rating,
+            updated_at: review.updated_at,
+            total_votes: review.votes.reduce((total, vote) => {
+              if (vote.type === 'UPVOTE') return (total += 1);
+              if (vote.type === 'DOWNVOTE') return (total -= 1);
+              return total;
+            }, 0),
+          })),
+        },
+        upvotes: {
+          total_votes,
+        },
+        user: {
+          id: recipe.user.id,
+          name: recipe.user.name,
+          email: recipe.user.email,
+          user_type: recipe.user.user_type,
+          image: recipe.user.image,
+          is_email_verified: recipe.user.is_email_verified,
+        },
+        tips: recipe.tips,
+        is_favourited,
+        is_upvoted,
       },
-      upvotes: {
-        total_votes,
-      },
-      user: {
-        id: recipe.user.id,
-        name: recipe.user.name,
-        email: recipe.user.email,
-        user_type: recipe.user.user_type,
-        image: recipe.user.image,
-        is_email_verified: recipe.user.is_email_verified,
-      },
-      is_favourited,
-      is_upvoted,
     };
   }
 
@@ -358,6 +393,7 @@ export class PrismaRecipeRepo extends RecipeRepo {
             recipe_id: step.recipe_id,
             created_at: step.created_at,
             updated_at: step.updated_at,
+            title: step.title,
           })),
           is_favourited,
           is_upvoted,

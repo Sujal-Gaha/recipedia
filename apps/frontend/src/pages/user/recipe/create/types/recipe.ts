@@ -7,6 +7,7 @@ export interface RecipeIngredient {
 export interface RecipeStep {
   step_no: number;
   content: string;
+  title: string;
 }
 
 export interface RecipeFormData {

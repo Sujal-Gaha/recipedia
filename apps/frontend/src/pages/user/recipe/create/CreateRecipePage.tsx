@@ -47,6 +47,7 @@ export const CreateRecipePage = () => {
         {
           step_no: 1,
           content: '',
+          title: '',
         },
       ],
       images: [],
@@ -77,6 +78,7 @@ export const CreateRecipePage = () => {
     const newStep: RecipeStep = {
       step_no: steps.length + 1,
       content: '',
+      title: '',
     };
     setValue('steps', [...steps, newStep]);
   };
@@ -169,6 +171,7 @@ export const CreateRecipePage = () => {
           steps: input.steps.map((step) => ({
             content: step.content,
             step_no: step.step_no,
+            title: step.title,
           })),
         },
       },

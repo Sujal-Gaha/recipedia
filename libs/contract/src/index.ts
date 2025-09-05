@@ -13,6 +13,7 @@ export * from './recipe/recipe-ingredient/schema';
 export * from './recipe/recipe-review/schema';
 export * from './recipe/recipe-review-vote/schema';
 export * from './recipe/recipe-step/schema';
+export * from './recipe/recipe-tips/schema';
 export * from './recipe/recipe-upvote/schema';
 export * from './recipe/schema';
 export * from './recipe/contract';

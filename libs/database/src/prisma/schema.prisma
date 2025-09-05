@@ -71,8 +71,24 @@ model User {
   recipeFavourites  RecipeFavourite[]  @relation("recipe_favourite_user")
   recipeReviews     RecipeReview[]     @relation("recipe_review_user")
   recipeReviewVotes RecipeReviewVote[] @relation("recipe_review_vote_user")
+  followers         UserFollower[]     @relation("user_followers")
+  followings        UserFollower[]     @relation("user_followings")
 
   @@map("user")
+}
+
+model UserFollower {
+  id           String @id @default(cuid())
+  follower_id  String
+  following_id String
+
+  follower  User @relation("user_followers", fields: [follower_id], references: [id])
+  following User @relation("user_followings", fields: [following_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("user_followers")
 }
 
 model File {
@@ -126,6 +142,7 @@ model Recipe {
   favourites  RecipeFavourite[]  @relation("recipe_favourite")
   reviews     RecipeReview[]     @relation("recipe_review")
   steps       RecipeStep[]       @relation("recipe_step")
+  tips        RecipeTip[]        @relation("recipe_tip")
 
   @@map("recipes")
 }
@@ -222,6 +239,7 @@ model RecipeReviewVote {
 model RecipeStep {
   id        String @id @default(cuid())
   step_no   Int
+  title     String
   content   String
   recipe_id String
 
@@ -232,6 +250,19 @@ model RecipeStep {
 
   @@unique([recipe_id, step_no])
   @@map("recipe_steps")
+}
+
+model RecipeTip {
+  id        String @id @default(cuid())
+  content   String
+  recipe_id String
+
+  recipe Recipe @relation("recipe_tip", fields: [recipe_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("recipe_tips")
 }
 
 model Ingredient {

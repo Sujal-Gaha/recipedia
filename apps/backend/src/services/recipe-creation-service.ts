@@ -4,6 +4,7 @@ import {
   PrismaRecipeIngredientRepo,
   PrismaRecipeRepo,
   PrismaRecipeStepRepo,
+  PrismaRecipeTipRepo,
 } from '@libs/database';
 import { logger } from '@libs/quasar';
 
@@ -12,7 +13,8 @@ export class RecipeCreationService {
     private readonly recipeRepo: PrismaRecipeRepo,
     private readonly recipeImageRepo: PrismaRecipeImageRepo,
     private readonly recipeIngredientRepo: PrismaRecipeIngredientRepo,
-    private readonly recipeStepRepo: PrismaRecipeStepRepo
+    private readonly recipeStepRepo: PrismaRecipeStepRepo,
+    private readonly recipeTipRepo: PrismaRecipeTipRepo
   ) {
     logger.info('Recipe Service initialized...');
   }
@@ -42,6 +44,14 @@ export class RecipeCreationService {
         recipe_id: recipe.id,
         step_no: step.step_no,
         content: step.content,
+        title: step.title,
+      })),
+    });
+
+    const recipeTips = await this.recipeTipRepo.createMany({
+      data: input.tips.map((tip) => ({
+        recipe_id: recipe.id,
+        content: tip.content,
       })),
     });
 
@@ -61,6 +71,7 @@ export class RecipeCreationService {
       difficulty: recipe.difficulty,
       preparation_time: recipe.preparation_time,
       slug: recipe.slug,
+      tips: recipeTips,
       title: recipe.title,
       id: recipe.id,
       images: recipeImages,

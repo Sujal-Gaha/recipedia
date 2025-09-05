@@ -11,14 +11,14 @@ export const getRecipeBySlug: AppRouteImplementation<typeof recipeContract.getRe
   try {
     const recipeRepo = new PrismaRecipeRepo();
 
-    const data = await recipeRepo.findBySlug({
+    const recipe = await recipeRepo.findBySlug({
       data: {
         slug: params.slug,
         user_id: params.user_id,
       },
     });
 
-    if (!data) {
+    if (!recipe) {
       return {
         status: StatusCodes.NOT_FOUND,
         body: {
@@ -27,6 +27,8 @@ export const getRecipeBySlug: AppRouteImplementation<typeof recipeContract.getRe
         },
       };
     }
+
+    const { data } = recipe;
 
     return {
       status: StatusCodes.OK,

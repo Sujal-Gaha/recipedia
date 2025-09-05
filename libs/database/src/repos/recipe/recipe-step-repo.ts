@@ -11,12 +11,15 @@ import {
 import { db } from '../../prisma/client';
 
 export class PrismaRecipeStepRepo extends RecipeStepRepo {
-  override async create({ data: { recipe_id, content, step_no } }: TCreateRecipeStepRepoInput): Promise<TRecipeStep> {
+  override async create({
+    data: { recipe_id, content, step_no, title },
+  }: TCreateRecipeStepRepoInput): Promise<TRecipeStep> {
     return await db.recipeStep.create({
       data: {
         recipe_id,
         content,
         step_no,
+        title,
       },
     });
   }
@@ -67,6 +70,7 @@ export class PrismaRecipeStepRepo extends RecipeStepRepo {
         recipe_id: recipeStep.recipe_id,
         content: recipeStep.content,
         step_no: recipeStep.step_no,
+        title: recipeStep.title,
       })),
     });
   }

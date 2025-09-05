@@ -1,5 +1,5 @@
 import { RecipeDifficultyType } from '@libs/contract';
-import { PrismaClient, RecipeStep } from '@prisma/client';
+import { PrismaClient, RecipeStep, RecipeTip } from '@prisma/client';
 import slugify from 'react-slugify';
 import { dummyIngredients } from './data/ingredient';
 
@@ -11,8 +11,9 @@ const dummyRecipes: {
   title: string;
   difficulty: RecipeDifficultyType;
   image: string;
-  steps: Pick<RecipeStep, 'step_no' | 'content'>[];
+  steps: Pick<RecipeStep, 'title' | 'step_no' | 'content'>[];
   ingredients: string[];
+  tips: Pick<RecipeTip, 'content'>[];
 }[] = [
   {
     cook_time: 25,
@@ -25,35 +26,52 @@ const dummyRecipes: {
     steps: [
       {
         step_no: 1,
-        content:
-          'Prepare the ingredients: mince the garlic, slice the chilies, and chop the chicken into bite-sized pieces.',
+        title: 'Prepare the Ingredients',
+        content: 'Mince the garlic, slice the chilies, and chop the chicken into bite-sized pieces.',
       },
       {
         step_no: 2,
+        title: 'Cook the Chicken',
         content: 'Heat oil in a wok or large pan over medium-high heat.',
       },
       {
         step_no: 3,
+        title: 'Add the Ingredients',
         content: 'Add garlic and chilies, stir-frying quickly until fragrant.',
       },
       {
         step_no: 4,
+        title: 'Cook the Chicken',
         content: 'Add the chicken and stir-fry until fully cooked and tender.',
       },
       {
         step_no: 5,
+        title: 'Add the Sauce',
         content: 'Pour in soy sauce, fish sauce, and a pinch of sugar. Stir well to coat the chicken evenly.',
       },
       {
         step_no: 6,
+        title: 'Serve and Enjoy',
         content: 'Turn off the heat and add fresh Thai basil leaves, stirring until just wilted.',
       },
       {
         step_no: 7,
+        title: 'Serve Over Jasmine Rice',
         content: 'Serve hot over steamed jasmine rice.',
       },
     ],
     ingredients: ['Jasmine Rice', 'Boneless Chicken Breast', 'Fresh Garlic', 'Thai Basil'],
+    tips: [
+      {
+        content: 'You can use any type of rice, such as white or brown, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of chicken, such as boneless or skinless, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of chilies, such as red, green, or yellow, depending on your preference.',
+      },
+    ],
   },
   {
     cook_time: 45,
@@ -67,30 +85,47 @@ const dummyRecipes: {
     steps: [
       {
         step_no: 1,
+        title: 'Prepare the Dough',
         content: 'Prepare the pizza dough and let it rise until doubled in size.',
       },
       {
         step_no: 2,
+        title: 'Preheat the Oven',
         content: 'Preheat oven to 250°C (480°F) with a pizza stone inside.',
       },
       {
         step_no: 3,
+        title: 'Roll Out the Dough',
         content: 'Roll out the dough into a thin round base.',
       },
       {
         step_no: 4,
+        title: 'Spread the Sauce',
         content: 'Spread San Marzano tomato sauce evenly over the dough.',
       },
       {
         step_no: 5,
+        title: 'Add the Toppings',
         content: 'Top with slices of fresh mozzarella and basil leaves.',
       },
       {
         step_no: 6,
+        title: 'Bake the Pizza',
         content: 'Bake until the crust is golden and cheese is bubbling.',
       },
     ],
     ingredients: ['Sweet Basil', 'Fresh Tomato', 'Fresh Mozzarella'],
+    tips: [
+      {
+        content: 'You can use any type of pizza dough, such as thin or thick, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of tomatoes, such as San Marzano or Roma, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of cheese, such as mozzarella or provolone, depending on your preference.',
+      },
+    ],
   },
   {
     cook_time: 35,
@@ -104,26 +139,42 @@ const dummyRecipes: {
     steps: [
       {
         step_no: 1,
+        title: 'Prepare the Ingredients',
         content: 'Heat broth in a saucepan and keep it warm over low heat.',
       },
       {
         step_no: 2,
+        title: 'Cook the Rice',
         content: 'Sauté onions and garlic in butter until translucent.',
       },
       {
         step_no: 3,
+        title: 'Add the Rice',
         content: 'Add Arborio rice and toast for 2 minutes.',
       },
       {
         step_no: 4,
+        title: 'Add the Sauce',
         content: 'Gradually add warm broth, stirring constantly until absorbed.',
       },
       {
         step_no: 5,
+        title: 'Add the Mushrooms',
         content: 'Stir in sautéed mushrooms and Parmesan cheese before serving.',
       },
     ],
     ingredients: ['Arborio Rice', 'White Mushroom', 'Shredded Mozzarella'],
+    tips: [
+      {
+        content: 'You can use any type of rice, such as Arborio or Quinoa, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of mushrooms, such as wild or red, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of cheese, such as mozzarella or provolone, depending on your preference.',
+      },
+    ],
   },
   {
     cook_time: 15,
@@ -136,26 +187,42 @@ const dummyRecipes: {
     steps: [
       {
         step_no: 1,
+        title: 'Preheat the Oven',
         content: 'Preheat oven to 220°C (425°F) and grease ramekins.',
       },
       {
         step_no: 2,
+        title: 'Prepare the Batter',
         content: 'Melt chocolate and butter together until smooth.',
       },
       {
         step_no: 3,
+        title: 'Add the Ingredients',
         content: 'Whisk in eggs, sugar, and flour until just combined.',
       },
       {
         step_no: 4,
+        title: 'Bake the Cakes',
         content: 'Pour batter into ramekins and bake until edges are set but center is soft.',
       },
       {
         step_no: 5,
+        title: 'Serve the Cakes',
         content: 'Invert cakes onto plates and serve immediately.',
       },
     ],
     ingredients: ['Dark Chocolate', 'Butter', 'Large Egg', 'Sugar', 'All-Purpose Flour'],
+    tips: [
+      {
+        content: 'You can use any type of chocolate, such as milk or dark, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of butter, such as unsalted or salted, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of eggs, such as large or small, depending on your preference.',
+      },
+    ],
   },
   {
     cook_time: 40,
@@ -169,26 +236,32 @@ const dummyRecipes: {
     steps: [
       {
         step_no: 1,
+        title: 'Prepare the Ingredients',
         content: 'Cook rice and set aside.',
       },
       {
         step_no: 2,
+        title: 'Cook the Vegetables',
         content: 'Sauté assorted vegetables like spinach, carrots, and mushrooms separately.',
       },
       {
         step_no: 3,
+        title: 'Cook the Meat',
         content: 'Cook beef slices in a pan with soy sauce and garlic.',
       },
       {
         step_no: 4,
+        title: 'Fry the Egg',
         content: 'Fry an egg sunny side up.',
       },
       {
         step_no: 5,
+        title: 'Assemble the Bowl',
         content: 'Arrange rice in a bowl, top with vegetables, meat, and egg.',
       },
       {
         step_no: 6,
+        title: 'Add the Sauce',
         content: 'Serve with gochujang and mix well before eating.',
       },
     ],
@@ -200,6 +273,17 @@ const dummyRecipes: {
       'White Mushroom',
       'Large Egg',
       'Red Pepper',
+    ],
+    tips: [
+      {
+        content: 'You can use any type of rice, such as jasmine or white, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of chicken, such as boneless or skinless, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of vegetables, such as spinach or carrots, depending on your preference.',
+      },
     ],
   },
   {
@@ -214,26 +298,42 @@ const dummyRecipes: {
     steps: [
       {
         step_no: 1,
+        title: 'Prepare the Ingredients',
         content: 'Cook rice and let it cool slightly.',
       },
       {
         step_no: 2,
+        title: 'Cook the Vegetables',
         content: 'Sauté diced chicken and vegetables until cooked through.',
       },
       {
         step_no: 3,
+        title: 'Prepare the Rice Mixture',
         content: 'Add rice and ketchup, stir-frying until evenly coated.',
       },
       {
         step_no: 4,
+        title: 'Make the Omelet',
         content: 'Make a thin omelet in a pan.',
       },
       {
         step_no: 5,
+        title: 'Assemble the Omurice',
         content: 'Place the rice mixture on a plate, cover with the omelet, and drizzle with ketchup.',
       },
     ],
     ingredients: ['Jasmine Rice', 'Boneless Chicken Breast', 'Spinach', 'Carrot', 'White Mushroom', 'Large Egg'],
+    tips: [
+      {
+        content: 'You can use any type of rice, such as jasmine or white, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of chicken, such as boneless or skinless, depending on your preference.',
+      },
+      {
+        content: 'You can use any type of vegetables, such as spinach or carrots, depending on your preference.',
+      },
+    ],
   },
 ];
 
@@ -298,6 +398,7 @@ export const seedRecipes = async (db: PrismaClient) => {
               data: recipe.steps.map((step) => ({
                 step_no: step.step_no,
                 content: step.content,
+                title: step.title,
               })),
             },
           },
@@ -323,6 +424,13 @@ export const seedRecipes = async (db: PrismaClient) => {
                     ingredient_variant_id: variant.id,
                   };
                 }),
+            },
+          },
+          tips: {
+            createMany: {
+              data: recipe.tips.map((tip) => ({
+                content: tip.content,
+              })),
             },
           },
         },

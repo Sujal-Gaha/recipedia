@@ -4,6 +4,7 @@ import {
   PrismaRecipeIngredientRepo,
   PrismaRecipeRepo,
   PrismaRecipeStepRepo,
+  PrismaRecipeTipRepo,
 } from '@libs/database';
 import { handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
@@ -12,16 +13,12 @@ import { StatusCodes } from 'http-status-codes';
 
 export const createRecipe: AppRouteImplementation<typeof recipeContract.createRecipe> = async ({ req }) => {
   try {
-    const recipeRepo = new PrismaRecipeRepo();
-    const recipeImageRepo = new PrismaRecipeImageRepo();
-    const recipeIngredientRepo = new PrismaRecipeIngredientRepo();
-    const recipeStepRepo = new PrismaRecipeStepRepo();
-
     const recipeCreationService = new RecipeCreationService(
-      recipeRepo,
-      recipeImageRepo,
-      recipeIngredientRepo,
-      recipeStepRepo
+      new PrismaRecipeRepo(),
+      new PrismaRecipeImageRepo(),
+      new PrismaRecipeIngredientRepo(),
+      new PrismaRecipeStepRepo(),
+      new PrismaRecipeTipRepo()
     );
 
     const data = await recipeCreationService.createRecipe(req.body);

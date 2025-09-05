@@ -7,6 +7,7 @@ import {
   TGetAllRecipesInput,
   TGetAllRecipesOutput,
   TGetRecipeBySlugInput,
+  TGetRecipeBySlugOutput,
 } from '@libs/contract';
 import { BaseRepo } from '../../domain/base-repo';
 import { logger } from '../../logger';
@@ -30,6 +31,10 @@ export type TFindRecipeBySlugRepoInput = {
   data: TGetRecipeBySlugInput;
 };
 
+export type TFindRecipeBySlugRepoOutput = {
+  data: TGetRecipeBySlugOutput;
+};
+
 export type TFindManyRecipesRepoInput = {
   data: TGetAllRecipesInput;
 };
@@ -47,6 +52,6 @@ export abstract class RecipeRepo implements BaseRepo {
   abstract create(input: TCreateRecipeRepoInput): Promise<TRecipe>;
   abstract delete(input: TDeleteRecipeRepoInput): Promise<TRecipe>;
   abstract update(input: TUpdateRecipeRepoInput): Promise<TRecipe>;
-  abstract findBySlug(input: TFindRecipeBySlugRepoInput): Promise<TGetAllRecipesOutput | null>;
+  abstract findBySlug(input: TFindRecipeBySlugRepoInput): Promise<TFindRecipeBySlugRepoOutput | null>;
   abstract findMany(input: TFindManyRecipesRepoInput): Promise<TFindManyRecipesRepoOutput>;
 }

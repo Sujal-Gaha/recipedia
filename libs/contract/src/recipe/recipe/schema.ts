@@ -1,5 +1,7 @@
 import { z } from 'zod';
 import {
+  IngredientSchema,
+  IngredientVariantSchema,
   RecipeDifficultySchema,
   RecipeImageSchema,
   RecipeIngredientSchema,
@@ -7,6 +9,7 @@ import {
   RecipeSchema,
   RecipeStatusSchema,
   RecipeStepSchema,
+  RecipeTipSchema,
   UserSchema,
 } from '../../__generated__';
 import { PaginationOutputSchema, SuccessSchema, TrueOrFalseInputSchema } from '../../lib/schema';
@@ -35,8 +38,64 @@ export const GetRecipeBySlugInputSchema = RecipeSchema.pick({
 });
 export type TGetRecipeBySlugInput = z.infer<typeof GetRecipeBySlugInputSchema>;
 
+export const GetRecipeBySlugOutputSchema = RecipeSchema.extend({
+  user: UserSchema.pick({
+    id: true,
+    name: true,
+    email: true,
+    user_type: true,
+    image: true,
+    is_email_verified: true,
+  }),
+  ingredients: z.array(
+    RecipeIngredientSchema.extend({
+      ingredient_variant: IngredientVariantSchema.pick({
+        image: true,
+        name: true,
+      }).extend({
+        ingredient: IngredientSchema.pick({
+          calories: true,
+          carbohydrates: true,
+          fat: true,
+          fiber: true,
+          protein: true,
+          sugar: true,
+        }),
+      }),
+    })
+  ),
+  images: z.array(RecipeImageSchema),
+  upvotes: z.object({
+    total_votes: z.number(),
+  }),
+  favourites: z.object({
+    total_favourites: z.number(),
+  }),
+  review: z.object({
+    average_rating: z.number(),
+    total_reviews: z.number(),
+    total_ratings: z.number(),
+    reviews: z.array(
+      RecipeReviewSchema.pick({
+        id: true,
+        comment: true,
+        created_at: true,
+        rating: true,
+        updated_at: true,
+      }).extend({
+        total_votes: z.number(),
+      })
+    ),
+  }),
+  steps: z.array(RecipeStepSchema),
+  tips: z.array(RecipeTipSchema),
+  is_favourited: z.boolean(),
+  is_upvoted: z.boolean(),
+});
+export type TGetRecipeBySlugOutput = z.infer<typeof GetRecipeBySlugOutputSchema>;
+
 export const GetRecipeBySlugResponseSchema = SuccessSchema.extend({
-  data: RecipeSchema,
+  data: GetRecipeBySlugOutputSchema,
 });
 export type TGetRecipeBySlugResponse = z.infer<typeof GetRecipeBySlugResponseSchema>;
 

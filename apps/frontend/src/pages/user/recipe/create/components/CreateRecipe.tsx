@@ -301,7 +301,8 @@ export const CreateRecipe = ({
                   {step.step_no}
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 space-y-2">
+                  <Input placeholder="Title" className="text-base" {...register(`steps.${index}.title`)} />
                   <Textarea
                     placeholder="Describe this step in detail..."
                     rows={3}
