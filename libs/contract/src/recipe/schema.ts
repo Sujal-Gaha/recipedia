@@ -10,7 +10,7 @@ import {
   RecipeStepSchema,
   RecipeUpvoteSchema,
 } from '../__generated__';
-import { SuccessSchema, TrueOrFalseInputSchema } from '../lib/schema';
+import { PaginationOutputSchema, SuccessSchema, TrueOrFalseInputSchema } from '../lib/schema';
 
 export const RecipeWithAllFieldsInputSchema = RecipeSchema.extend({
   ingredients: z.array(RecipeIngredientSchema),
@@ -96,8 +96,12 @@ export const GetAllRecipesWithAllFieldsInputSchema = z.object({
 });
 export type TGetAllRecipesWithAllFieldsInput = z.infer<typeof GetAllRecipesWithAllFieldsInputSchema>;
 
+export const GetAllRecipesWithAllFieldsOutputSchema = RecipeWithAllFieldsInputSchema;
+export type TGetAllRecipesWithAllFieldsOutput = z.infer<typeof GetAllRecipesWithAllFieldsOutputSchema>;
+
 export const GetAllRecipesWithAllFieldsResponseSchema = SuccessSchema.extend({
-  data: z.array(RecipeWithAllFieldsInputSchema),
+  data: z.array(GetAllRecipesWithAllFieldsOutputSchema),
+  pagination: PaginationOutputSchema,
 });
 export type TGetAllRecipesWithAllFiledsResponse = z.infer<typeof GetAllRecipesWithAllFieldsResponseSchema>;
 

@@ -68,7 +68,9 @@ export class PrismaRecipeRepo extends RecipeRepo {
     });
   }
 
-  override async findBySlug({ data: { slug } }: TFindRecipeBySlugRepoInput): Promise<TGetAllRecipesOutput | null> {
+  override async findBySlug({
+    data: { slug, user_id },
+  }: TFindRecipeBySlugRepoInput): Promise<TGetAllRecipesOutput | null> {
     const recipe = await db.recipe.findUnique({
       where: {
         slug,
@@ -107,6 +109,23 @@ export class PrismaRecipeRepo extends RecipeRepo {
 
     const total_votes = recipe.upvotes.length;
     const total_favourites = recipe.favourites.length;
+
+    const favourites = await db.recipeFavourite.findFirst({
+      where: {
+        recipe_id: recipe.id,
+        user_id,
+      },
+    });
+
+    const upvotes = await db.recipeUpvote.findFirst({
+      where: {
+        recipe_id: recipe.id,
+        user_id,
+      },
+    });
+
+    const is_favourited = !!favourites;
+    const is_upvoted = !!upvotes;
 
     return {
       cook_time: recipe.cook_time,
@@ -157,6 +176,8 @@ export class PrismaRecipeRepo extends RecipeRepo {
         image: recipe.user.image,
         is_email_verified: recipe.user.is_email_verified,
       },
+      is_favourited,
+      is_upvoted,
     };
   }
 
@@ -170,6 +191,7 @@ export class PrismaRecipeRepo extends RecipeRepo {
       preparation_time,
       status,
       global_filter,
+      user_id,
       recipe_ingredients_ids,
     },
   }: TFindManyRecipesRepoInput): Promise<TFindManyRecipesRepoOutput> {
@@ -191,7 +213,6 @@ export class PrismaRecipeRepo extends RecipeRepo {
             },
           }
         : null),
-
       is_deleted: false,
     };
 
@@ -242,13 +263,30 @@ export class PrismaRecipeRepo extends RecipeRepo {
           return total;
         }, 0);
 
-        const average_rating = total_ratings / total_recipe_reviews;
+        const average_rating = total_recipe_reviews !== 0 ? total_ratings / total_recipe_reviews : 0;
 
         const total_votes = await db.recipeUpvote.count({
           where: {
             recipe_id: recipe.id,
           },
         });
+
+        const favourites = await db.recipeFavourite.findFirst({
+          where: {
+            recipe_id: recipe.id,
+            user_id,
+          },
+        });
+
+        const upvotes = await db.recipeUpvote.findFirst({
+          where: {
+            recipe_id: recipe.id,
+            user_id,
+          },
+        });
+
+        const is_favourited = !!favourites;
+        const is_upvoted = !!upvotes;
 
         return {
           id: recipe.id,
@@ -321,6 +359,8 @@ export class PrismaRecipeRepo extends RecipeRepo {
             created_at: step.created_at,
             updated_at: step.updated_at,
           })),
+          is_favourited,
+          is_upvoted,
         };
       })
     );

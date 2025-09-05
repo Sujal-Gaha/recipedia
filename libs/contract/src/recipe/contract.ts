@@ -1,11 +1,9 @@
 import { initContract } from '@ts-rest/core';
-import { BASE_API_PATH, ErrorSchema } from '../lib/schema';
-import {
-  CreateRecipeWithAllFieldsInputSchema,
-  CreateRecipeWithAllFieldsResponseSchema,
-  GetAllRecipesWithAllFieldsInputSchema,
-} from './schema';
+import { BASE_API_PATH, ErrorSchema, TrueOrFalseInputSchema } from '../lib/schema';
+import { CreateRecipeWithAllFieldsInputSchema, CreateRecipeWithAllFieldsResponseSchema } from './schema';
 import { GetAllRecipesResponseSchema, GetRecipeBySlugResponseSchema } from './recipe/schema';
+import { z } from 'zod';
+import { RecipeDifficultySchema, RecipeStatusSchema } from '../__generated__';
 
 const c = initContract();
 
@@ -25,7 +23,17 @@ export const recipeContract = c.router({
   getAllRecipes: {
     method: 'GET',
     path: `${BASE_API_PATH}/recipe/getAllRecipes`,
-    query: GetAllRecipesWithAllFieldsInputSchema,
+    query: z.object({
+      page: z.string(),
+      perPage: z.string(),
+      preparation_time: z.string().optional(),
+      cook_time: z.string().optional(),
+      difficulty: RecipeDifficultySchema.optional(),
+      status: RecipeStatusSchema.optional(),
+      is_flagged: TrueOrFalseInputSchema.optional(),
+      global_filter: z.string().optional(),
+      recipe_ingredients_ids: z.array(z.string()).optional(),
+    }),
     responses: {
       200: GetAllRecipesResponseSchema,
       400: ErrorSchema,
