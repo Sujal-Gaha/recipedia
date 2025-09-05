@@ -6,7 +6,7 @@ import { RecipesPage } from '../pages/user/recipe/RecipePage';
 import { CreateRecipePage } from '../pages/user/recipe/create/CreateRecipePage';
 import { UserLayout } from '../pages/user/layout/UserLayout';
 import { WithAuth } from '../components/auth';
-import RecipeDetailPage from '../pages/user/recipe/RecipeDetailPage';
+import RecipeDetailPage from '../pages/user/recipe/detail/RecipeDetailPage';
 
 export const userRoutes: RouteObject[] = [
   {

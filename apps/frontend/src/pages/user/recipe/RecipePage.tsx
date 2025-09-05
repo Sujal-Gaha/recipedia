@@ -46,7 +46,7 @@ export const RecipesPage = () => {
     }
   );
 
-  const fetchedRecipes = getAllRecipesData?.status === 200 ? getAllRecipesData.body.data : [];
+  const recipes = getAllRecipesData?.status === 200 ? getAllRecipesData.body.data : [];
 
   const deleteRecipeFavourite = async (id: string) => {
     await deleteRecipeFavouriteMtn.mutateAsync(
@@ -234,13 +234,13 @@ export const RecipesPage = () => {
 
         <div className="mb-8">
           <p className="text-lg text-gray-600">
-            Showing <span className="font-semibold">{fetchedRecipes.length}</span> of{' '}
-            <span className="font-semibold">{fetchedRecipes.length}</span> recipes
+            Showing <span className="font-semibold">{recipes.length}</span> of{' '}
+            <span className="font-semibold">{recipes.length}</span> recipes
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {fetchedRecipes.map((recipe) => (
+          {recipes.map((recipe) => (
             <Card key={recipe.id} className="overflow-hidden border-0 group cursor-pointer">
               <div className="relative overflow-hidden">
                 <img

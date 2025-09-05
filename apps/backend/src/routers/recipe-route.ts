@@ -8,6 +8,8 @@ import { createRecipeFavourite } from '../modules/recipe/createRecipeFavourite';
 import { createRecipeUpvote } from '../modules/recipe/createRecipeUpvote';
 import { deleteRecipeFavourite } from '../modules/recipe/deleteRecipeFavourite';
 import { deleteRecipeUpvote } from '../modules/recipe/deleteRecipeUpvote';
+import { createRecipeReview } from '../modules/recipe/createRecipeReview';
+import { deleteRecipeReview } from '../modules/recipe/deleteRecipeReview';
 
 const s = initServer();
 
@@ -24,6 +26,7 @@ export const recipeRouter = s.router(recipeContract, {
     middleware: [validateAccessToken],
     handler: getRecipeBySlug,
   },
+
   createRecipeFavourite: {
     middleware: [validateAccessToken],
     handler: createRecipeFavourite,
@@ -32,6 +35,7 @@ export const recipeRouter = s.router(recipeContract, {
     middleware: [validateAccessToken],
     handler: deleteRecipeFavourite,
   },
+
   createRecipeUpvote: {
     middleware: [validateAccessToken],
     handler: createRecipeUpvote,
@@ -39,5 +43,14 @@ export const recipeRouter = s.router(recipeContract, {
   deleteRecipeUpvote: {
     middleware: [validateAccessToken],
     handler: deleteRecipeUpvote,
+  },
+
+  createRecipeReview: {
+    middleware: [validateAccessToken],
+    handler: createRecipeReview,
+  },
+  deleteRecipeReview: {
+    middleware: [validateAccessToken],
+    handler: deleteRecipeReview,
   },
 });

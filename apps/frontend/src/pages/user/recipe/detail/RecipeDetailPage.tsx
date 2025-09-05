@@ -4,113 +4,33 @@ import {
   Heart,
   Share2,
   Clock,
-  Users,
   ChefHat,
   Star,
   MessageCircle,
   Bookmark,
-  Plus,
-  Minus,
   Timer,
-  ShoppingCart,
   Printer as Print,
-  Flag,
-  ThumbsUp,
-  ThumbsDown,
-  MoreHorizontal,
   Award,
-  Eye,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { Button } from '../../../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
-import { Badge } from '../../../components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components/ui/tabs';
-import { Separator } from '../../../components/ui/separator';
-import { Progress } from '../../../components/ui/progress';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../../components/ui/dialog';
-import { Label } from '../../../components/ui/label';
-import { Textarea } from '../../../components/ui/textarea';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '../../../components/ui/dropdown-menu';
+import { Button } from '../../../../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../../../../components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '../../../../components/ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../../components/ui/tabs';
+import { Separator } from '../../../../components/ui/separator';
+import { Progress } from '../../../../components/ui/progress';
 import { useParams } from 'react-router-dom';
-import { recipeApi } from '../../../apis/recipe-api';
-import { useUserStore } from '../../../stores/useUserStore';
-import { PageLoading } from '../../../components/loading';
-import { toastError, toastSuccess } from '../../../components/toaster';
+import { recipeApi } from '../../../../apis/recipe-api';
+import { useUserStore } from '../../../../stores/useUserStore';
+import { PageLoading } from '../../../../components/loading';
+import { toastError, toastSuccess } from '../../../../components/toaster';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
-
-// Mock reviews data
-const mockReviews = [
-  {
-    id: '1',
-    user: {
-      name: 'Sarah Johnson',
-      avatar: '/placeholder.svg?height=40&width=40&text=SJ',
-      verified: false,
-    },
-    rating: 5,
-    date: '2024-01-15',
-    title: 'Perfect pizza recipe!',
-    content:
-      "This recipe is absolutely amazing! The crust came out perfectly crispy and the flavor combination is incredible. My family loved it and we'll definitely be making this again.",
-    helpful: 23,
-    images: [
-      '/placeholder.svg?height=150&width=150&text=User+Pizza+1',
-      '/placeholder.svg?height=150&width=150&text=User+Pizza+2',
-    ],
-    verified_purchase: true,
-  },
-  {
-    id: '2',
-    user: {
-      name: 'Mike Chen',
-      avatar: '/placeholder.svg?height=40&width=40&text=MC',
-      verified: true,
-    },
-    rating: 4,
-    date: '2024-01-10',
-    title: 'Great recipe with minor tweaks',
-    content:
-      'Excellent base recipe! I added a bit of garlic to the sauce and used whole wheat flour for the dough. Still turned out fantastic. The instructions are very clear and easy to follow.',
-    helpful: 18,
-    images: [],
-    verified_purchase: true,
-  },
-  {
-    id: '3',
-    user: {
-      name: 'Emma Rodriguez',
-      avatar: '/placeholder.svg?height=40&width=40&text=ER',
-      verified: false,
-    },
-    rating: 5,
-    date: '2024-01-08',
-    title: 'Restaurant quality at home',
-    content:
-      "I've tried many pizza recipes but this one is by far the best. The key is really using high-quality ingredients like San Marzano tomatoes and buffalo mozzarella. Worth every penny!",
-    helpful: 31,
-    images: ['/placeholder.svg?height=150&width=150&text=User+Pizza+3'],
-    verified_purchase: false,
-  },
-];
+import { ReviewTab } from './components/ReviewTab';
 
 export default function RecipeDetailPage() {
-  const [reviews, setReviews] = useState(mockReviews);
   const [activeStep, setActiveStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-  const [showReviewForm, setShowReviewForm] = useState(false);
-  const [newReview, setNewReview] = useState({
-    rating: 5,
-    title: '',
-    content: '',
-  });
 
   const qc = useQueryClient();
 
@@ -144,39 +64,12 @@ export default function RecipeDetailPage() {
     setCompletedSteps((prev) =>
       prev.includes(stepIndex) ? prev.filter((s) => s !== stepIndex) : [...prev, stepIndex]
     );
+    setActiveStep(stepIndex + 1);
   };
 
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success('Recipe link copied to clipboard!');
-  };
-
-  const submitReview = () => {
-    if (!newReview.title.trim() || !newReview.content.trim()) {
-      toast.error('Please fill in all fields');
-      return;
-    }
-
-    const review = {
-      id: Date.now().toString(),
-      user: {
-        name: 'You',
-        avatar: '/placeholder.svg?height=40&width=40&text=You',
-        verified: false,
-      },
-      rating: newReview.rating,
-      date: new Date().toISOString().split('T')[0],
-      title: newReview.title,
-      content: newReview.content,
-      helpful: 0,
-      images: [],
-      verified_purchase: false,
-    };
-
-    setReviews((prev) => [review, ...prev]);
-    setNewReview({ rating: 5, title: '', content: '' });
-    setShowReviewForm(false);
-    toast.success('Review submitted successfully!');
   };
 
   if (isGetRecipeBySlugLoading) {
@@ -454,9 +347,8 @@ export default function RecipeDetailPage() {
               </CardContent>
             </Card>
 
-            {/* Recipe Stats */}
-            {/* <div className="grid grid-cols-2 gap-4">
-              <Card>
+            <div className="grid grid-cols-2 gap-4">
+              {/* <Card>
                 <CardContent className="p-4 text-center">
                   <div className="flex items-center justify-center mb-2">
                     <Eye className="h-5 w-5 text-blue-500 mr-2" />
@@ -464,17 +356,17 @@ export default function RecipeDetailPage() {
                   </div>
                   <div className="text-sm text-muted-foreground">Views</div>
                 </CardContent>
-              </Card>
+              </Card> */}
               <Card>
                 <CardContent className="p-4 text-center">
                   <div className="flex items-center justify-center mb-2">
                     <MessageCircle className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="text-2xl font-bold">{recipe.stats.reviews}</span>
+                    <span className="text-2xl font-bold">{recipe.review.reviews.length}</span>
                   </div>
                   <div className="text-sm text-muted-foreground">Reviews</div>
                 </CardContent>
               </Card>
-            </div> */}
+            </div>
 
             {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-4">
@@ -490,7 +382,7 @@ export default function RecipeDetailPage() {
         <Tabs defaultValue="recipe" className="space-y-8">
           <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4">
             <TabsTrigger value="recipe">Recipe</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews ({reviews.length})</TabsTrigger>
+            <TabsTrigger value="reviews">Reviews ({recipe.review.reviews.length})</TabsTrigger>
             <TabsTrigger value="nutrition">Nutrition</TabsTrigger>
             <TabsTrigger value="tips">Tips</TabsTrigger>
           </TabsList>
@@ -606,7 +498,6 @@ export default function RecipeDetailPage() {
                   </motion.div>
                 ))}
 
-                {/* Completion Progress */}
                 <Card>
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-3">
@@ -622,222 +513,8 @@ export default function RecipeDetailPage() {
             </div>
           </TabsContent>
 
-          {/* Reviews Tab */}
           <TabsContent value="reviews" className="space-y-6">
-            {/* Review Summary */}
-            <Card>
-              <CardContent className="p-6">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="text-center">
-                    <div className="text-4xl font-bold mb-2">{recipe.review.average_rating}</div>
-                    <div className="flex items-center justify-center mb-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star
-                          key={star}
-                          className={`h-5 w-5 ${
-                            star <= recipe.review.average_rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <div className="text-sm text-muted-foreground">Based on {recipe.review.total_reviews} reviews</div>
-                  </div>
-
-                  <div className="space-y-2">
-                    {[5, 4, 3, 2, 1].map((rating) => {
-                      const count = reviews.filter((r) => r.rating === rating).length;
-                      const percentage = (count / reviews.length) * 100;
-
-                      return (
-                        <div key={rating} className="flex items-center gap-3">
-                          <div className="flex items-center gap-1 w-12">
-                            <span className="text-sm">{rating}</span>
-                            <Star className="h-3 w-3 text-yellow-400 fill-current" />
-                          </div>
-                          <Progress value={percentage} className="flex-1 h-2" />
-                          <span className="text-sm text-muted-foreground w-8">{count}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <Separator className="my-6" />
-
-                <div className="flex justify-center">
-                  <Dialog open={showReviewForm} onOpenChange={setShowReviewForm}>
-                    <DialogTrigger asChild>
-                      <Button>
-                        <MessageCircle className="mr-2 h-4 w-4" />
-                        Write a Review
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-md">
-                      <DialogHeader>
-                        <DialogTitle>Write a Review</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div>
-                          <Label>Rating</Label>
-                          <div className="flex gap-1 mt-2">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <Button
-                                key={star}
-                                variant="ghost"
-                                size="sm"
-                                className="p-1"
-                                onClick={() => setNewReview((prev) => ({ ...prev, rating: star }))}
-                              >
-                                <Star
-                                  className={`h-6 w-6 ${
-                                    star <= newReview.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                                  }`}
-                                />
-                              </Button>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div>
-                          <Label htmlFor="review-title">Title</Label>
-                          <input
-                            id="review-title"
-                            className="w-full mt-1 px-3 py-2 border rounded-md"
-                            placeholder="Summarize your experience"
-                            value={newReview.title}
-                            onChange={(e) => setNewReview((prev) => ({ ...prev, title: e.target.value }))}
-                          />
-                        </div>
-
-                        <div>
-                          <Label htmlFor="review-content">Review</Label>
-                          <Textarea
-                            id="review-content"
-                            className="mt-1"
-                            placeholder="Share your thoughts about this recipe..."
-                            rows={4}
-                            value={newReview.content}
-                            onChange={(e) => setNewReview((prev) => ({ ...prev, content: e.target.value }))}
-                          />
-                        </div>
-
-                        <div className="flex gap-2">
-                          <Button onClick={submitReview} className="flex-1">
-                            Submit Review
-                          </Button>
-                          <Button variant="outline" onClick={() => setShowReviewForm(false)}>
-                            Cancel
-                          </Button>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Reviews List */}
-            <div className="space-y-6">
-              {reviews.map((review, index) => (
-                <motion.div
-                  key={review.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Card>
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                          <Avatar>
-                            <AvatarImage src={review.user.avatar || '/placeholder.svg'} />
-                            <AvatarFallback>
-                              {review.user.name
-                                .split(' ')
-                                .map((n) => n[0])
-                                .join('')}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium">{review.user.name}</span>
-                              {review.user.verified && <Award className="h-4 w-4 text-blue-500" />}
-                              {review.verified_purchase && (
-                                <Badge variant="secondary" className="text-xs">
-                                  Verified
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2 mt-1">
-                              <div className="flex">
-                                {[1, 2, 3, 4, 5].map((star) => (
-                                  <Star
-                                    key={star}
-                                    className={`h-4 w-4 ${
-                                      star <= review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                                    }`}
-                                  />
-                                ))}
-                              </div>
-                              <span className="text-sm text-muted-foreground">
-                                {new Date(review.date).toLocaleDateString()}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
-                              <Flag className="mr-2 h-4 w-4" />
-                              Report
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-
-                      <div className="space-y-3">
-                        <h4 className="font-medium">{review.title}</h4>
-                        <p className="text-gray-700 leading-relaxed">{review.content}</p>
-
-                        {/* BACKLOG_FEATURE */}
-                        {/* {review.images.length > 0 && (
-                          <div className="flex gap-2">
-                            {review.images.map((image, imgIndex) => (
-                              <div key={imgIndex} className="w-20 h-20 rounded-lg overflow-hidden">
-                                <img
-                                  src={image || '/placeholder.svg'}
-                                  alt={`Review image ${imgIndex + 1}`}
-                                  width={80}
-                                  height={80}
-                                  className="object-cover w-full h-full"
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        )} */}
-
-                        <div className="flex items-center gap-4 pt-2">
-                          <Button variant="ghost" size="sm">
-                            <ThumbsUp className="mr-2 h-4 w-4" />
-                            Helpful ({review.helpful})
-                          </Button>
-                          <Button variant="ghost" size="sm">
-                            <ThumbsDown className="mr-2 h-4 w-4" />
-                            Not helpful
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
+            <ReviewTab recipe={recipe} user_id={user_id} />
           </TabsContent>
 
           <TabsContent value="nutrition">

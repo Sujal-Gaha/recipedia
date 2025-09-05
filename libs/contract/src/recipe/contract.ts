@@ -16,6 +16,12 @@ import {
   DeleteRecipeUpvoteInputSchema,
   DeleteRecipeUpvoteResponseSchema,
 } from './recipe-upvote/schema';
+import {
+  CreateRecipeReviewInputSchema,
+  CreateRecipeReviewResponseSchema,
+  DeleteRecipeReviewInputSchema,
+  DeleteRecipeReviewResponseSchema,
+} from './recipe-review/schema';
 
 const c = initContract();
 
@@ -113,5 +119,29 @@ export const recipeContract = c.router({
       500: ErrorSchema,
     },
     summary: 'Delete a recipe favourite',
+  },
+
+  createRecipeReview: {
+    method: 'POST',
+    path: `${BASE_API_PATH}/recipe/createRecipeReview`,
+    body: CreateRecipeReviewInputSchema,
+    responses: {
+      201: CreateRecipeReviewResponseSchema,
+      400: ErrorSchema,
+      500: ErrorSchema,
+    },
+    summary: 'Create a recipe review',
+  },
+
+  deleteRecipeReview: {
+    method: 'POST',
+    path: `${BASE_API_PATH}/recipe/deleteRecipeReview`,
+    body: DeleteRecipeReviewInputSchema,
+    responses: {
+      200: DeleteRecipeReviewResponseSchema,
+      400: ErrorSchema,
+      500: ErrorSchema,
+    },
+    summary: 'Delete a recipe review',
   },
 });

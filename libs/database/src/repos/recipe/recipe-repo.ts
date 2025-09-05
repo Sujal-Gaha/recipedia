@@ -92,6 +92,10 @@ export class PrismaRecipeRepo extends RecipeRepo {
         reviews: {
           include: {
             votes: true,
+            user: true,
+          },
+          orderBy: {
+            created_at: 'desc',
           },
         },
         tips: true,
@@ -196,6 +200,14 @@ export class PrismaRecipeRepo extends RecipeRepo {
               if (vote.type === 'DOWNVOTE') return (total -= 1);
               return total;
             }, 0),
+            user: {
+              id: review.user.id,
+              name: review.user.name,
+              email: review.user.email,
+              user_type: review.user.user_type,
+              image: review.user.image,
+              is_email_verified: review.user.is_email_verified,
+            },
           })),
         },
         upvotes: {

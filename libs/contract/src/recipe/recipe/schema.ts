@@ -84,6 +84,14 @@ export const GetRecipeBySlugOutputSchema = RecipeSchema.extend({
         updated_at: true,
       }).extend({
         total_votes: z.number(),
+        user: UserSchema.pick({
+          id: true,
+          name: true,
+          email: true,
+          user_type: true,
+          image: true,
+          is_email_verified: true,
+        }),
       })
     ),
   }),
