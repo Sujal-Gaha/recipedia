@@ -1,5 +1,5 @@
-import { ChefHat, Menu } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ChefHat, LogOut, Menu, Plus, User } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { _FULL_ROUTES } from '../../constants/routes';
 import {
   NavigationMenu,
@@ -19,6 +19,18 @@ import {
   SheetTrigger,
 } from '../../components/ui/sheet';
 import { Button } from '../../components/ui/button';
+import { useUserStore } from '../../stores/useUserStore';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../../components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
+import { Badge } from '../../components/ui/badge';
+import { useLogoutMutation } from '../../apis/auth/query';
+import { toastError, toastSuccess } from '../../components/toaster';
 
 const navigationItems = [
   {
@@ -44,9 +56,32 @@ const navigationItems = [
 ];
 
 export const Navbar = () => {
+  const navigate = useNavigate();
+  const { user, setUser } = useUserStore();
+
+  const logoutMtn = useLogoutMutation();
+
+  const logoutUser = async () => {
+    await logoutMtn.mutateAsync(
+      {},
+      {
+        onSuccess: (data) => {
+          if (data.code === 'LOGOUT_SUCCESS') {
+            setUser(null);
+            toastSuccess('Logout successful!');
+            navigate(_FULL_ROUTES.LOGIN);
+          }
+        },
+        onError: (error) => {
+          toastError(error.message ?? 'Logout failed');
+        },
+      }
+    );
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 lg:flex lg:justify-center">
-      <div className="container flex h-16 items-center">
+      <div className="container flex h-16 items-center mx-auto">
         <div className="mr-4 hidden md:flex">
           <Link to={_FULL_ROUTES.HOME} className="mr-6 flex items-center space-x-2">
             <ChefHat className="h-6 w-6 text-primary" />
@@ -129,7 +164,7 @@ export const Navbar = () => {
           <SheetContent side="left" className="pr-0">
             <SheetHeader>
               <SheetTitle>
-                <Link to="/" className="flex items-center space-x-2">
+                <Link to={_FULL_ROUTES.HOME} className="flex items-center space-x-2">
                   <ChefHat className="h-6 w-6 text-primary" />
                   <span className="font-bold">Recipedia</span>
                 </Link>
@@ -153,19 +188,77 @@ export const Navbar = () => {
         </Sheet>
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none">
-            <Link to="/" className="flex items-center space-x-2 md:hidden">
+            <Link to={_FULL_ROUTES.HOME} className="flex items-center space-x-2 md:hidden">
               <ChefHat className="h-6 w-6 text-primary" />
               <span className="font-bold">Recipedia</span>
             </Link>
           </div>
-          <nav className="flex items-center space-x-2">
-            <Button variant="ghost" asChild>
-              <Link to={_FULL_ROUTES.LOGIN}>Sign In</Link>
-            </Button>
-            <Button asChild>
-              <Link to={_FULL_ROUTES.REGISTER}>Get Started</Link>
-            </Button>
-          </nav>
+          {!user ? (
+            <nav className="flex items-center space-x-2">
+              <Button variant="ghost" asChild>
+                <Link to={_FULL_ROUTES.LOGIN}>Sign In</Link>
+              </Button>
+              <Button asChild>
+                <Link to={_FULL_ROUTES.REGISTER}>Get Started</Link>
+              </Button>
+            </nav>
+          ) : (
+            <>
+              <Button asChild className="hidden md:flex">
+                <Link to={_FULL_ROUTES.CREATE_RECIPE}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Recipe
+                </Link>
+              </Button>
+
+              {/* BACKLOG_FEATURE */}
+              {/* <NotificationBell /> */}
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user.image || '/placeholder.svg'} alt={user.name} />
+                      <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <div className="flex items-center justify-start gap-2 p-2">
+                    <div className="flex flex-col space-y-1 leading-none">
+                      <p className="font-medium">{user.name}</p>
+                      <p className="w-[200px] truncate text-sm text-muted-foreground">{user.email}</p>
+                      {user.user_type === 'CHEF' && (
+                        <Badge variant="secondary" className="w-fit">
+                          Chef
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to={_FULL_ROUTES.PROFILE}>
+                      <User className="mr-2 h-4 w-4" />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  {/* BACKLOG_FEATURE */}
+                  {/* <DropdownMenuItem asChild>
+                    <Link to="/notifications">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Notifications
+                    </Link>
+                  </DropdownMenuItem> */}
+
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logoutUser} disabled={logoutMtn.isPending}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    {logoutMtn.isPending ? 'Logging out...' : 'Log out'}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          )}
         </div>
       </div>
     </header>

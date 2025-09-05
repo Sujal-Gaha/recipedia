@@ -3,7 +3,9 @@ import { toast, ExternalToast } from 'sonner';
 const toastData: ExternalToast = {
   position: 'top-right',
   dismissible: true,
-  duration: 5000,
+  duration: 3000,
+  closeButton: true,
+  richColors: true,
 };
 
 export const toastSuccess = (message: string) => {
@@ -15,5 +17,5 @@ export const toastError = (message: string) => {
 };
 
 export const toastInfo = (message: string) => {
-  toast(message, toastData);
+  toast.info(message, toastData);
 };

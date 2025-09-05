@@ -9,16 +9,19 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { TCreateRecipeWithAllFieldsInput } from '@libs/contract';
 import { toastError, toastSuccess } from '../../../../components/toaster';
 import { ingredientApi } from '../../../../apis/ingredient-api';
+import { useUserStore } from '../../../../stores/useUserStore';
 
 export const CreateRecipePage = () => {
   const [activeTab, setActiveTab] = useState('create');
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [draggedStep, setDraggedStep] = useState<number | null>(null);
 
-  const recipeMtn = recipeApi.createRecipe.useMutation();
+  const { user } = useUserStore();
+
+  const createRecipeMtn = recipeApi.createRecipe.useMutation();
 
   const { data: getAllIngredientVariants } = ingredientApi.getAllIngredientVariants.useQuery(
-    ['getAllIngredientVariants'],
+    ['getAllIngredientVariants', '1', '100'],
     {
       query: {
         page: '1',
@@ -31,7 +34,7 @@ export const CreateRecipePage = () => {
 
   const { register, handleSubmit, setValue, watch } = useForm<TCreateRecipeWithAllFieldsInput>({
     defaultValues: {
-      user_id: '',
+      user_id: user ? user.id : '',
       ingredients: [
         {
           ingredient_variant_id: '',
@@ -144,7 +147,7 @@ export const CreateRecipePage = () => {
   };
 
   const createRecipe: SubmitHandler<TCreateRecipeWithAllFieldsInput> = async (input) => {
-    await recipeMtn.mutateAsync(
+    await createRecipeMtn.mutateAsync(
       {
         body: {
           cook_time: input.cook_time,
@@ -209,8 +212,6 @@ export const CreateRecipePage = () => {
     );
   };
 
-  console.log({ images });
-
   return (
     <div className="container mx-auto px-6 py-8 max-w-7xl">
       <div className="mb-8">
@@ -232,6 +233,7 @@ export const CreateRecipePage = () => {
 
         <TabsContent value="create">
           <CreateRecipe
+            isCreatingRecipe={createRecipeMtn.isPending}
             fetchedIngredientVariants={fetchedIngredientVariants}
             onFileUpload={onFileUpload}
             onFileRemove={onFileRemove}
@@ -266,6 +268,7 @@ export const CreateRecipePage = () => {
             handleSubmit={handleSubmit}
             createRecipe={createRecipe}
             watch={watch}
+            isCreatingRecipe={createRecipeMtn.isPending}
           />
         </TabsContent>
       </Tabs>

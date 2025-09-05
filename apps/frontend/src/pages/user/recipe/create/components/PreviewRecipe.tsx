@@ -9,14 +9,7 @@ import {
   TGetAllIngredientVariantsOutput,
 } from '@libs/contract';
 import { SubmitHandler, UseFormHandleSubmit, UseFormWatch } from 'react-hook-form';
-
-// Mock Data
-const currentUser = {
-  name: 'Chef Maria Rodriguez',
-  image: '/placeholder.svg?height=60&width=60',
-  recipesCount: 24,
-  followers: 1247,
-};
+import { useUserStore } from '../../../../../stores/useUserStore';
 
 export const PreviewRecipe = ({
   fetchedIngredientVariants,
@@ -26,6 +19,7 @@ export const PreviewRecipe = ({
   createRecipe,
   toggleStep,
   watch,
+  isCreatingRecipe,
 }: {
   fetchedIngredientVariants: TGetAllIngredientVariantsOutput[];
   setActiveTab: (tab: string) => void;
@@ -34,11 +28,21 @@ export const PreviewRecipe = ({
   handleSubmit: UseFormHandleSubmit<TCreateRecipeWithAllFieldsInput>;
   createRecipe: SubmitHandler<TCreateRecipeWithAllFieldsInput>;
   watch: UseFormWatch<TCreateRecipeWithAllFieldsInput>;
+  isCreatingRecipe: boolean;
 }) => {
   const { cook_time, description, difficulty, images, ingredients, preparation_time, steps, title } = watch();
 
+  const { user } = useUserStore();
+
   const getIngredientVariantNameFromId = (id: string) => {
     return fetchedIngredientVariants.find((ing) => ing.id === id)?.name || '';
+  };
+
+  const currentUser = {
+    name: `Chef ${user?.name || 'John Doe'}`,
+    image: user ? user.image : '/placeholder.svg?height=60&width=60',
+    recipesCount: 24,
+    followers: 1247,
   };
 
   return (
@@ -56,9 +60,7 @@ export const PreviewRecipe = ({
         </div>
       </Card>
 
-      {/* Recipe Preview */}
       <div className="grid lg:grid-cols-2 gap-12">
-        {/* Recipe Image */}
         <div className="relative">
           <div className="aspect-[4/3] relative overflow-hidden rounded-2xl shadow-2xl">
             {images.find((img) => img.is_primary)?.url && (
@@ -123,7 +125,6 @@ export const PreviewRecipe = ({
             </div>
           </Card>
 
-          {/* Recipe Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Card className="p-4 text-center">
               <Clock className="h-6 w-6 mx-auto mb-2 text-primary" />
@@ -235,7 +236,7 @@ export const PreviewRecipe = ({
           Continue Editing
         </Button>
         <Button type="submit" className="h-12 px-8">
-          Publish Recipe
+          {isCreatingRecipe ? 'Publishing...' : 'Publish Recipe'}
         </Button>
       </div>
     </form>

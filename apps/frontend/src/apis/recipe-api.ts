@@ -3,9 +3,9 @@ import { env } from '../lib/env';
 import { recipeContract } from '@libs/contract';
 
 export const recipeApi = initQueryClient(recipeContract, {
-  baseUrl: env.BACKEND_URL,
+  baseUrl: env.VITE_BACKEND_URL,
   baseHeaders: {
-    'content-type': 'application/json',
+    'Content-Type': 'application/json',
   },
   credentials: 'include',
 });

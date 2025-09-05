@@ -86,6 +86,8 @@ export type TMeOutput = {
       name: string;
       email: string;
       user_type: UserTypeType;
+      image: string | null;
+      is_email_verified: boolean;
     };
     token: {
       name: string;

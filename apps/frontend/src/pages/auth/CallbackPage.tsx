@@ -4,13 +4,17 @@ import { Error } from '../../components/error';
 import { PageLoader } from '../../components/PageLoader';
 import { _FULL_ROUTES } from '../../constants/routes';
 import { useEffect } from 'react';
+import { useUserStore } from '../../stores/useUserStore';
 
 export const CallbackPage = () => {
+  const { setUser } = useUserStore();
+
   const navigate = useNavigate();
   const { data, isLoading, isSuccess, isError } = useMeQuery();
 
   useEffect(() => {
     if (isSuccess) {
+      setUser(data.data.me);
       if (data.data.me.user_type === 'USER') {
         navigate(_FULL_ROUTES.HOME);
       }
@@ -19,7 +23,7 @@ export const CallbackPage = () => {
         navigate(_FULL_ROUTES.ADMIN_DASHBOARD);
       }
     }
-  }, [data?.data.me.user_type, isSuccess, navigate]);
+  }, [data?.data.me, data?.data.me.user_type, isSuccess, navigate, setUser]);
 
   if (isLoading) {
     return <PageLoader />;

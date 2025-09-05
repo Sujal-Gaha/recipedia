@@ -40,6 +40,7 @@ export const CreateRecipe = ({
   createRecipe,
   register,
   setValue,
+  isCreatingRecipe,
 }: {
   fetchedIngredientVariants: TGetAllIngredientVariantsOutput[];
   images: Pick<RecipeImage, 'is_primary' | 'url'>[];
@@ -63,6 +64,7 @@ export const CreateRecipe = ({
   createRecipe: SubmitHandler<TCreateRecipeWithAllFieldsInput>;
   register: UseFormRegister<TCreateRecipeWithAllFieldsInput>;
   setValue: UseFormSetValue<TCreateRecipeWithAllFieldsInput>;
+  isCreatingRecipe: boolean;
 }) => {
   return (
     <form onSubmit={handleSubmit(createRecipe)} className="space-y-8">
@@ -112,7 +114,7 @@ export const CreateRecipe = ({
                   type="number"
                   placeholder="15"
                   className="pl-12 h-12 text-lg"
-                  {...register('preparation_time')}
+                  {...register('preparation_time', { valueAsNumber: true })}
                 />
               </div>
             </div>
@@ -128,7 +130,7 @@ export const CreateRecipe = ({
                   type="number"
                   placeholder="30"
                   className="pl-12 h-12 text-lg"
-                  {...register('cook_time')}
+                  {...register('cook_time', { valueAsNumber: true })}
                 />
               </div>
             </div>
@@ -208,7 +210,10 @@ export const CreateRecipe = ({
                   <Label htmlFor={`ingredient-${index}`} className="text-sm font-medium">
                     Ingredient
                   </Label>
-                  <Select onValueChange={(value) => setValue(`ingredients.${index}.ingredient_variant_id`, value)}>
+                  <Select
+                    value={ingredient.ingredient_variant_id ? ingredient.ingredient_variant_id : undefined}
+                    onValueChange={(value) => setValue(`ingredients.${index}.ingredient_variant_id`, value)}
+                  >
                     <SelectTrigger id={`ingredient-${index}`} className="w-full">
                       <SelectValue placeholder="Select an ingredient" />
                     </SelectTrigger>
@@ -340,7 +345,7 @@ export const CreateRecipe = ({
           Preview Recipe
         </Button>
         <Button type="submit" className="h-12 px-8 text-base">
-          Publish Recipe
+          {isCreatingRecipe ? 'Publishing...' : 'Publish Recipe'}
         </Button>
       </div>
     </form>
