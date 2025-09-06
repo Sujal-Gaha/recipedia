@@ -8,8 +8,10 @@ import { createRecipeFavourite } from '../modules/recipe/createRecipeFavourite';
 import { createRecipeUpvote } from '../modules/recipe/createRecipeUpvote';
 import { deleteRecipeFavourite } from '../modules/recipe/deleteRecipeFavourite';
 import { deleteRecipeUpvote } from '../modules/recipe/deleteRecipeUpvote';
-import { createRecipeReview } from '../modules/recipe/createRecipeReview';
 import { deleteRecipeReview } from '../modules/recipe/deleteRecipeReview';
+import { toggleRecipeReviewVote } from '../modules/recipe/toggleRecipeReviewVote';
+import { upsertRecipeReview } from '../modules/recipe/upsertRecipeReview';
+import { getRecipeReviewById } from '../modules/recipe/getRecipeReviewById';
 
 const s = initServer();
 
@@ -45,12 +47,21 @@ export const recipeRouter = s.router(recipeContract, {
     handler: deleteRecipeUpvote,
   },
 
-  createRecipeReview: {
+  upsertRecipeReview: {
     middleware: [validateAccessToken],
-    handler: createRecipeReview,
+    handler: upsertRecipeReview,
+  },
+  getRecipeReviewById: {
+    middleware: [validateAccessToken],
+    handler: getRecipeReviewById,
   },
   deleteRecipeReview: {
     middleware: [validateAccessToken],
     handler: deleteRecipeReview,
+  },
+
+  toggleRecipeReviewVote: {
+    middleware: [validateAccessToken],
+    handler: toggleRecipeReviewVote,
   },
 });

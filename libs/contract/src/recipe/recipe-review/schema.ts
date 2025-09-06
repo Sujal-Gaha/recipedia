@@ -16,6 +16,22 @@ export const CreateRecipeReviewResponseSchema = SuccessSchema.extend({
 });
 export type TCreateRecipeReviewResponse = z.infer<typeof CreateRecipeReviewResponseSchema>;
 
+/** -------- Upsert Recipe Review -------- */
+export const UpsertRecipeReviewInputSchema = RecipeReviewSchema.pick({
+  recipe_id: true,
+  user_id: true,
+  comment: true,
+  rating: true,
+}).extend({
+  id: z.string().optional(),
+});
+export type TUpsertRecipeReviewInput = z.infer<typeof UpsertRecipeReviewInputSchema>;
+
+export const UpsertRecipeReviewResponseSchema = SuccessSchema.extend({
+  data: RecipeReviewSchema,
+});
+export type TUpsertRecipeReviewResponse = z.infer<typeof UpsertRecipeReviewResponseSchema>;
+
 /** -------- Get Recipe Review By Id -------- */
 export const GetRecipeReviewByIdInputSchema = RecipeReviewSchema.pick({
   id: true,
@@ -41,6 +57,18 @@ export const GetAllRecipeReviewsResponseSchema = SuccessSchema.extend({
   data: z.array(GetAllRecipeReviewsOutputSchema),
 });
 export type TGetAllRecipeReviewsResponse = z.infer<typeof GetAllRecipeReviewsResponseSchema>;
+
+/** -------- Update Recipe Review -------- */
+export const UpdateRecipeReviewInputSchema = RecipeReviewSchema.pick({
+  comment: true,
+  rating: true,
+});
+export type TUpdateRecipeReviewInput = z.infer<typeof UpdateRecipeReviewInputSchema>;
+
+export const UpdateRecipeReviewResponseSchema = SuccessSchema.extend({
+  data: RecipeReviewSchema,
+});
+export type TUpdateRecipeReviewResponse = z.infer<typeof UpdateRecipeReviewResponseSchema>;
 
 /** -------- Delete Recipe Review -------- */
 export const DeleteRecipeReviewInputSchema = RecipeReviewSchema.pick({

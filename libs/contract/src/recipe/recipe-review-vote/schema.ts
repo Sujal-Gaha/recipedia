@@ -39,6 +39,17 @@ export const GetAllRecipeReviewVotesResponseSchema = SuccessSchema.extend({
 });
 export type TGetAllRecipeReviewVotesResponse = z.infer<typeof GetAllRecipeReviewVotesResponseSchema>;
 
+/** -------- Update Recipe Review Vote -------- */
+export const UpdateRecipeReviewVoteInputSchema = RecipeReviewVoteSchema.pick({
+  type: true,
+});
+export type TUpdateRecipeReviewVoteInput = z.infer<typeof UpdateRecipeReviewVoteInputSchema>;
+
+export const UpdateRecipeReviewVoteResponseSchema = SuccessSchema.extend({
+  data: RecipeReviewVoteSchema,
+});
+export type TUpdateRecipeReviewVoteResponse = z.infer<typeof UpdateRecipeReviewVoteResponseSchema>;
+
 /** -------- Delete Recipe Review Vote -------- */
 export const DeleteRecipeReviewVoteInputSchema = RecipeReviewVoteSchema.pick({
   id: true,
@@ -60,3 +71,18 @@ export const DeleteManyRecipeReviewVotesResponseSchema = SuccessSchema.extend({
   data: z.array(RecipeReviewVoteSchema),
 });
 export type TDeleteManyRecipeReviewVotesResponse = z.infer<typeof DeleteManyRecipeReviewVotesResponseSchema>;
+
+/** -------- Toggle Recipe Review Vote -------- */
+export const ToggleRecipeReviewVoteInputSchema = RecipeReviewVoteSchema.pick({
+  review_id: true,
+  type: true,
+  user_id: true,
+}).extend({
+  id: z.string().optional(),
+});
+export type TToggleRecipeReviewVoteInput = z.infer<typeof ToggleRecipeReviewVoteInputSchema>;
+
+export const ToggleRecipeReviewVoteResponseSchema = SuccessSchema.extend({
+  data: RecipeReviewVoteSchema,
+});
+export type TToggleRecipeReviewVoteResponse = z.infer<typeof ToggleRecipeReviewVoteResponseSchema>;

@@ -119,7 +119,7 @@ export class PrismaRecipeRepo extends RecipeRepo {
 
     const total_reviews = recipeReviews.length;
 
-    const average_rating = total_ratings / total_reviews;
+    const average_rating = +(total_ratings / total_reviews).toFixed(1);
 
     const total_votes = recipe.upvotes.length;
     const total_favourites = recipe.favourites.length;
@@ -189,26 +189,45 @@ export class PrismaRecipeRepo extends RecipeRepo {
           average_rating,
           total_reviews,
           total_ratings,
-          reviews: recipeReviews.map((review) => ({
-            id: review.id,
-            comment: review.comment,
-            created_at: review.created_at,
-            rating: review.rating,
-            updated_at: review.updated_at,
-            total_votes: review.votes.reduce((total, vote) => {
-              if (vote.type === 'UPVOTE') return (total += 1);
-              if (vote.type === 'DOWNVOTE') return (total -= 1);
-              return total;
-            }, 0),
-            user: {
-              id: review.user.id,
-              name: review.user.name,
-              email: review.user.email,
-              user_type: review.user.user_type,
-              image: review.user.image,
-              is_email_verified: review.user.is_email_verified,
-            },
-          })),
+          reviews: recipeReviews.map((review) => {
+            const total_upvotes = review.votes.reduce(
+              (total, vote) => (vote.type === 'UPVOTE' ? (total += 1) : total),
+              0
+            );
+            const total_downvotes = review.votes.reduce(
+              (total, vote) => (vote.type === 'DOWNVOTE' ? (total += 1) : total),
+              0
+            );
+
+            const is_upvoted = review.votes.some((vote) => vote.type === 'UPVOTE' && vote.user_id === user_id);
+            const is_downvoted = review.votes.some((vote) => vote.type === 'DOWNVOTE' && vote.user_id === user_id);
+
+            return {
+              id: review.id,
+              comment: review.comment,
+              created_at: review.created_at,
+              rating: review.rating,
+              updated_at: review.updated_at,
+              total_votes: review.votes.reduce((total, vote) => {
+                if (vote.type === 'UPVOTE') return (total += 1);
+                if (vote.type === 'DOWNVOTE') return (total -= 1);
+                return total;
+              }, 0),
+              user: {
+                id: review.user.id,
+                name: review.user.name,
+                email: review.user.email,
+                user_type: review.user.user_type,
+                image: review.user.image,
+                is_email_verified: review.user.is_email_verified,
+              },
+              is_upvoted,
+              is_downvoted,
+              total_downvotes,
+              total_upvotes,
+              votes: review.votes,
+            };
+          }),
         },
         upvotes: {
           total_votes,
@@ -312,7 +331,7 @@ export class PrismaRecipeRepo extends RecipeRepo {
           return total;
         }, 0);
 
-        const average_rating = total_recipe_reviews !== 0 ? total_ratings / total_recipe_reviews : 0;
+        const average_rating = +(total_recipe_reviews !== 0 ? total_ratings / total_recipe_reviews : 0).toFixed(1);
 
         const total_votes = await db.recipeUpvote.count({
           where: {

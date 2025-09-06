@@ -17,11 +17,14 @@ import {
   DeleteRecipeUpvoteResponseSchema,
 } from './recipe-upvote/schema';
 import {
-  CreateRecipeReviewInputSchema,
-  CreateRecipeReviewResponseSchema,
   DeleteRecipeReviewInputSchema,
   DeleteRecipeReviewResponseSchema,
+  GetRecipeReviewByIdInputSchema,
+  GetRecipeReviewByIdResponseSchema,
+  UpsertRecipeReviewInputSchema,
+  UpsertRecipeReviewResponseSchema,
 } from './recipe-review/schema';
+import { ToggleRecipeReviewVoteInputSchema, ToggleRecipeReviewVoteResponseSchema } from './recipe-review-vote/schema';
 
 const c = initContract();
 
@@ -121,16 +124,30 @@ export const recipeContract = c.router({
     summary: 'Delete a recipe favourite',
   },
 
-  createRecipeReview: {
+  upsertRecipeReview: {
     method: 'POST',
-    path: `${BASE_API_PATH}/recipe/createRecipeReview`,
-    body: CreateRecipeReviewInputSchema,
+    path: `${BASE_API_PATH}/recipe/upsertRecipeReview`,
+    body: UpsertRecipeReviewInputSchema,
     responses: {
-      201: CreateRecipeReviewResponseSchema,
+      200: UpsertRecipeReviewResponseSchema,
+      201: UpsertRecipeReviewResponseSchema,
       400: ErrorSchema,
       500: ErrorSchema,
     },
-    summary: 'Create a recipe review',
+    summary: 'Upsert a recipe review',
+  },
+
+  getRecipeReviewById: {
+    method: 'GET',
+    path: `${BASE_API_PATH}/recipe/getRecipeReviewById`,
+    query: GetRecipeReviewByIdInputSchema,
+    responses: {
+      200: GetRecipeReviewByIdResponseSchema,
+      400: ErrorSchema,
+      404: ErrorSchema,
+      500: ErrorSchema,
+    },
+    summary: 'Get a recipe review by id',
   },
 
   deleteRecipeReview: {
@@ -143,5 +160,18 @@ export const recipeContract = c.router({
       500: ErrorSchema,
     },
     summary: 'Delete a recipe review',
+  },
+
+  toggleRecipeReviewVote: {
+    method: 'POST',
+    path: `${BASE_API_PATH}/recipe/toggleRecipeReviewVote`,
+    body: ToggleRecipeReviewVoteInputSchema,
+    responses: {
+      200: ToggleRecipeReviewVoteResponseSchema,
+      400: ErrorSchema,
+      404: ErrorSchema,
+      500: ErrorSchema,
+    },
+    summary: 'Toggle a recipe review vote',
   },
 });

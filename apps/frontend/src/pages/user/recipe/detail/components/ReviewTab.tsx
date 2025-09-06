@@ -1,17 +1,9 @@
-import {
-  RecipeReviewRatingEnumSchema,
-  RecipeReviewRatingEnumType,
-  TCreateRecipeReviewInput,
-  TGetRecipeBySlugOutput,
-} from '@libs/contract';
+import { RecipeReviewVoteTypeType, TGetRecipeBySlugOutput } from '@libs/contract';
 import { Card, CardContent } from '../../../../../components/ui/card';
-import { Award, Flag, MessageCircle, MoreHorizontal, Star, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { Award, Edit, Flag, MessageCircle, MoreHorizontal, Star, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Progress } from '../../../../../components/ui/progress';
 import { Separator } from '../../../../../components/ui/separator';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../../../../components/ui/dialog';
 import { Button } from '../../../../../components/ui/button';
-import { Label } from '../../../../../components/ui/label';
-import { Textarea } from '../../../../../components/ui/textarea';
 import { motion } from 'framer-motion';
 import { Avatar, AvatarFallback, AvatarImage } from '../../../../../components/ui/avatar';
 import {
@@ -22,36 +14,40 @@ import {
 } from '../../../../../components/ui/dropdown-menu';
 import { useState } from 'react';
 import { recipeApi } from '../../../../../apis/recipe-api';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import clsx from 'clsx';
 import { toastError, toastSuccess } from '../../../../../components/toaster';
 import { useQueryClient } from '@tanstack/react-query';
-import { InlineLoading } from '../../../../../components/loading';
+import { useRecipeReviewModal } from '../modules/useRecipeReviewDialog';
 
 export const ReviewTab = ({ recipe, user_id }: { recipe: TGetRecipeBySlugOutput; user_id: string }) => {
-  const [isReviewDialogOpen, setReviewDialog] = useState(false);
+  const [selectedReviewId, setSelectedReviewId] = useState('');
 
   const qc = useQueryClient();
 
-  const createRecipeReviewMtn = recipeApi.createRecipeReview.useMutation();
+  const toggleRecipeReviewVoteMtn = recipeApi.toggleRecipeReviewVote.useMutation();
 
-  const { register, handleSubmit, setValue, watch } = useForm<TCreateRecipeReviewInput>({
-    defaultValues: {
-      comment: '',
-      rating: 'FIVE',
-      recipe_id: recipe.id,
-      user_id,
-    },
+  const { RecipeReviewModalNode, setRecipeReviewModal } = useRecipeReviewModal({
+    recipe_id: recipe.id,
+    user_id,
+    review_id: selectedReviewId,
   });
 
-  const createRecipeReview: SubmitHandler<TCreateRecipeReviewInput> = async (input) => {
-    await createRecipeReviewMtn.mutateAsync(
+  const toggleRecipeReviewVote = async ({
+    id,
+    type,
+    review_id,
+  }: {
+    id: string;
+    type: RecipeReviewVoteTypeType;
+    review_id: string;
+  }) => {
+    await toggleRecipeReviewVoteMtn.mutateAsync(
       {
         body: {
-          comment: input.comment,
-          rating: input.rating,
-          recipe_id: recipe.id,
-          user_id: input.user_id,
+          id,
+          review_id,
+          type,
+          user_id,
         },
       },
       {
@@ -60,7 +56,6 @@ export const ReviewTab = ({ recipe, user_id }: { recipe: TGetRecipeBySlugOutput;
           qc.invalidateQueries({
             queryKey: ['getRecipeBySlug'],
           });
-          setReviewDialog(false);
         },
         onError: (error) => {
           if (error.status === 400 || error.status === 500) {
@@ -82,16 +77,6 @@ export const ReviewTab = ({ recipe, user_id }: { recipe: TGetRecipeBySlugOutput;
     if (rating === 'FIVE') return 5;
     return 0;
   };
-
-  const getRatingEnum = (rating: number): RecipeReviewRatingEnumType => {
-    if (rating === 1) return RecipeReviewRatingEnumSchema.Enum.ONE;
-    if (rating === 2) return RecipeReviewRatingEnumSchema.Enum.TWO;
-    if (rating === 3) return RecipeReviewRatingEnumSchema.Enum.THREE;
-    if (rating === 4) return RecipeReviewRatingEnumSchema.Enum.FOUR;
-    return RecipeReviewRatingEnumSchema.Enum.FIVE;
-  };
-
-  const { rating } = watch();
 
   return (
     <>
@@ -134,65 +119,19 @@ export const ReviewTab = ({ recipe, user_id }: { recipe: TGetRecipeBySlugOutput;
 
           <Separator className="my-6" />
 
+          {RecipeReviewModalNode}
+
           <div className="flex justify-center">
-            <Dialog open={isReviewDialogOpen} onOpenChange={setReviewDialog}>
-              <DialogTrigger asChild>
-                <Button type="button">
-                  <MessageCircle className="mr-2 h-4 w-4" />
-                  Write a Review
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                  <DialogTitle>Write a Review</DialogTitle>
-                </DialogHeader>
-
-                <form onSubmit={handleSubmit(createRecipeReview)} className="space-y-4">
-                  <div>
-                    <Label>Rating</Label>
-                    <div className="flex gap-1 mt-2">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Button
-                          key={star}
-                          variant="ghost"
-                          size="sm"
-                          type="button"
-                          className="p-1"
-                          onClick={() => setValue('rating', getRatingEnum(star))}
-                        >
-                          <Star
-                            className={clsx(
-                              'h-6 w-6',
-                              star <= getRating(rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                            )}
-                          />
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="review-content">Review</Label>
-                    <Textarea
-                      id="review-content"
-                      className="mt-1"
-                      placeholder="Share your thoughts about this recipe..."
-                      rows={4}
-                      {...register('comment')}
-                    />
-                  </div>
-
-                  <div className="flex gap-2">
-                    <Button type="submit" disabled={createRecipeReviewMtn.isPending}>
-                      {createRecipeReviewMtn.isPending ? <InlineLoading /> : 'Submit Review'}
-                    </Button>
-                    <Button type="button" variant="outline" onClick={() => setReviewDialog(false)}>
-                      Cancel
-                    </Button>
-                  </div>
-                </form>
-              </DialogContent>
-            </Dialog>
+            <Button
+              type="button"
+              onClick={() => {
+                setSelectedReviewId('');
+                setRecipeReviewModal(true);
+              }}
+            >
+              <MessageCircle className="mr-2 h-4 w-4" />
+              Write a Review
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -248,10 +187,22 @@ export const ReviewTab = ({ recipe, user_id }: { recipe: TGetRecipeBySlugOutput;
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>
-                        <Flag className="mr-2 h-4 w-4" />
-                        Report
-                      </DropdownMenuItem>
+                      {review.user.id === user_id ? (
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setSelectedReviewId(review.id);
+                            setRecipeReviewModal(true);
+                          }}
+                        >
+                          <Edit className="mr-2 h-4 w-4" />
+                          Edit
+                        </DropdownMenuItem>
+                      ) : (
+                        <DropdownMenuItem>
+                          <Flag className="mr-2 h-4 w-4" />
+                          Report
+                        </DropdownMenuItem>
+                      )}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -277,13 +228,35 @@ export const ReviewTab = ({ recipe, user_id }: { recipe: TGetRecipeBySlugOutput;
                         )} */}
 
                   <div className="flex items-center gap-4 pt-2">
-                    <Button variant="ghost" size="sm">
-                      <ThumbsUp className="mr-2 h-4 w-4" />
-                      Helpful ({review.total_votes})
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        toggleRecipeReviewVote({
+                          id: review.votes.find((vote) => vote.review_id === review.id)?.id || '',
+                          type: 'UPVOTE',
+                          review_id: review.id,
+                        });
+                      }}
+                      disabled={toggleRecipeReviewVoteMtn.isPending}
+                    >
+                      <ThumbsUp className={clsx('mr-2 h-4 w-4', review.is_upvoted ? 'fill-green-500' : '')} />
+                      Helpful ({review.total_upvotes})
                     </Button>
-                    <Button variant="ghost" size="sm">
-                      <ThumbsDown className="mr-2 h-4 w-4" />
-                      Not helpful
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        toggleRecipeReviewVote({
+                          id: review.votes.find((vote) => vote.review_id === review.id)?.id || '',
+                          type: 'DOWNVOTE',
+                          review_id: review.id,
+                        });
+                      }}
+                      disabled={toggleRecipeReviewVoteMtn.isPending}
+                    >
+                      <ThumbsDown className={clsx('mr-2 h-4 w-4', review.is_downvoted ? 'fill-red-500' : '')} />
+                      Not helpful ({review.total_downvotes})
                     </Button>
                   </div>
                 </div>

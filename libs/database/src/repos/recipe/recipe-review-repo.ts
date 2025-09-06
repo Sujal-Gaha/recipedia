@@ -6,6 +6,7 @@ import {
   TFindManyRecipeReviewsRepoInput,
   TFindRecipeReviewByIdRepoInput,
   TRecipeReview,
+  TUpdateRecipeReviewRepoInput,
 } from '@libs/quasar';
 import { db } from '../../prisma/client';
 
@@ -43,6 +44,18 @@ export class PrismaRecipeReviewRepo extends RecipeReviewRepo {
     return await db.recipeReview.findMany({
       where: {
         recipe_id,
+      },
+    });
+  }
+
+  override async update({ id, data: { comment, rating } }: TUpdateRecipeReviewRepoInput): Promise<TRecipeReview> {
+    return await db.recipeReview.update({
+      where: {
+        id,
+      },
+      data: {
+        comment,
+        rating,
       },
     });
   }

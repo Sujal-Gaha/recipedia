@@ -11,6 +11,7 @@ import {
   Timer,
   Printer as Print,
   Award,
+  Eye,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '../../../../components/ui/button';
@@ -348,15 +349,15 @@ export default function RecipeDetailPage() {
             </Card>
 
             <div className="grid grid-cols-2 gap-4">
-              {/* <Card>
+              <Card>
                 <CardContent className="p-4 text-center">
                   <div className="flex items-center justify-center mb-2">
                     <Eye className="h-5 w-5 text-blue-500 mr-2" />
-                    <span className="text-2xl font-bold">{recipe.stats.views.toLocaleString()}</span>
+                    <span className="text-2xl font-bold">100</span>
                   </div>
                   <div className="text-sm text-muted-foreground">Views</div>
                 </CardContent>
-              </Card> */}
+              </Card>
               <Card>
                 <CardContent className="p-4 text-center">
                   <div className="flex items-center justify-center mb-2">
@@ -368,7 +369,6 @@ export default function RecipeDetailPage() {
               </Card>
             </div>
 
-            {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-4">
               <Button size="lg" className="h-12 col-span-2">
                 <Timer className="mr-2 h-5 w-5" />
@@ -378,7 +378,6 @@ export default function RecipeDetailPage() {
           </div>
         </motion.div>
 
-        {/* Main Content */}
         <Tabs defaultValue="recipe" className="space-y-8">
           <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4">
             <TabsTrigger value="recipe">Recipe</TabsTrigger>
@@ -387,10 +386,8 @@ export default function RecipeDetailPage() {
             <TabsTrigger value="tips">Tips</TabsTrigger>
           </TabsList>
 
-          {/* Recipe Tab */}
           <TabsContent value="recipe" className="space-y-8">
             <div className="grid lg:grid-cols-3 gap-8">
-              {/* Ingredients */}
               <div className="lg:col-span-1">
                 <Card className="sticky top-4">
                   <CardHeader>

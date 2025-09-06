@@ -4,38 +4,35 @@ import { handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { StatusCodes } from 'http-status-codes';
 
-export const createRecipeReview: AppRouteImplementation<typeof recipeContract.createRecipeReview> = async ({
+export const getRecipeReviewById: AppRouteImplementation<typeof recipeContract.getRecipeReviewById> = async ({
   req,
-  body,
+  query,
 }) => {
   try {
     const recipeReviewRepo = new PrismaRecipeReviewRepo();
 
-    const data = await recipeReviewRepo.create({
+    const data = await recipeReviewRepo.findById({
       data: {
-        user_id: body.user_id,
-        recipe_id: body.recipe_id,
-        comment: body.comment,
-        rating: body.rating,
+        id: query.id,
       },
     });
 
     if (!data) {
       return {
-        status: StatusCodes.INTERNAL_SERVER_ERROR,
+        status: StatusCodes.NOT_FOUND,
         body: {
           isSuccess: false,
-          message: 'Failed to create recipe review',
+          message: 'Recipe Review not found',
         },
       };
     }
 
     return {
-      status: StatusCodes.CREATED,
+      status: StatusCodes.OK,
       body: {
         data,
         isSuccess: true,
-        message: 'Created Recipe Review Successfully',
+        message: 'Get Recipe Review Successfully',
       },
     };
   } catch (e) {

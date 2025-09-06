@@ -5,6 +5,7 @@ import {
   TGetAllRecipeReviewVotesInput,
   TGetRecipeReviewVoteByIdInput,
   TDeleteManyRecipeReviewVotesInput,
+  TUpdateRecipeReviewVoteInput,
 } from '@libs/contract';
 import { BaseRepo } from '../../domain/base-repo';
 import { logger } from '../../logger';
@@ -27,6 +28,11 @@ export type TFindManyRecipeReviewVotesRepoInput = {
   data: TGetAllRecipeReviewVotesInput;
 };
 
+export type TUpdateRecipeReviewVoteRepoInput = {
+  id: string;
+  data: TUpdateRecipeReviewVoteInput;
+};
+
 export type TDeleteManyRecipeReviewVotesRepoOuput = {
   data: TDeleteManyRecipeReviewVotesInput;
 };
@@ -40,6 +46,7 @@ export abstract class RecipeReviewVoteRepo implements BaseRepo {
   abstract delete(input: TDeleteRecipeReviewVoteRepoInput): Promise<TRecipeReviewVote>;
   abstract findById(input: TFindRecipeReviewVoteByIdRepoInput): Promise<TRecipeReviewVote | null>;
   abstract findMany(input: TFindManyRecipeReviewVotesRepoInput): Promise<TRecipeReviewVote[]>;
+  abstract update(input: TUpdateRecipeReviewVoteRepoInput): Promise<TRecipeReviewVote>;
 
   abstract deleteMany(input: TDeleteManyRecipeReviewVotesRepoOuput): Promise<TRecipeReviewVote[]>;
 }

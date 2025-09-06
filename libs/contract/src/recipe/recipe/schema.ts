@@ -6,6 +6,7 @@ import {
   RecipeImageSchema,
   RecipeIngredientSchema,
   RecipeReviewSchema,
+  RecipeReviewVoteSchema,
   RecipeSchema,
   RecipeStatusSchema,
   RecipeStepSchema,
@@ -84,6 +85,10 @@ export const GetRecipeBySlugOutputSchema = RecipeSchema.extend({
         updated_at: true,
       }).extend({
         total_votes: z.number(),
+        total_upvotes: z.number(),
+        total_downvotes: z.number(),
+        is_upvoted: z.boolean(),
+        is_downvoted: z.boolean(),
         user: UserSchema.pick({
           id: true,
           name: true,
@@ -92,6 +97,7 @@ export const GetRecipeBySlugOutputSchema = RecipeSchema.extend({
           image: true,
           is_email_verified: true,
         }),
+        votes: z.array(RecipeReviewVoteSchema),
       })
     ),
   }),
