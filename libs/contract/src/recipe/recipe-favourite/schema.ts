@@ -14,6 +14,20 @@ export const CreateRecipeFavouriteResponseSchema = SuccessSchema.extend({
 });
 export type TCreateRecipeFavouriteResponse = z.infer<typeof CreateRecipeFavouriteResponseSchema>;
 
+/** -------- Toggle Recipe Favourite -------- */
+export const ToggleRecipeFavouriteInputSchema = RecipeFavouriteSchema.pick({
+  recipe_id: true,
+  user_id: true,
+}).extend({
+  id: z.string().optional(),
+});
+export type TToggleRecipeFavouriteInput = z.infer<typeof ToggleRecipeFavouriteInputSchema>;
+
+export const ToggleRecipeFavouriteResponseSchema = SuccessSchema.extend({
+  data: RecipeFavouriteSchema,
+});
+export type TToggleRecipeFavouriteResponse = z.infer<typeof ToggleRecipeFavouriteResponseSchema>;
+
 /** -------- Get Recipe Favourite By Id -------- */
 export const GetRecipeFavouriteByIdInputSchema = RecipeFavouriteSchema.pick({
   id: true,

@@ -4,14 +4,12 @@ import { initServer } from '@ts-rest/express';
 import { createRecipe } from '../modules/recipe/createRecipe';
 import { getAllRecipes } from '../modules/recipe/getAllRecipes';
 import { getRecipeBySlug } from '../modules/recipe/getRecipeBySlug';
-import { createRecipeFavourite } from '../modules/recipe/createRecipeFavourite';
-import { createRecipeUpvote } from '../modules/recipe/createRecipeUpvote';
-import { deleteRecipeFavourite } from '../modules/recipe/deleteRecipeFavourite';
-import { deleteRecipeUpvote } from '../modules/recipe/deleteRecipeUpvote';
 import { deleteRecipeReview } from '../modules/recipe/deleteRecipeReview';
 import { toggleRecipeReviewVote } from '../modules/recipe/toggleRecipeReviewVote';
 import { upsertRecipeReview } from '../modules/recipe/upsertRecipeReview';
 import { getRecipeReviewById } from '../modules/recipe/getRecipeReviewById';
+import { toggleRecipeFavourite } from '../modules/recipe/toggleRecipeFavourite';
+import { toggleRecipeUpvote } from '../modules/recipe/toggleRecipeUpvote';
 
 const s = initServer();
 
@@ -29,22 +27,14 @@ export const recipeRouter = s.router(recipeContract, {
     handler: getRecipeBySlug,
   },
 
-  createRecipeFavourite: {
+  toggleRecipeFavourite: {
     middleware: [validateAccessToken],
-    handler: createRecipeFavourite,
-  },
-  deleteRecipeFavourite: {
-    middleware: [validateAccessToken],
-    handler: deleteRecipeFavourite,
+    handler: toggleRecipeFavourite,
   },
 
-  createRecipeUpvote: {
+  toggleRecipeUpvote: {
     middleware: [validateAccessToken],
-    handler: createRecipeUpvote,
-  },
-  deleteRecipeUpvote: {
-    middleware: [validateAccessToken],
-    handler: deleteRecipeUpvote,
+    handler: toggleRecipeUpvote,
   },
 
   upsertRecipeReview: {

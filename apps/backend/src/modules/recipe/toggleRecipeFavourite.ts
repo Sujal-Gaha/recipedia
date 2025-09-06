@@ -4,12 +4,39 @@ import { handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { StatusCodes } from 'http-status-codes';
 
-export const createRecipeFavourite: AppRouteImplementation<typeof recipeContract.createRecipeFavourite> = async ({
+export const toggleRecipeFavourite: AppRouteImplementation<typeof recipeContract.toggleRecipeFavourite> = async ({
   req,
   body,
 }) => {
   try {
     const recipeFavouriteRepo = new PrismaRecipeFavouriteRepo();
+
+    if (body.id) {
+      const data = await recipeFavouriteRepo.delete({
+        data: {
+          id: body.id,
+        },
+      });
+
+      if (!data) {
+        return {
+          status: StatusCodes.INTERNAL_SERVER_ERROR,
+          body: {
+            isSuccess: false,
+            message: 'Failed to delete recipe favourite',
+          },
+        };
+      }
+
+      return {
+        status: StatusCodes.OK,
+        body: {
+          data,
+          isSuccess: true,
+          message: 'Deleted Recipe Favourite Successfully',
+        },
+      };
+    }
 
     const data = await recipeFavouriteRepo.create({
       data: {

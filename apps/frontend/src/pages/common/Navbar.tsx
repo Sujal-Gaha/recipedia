@@ -143,11 +143,6 @@ export const Navbar = () => {
                   Ingredient Filter
                 </NavigationMenuLink>
               </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink href={_FULL_ROUTES.CREATE_RECIPE} className={navigationMenuTriggerStyle()}>
-                  Create Recipe
-                </NavigationMenuLink>
-              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>

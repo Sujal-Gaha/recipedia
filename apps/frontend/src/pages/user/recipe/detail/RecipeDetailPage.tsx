@@ -1,25 +1,9 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  Heart,
-  Share2,
-  Clock,
-  ChefHat,
-  Star,
-  MessageCircle,
-  Bookmark,
-  Timer,
-  Printer as Print,
-  Award,
-  Eye,
-} from 'lucide-react';
-import { toast } from 'sonner';
+import { Heart, Share2, Clock, ChefHat, Star, MessageCircle, Bookmark, Timer, Award, Eye, Users } from 'lucide-react';
 import { Button } from '../../../../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../../../components/ui/card';
+import { Card, CardContent } from '../../../../components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '../../../../components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../../components/ui/tabs';
-import { Separator } from '../../../../components/ui/separator';
-import { Progress } from '../../../../components/ui/progress';
 import { useParams } from 'react-router-dom';
 import { recipeApi } from '../../../../apis/recipe-api';
 import { useUserStore } from '../../../../stores/useUserStore';
@@ -28,11 +12,11 @@ import { toastError, toastSuccess } from '../../../../components/toaster';
 import { useQueryClient } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { ReviewTab } from './components/ReviewTab';
+import { RecipeTab } from './components/RecipeTab';
+import { NutritionTab } from './components/NutritionTab';
+import { TipsTab } from './components/TipsTab';
 
 export default function RecipeDetailPage() {
-  const [activeStep, setActiveStep] = useState(0);
-  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-
   const qc = useQueryClient();
 
   const params = useParams();
@@ -41,11 +25,9 @@ export default function RecipeDetailPage() {
   const { user } = useUserStore();
   const user_id = user?.id || '';
 
-  const createRecipeFavouriteMtn = recipeApi.createRecipeFavourite.useMutation();
-  const deleteRecipeFavouriteMtn = recipeApi.deleteRecipeFavourite.useMutation();
+  const toggleRecipeFavouriteMtn = recipeApi.toggleRecipeFavourite.useMutation();
 
-  const createRecipeUpvoteMtn = recipeApi.createRecipeUpvote.useMutation();
-  const deleteRecipeUpvoteMtn = recipeApi.deleteRecipeUpvote.useMutation();
+  const toggleRecipeUpvoteMtn = recipeApi.toggleRecipeUpvote.useMutation();
 
   const { data: getRecipeBySlugData, isLoading: isGetRecipeBySlugLoading } = recipeApi.getRecipeBySlug.useQuery(
     ['getRecipeBySlug', slug, user_id],
@@ -61,16 +43,9 @@ export default function RecipeDetailPage() {
     }
   );
 
-  const toggleStepComplete = (stepIndex: number) => {
-    setCompletedSteps((prev) =>
-      prev.includes(stepIndex) ? prev.filter((s) => s !== stepIndex) : [...prev, stepIndex]
-    );
-    setActiveStep(stepIndex + 1);
-  };
-
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
-    toast.success('Recipe link copied to clipboard!');
+    toastSuccess('Recipe link copied to clipboard!');
   };
 
   if (isGetRecipeBySlugLoading) {
@@ -81,103 +56,11 @@ export default function RecipeDetailPage() {
 
   const recipe = getRecipeBySlugData.body.data;
 
-  const total_calories = +recipe.ingredients
-    .reduce((total, ing) => (total += ing.ingredient_variant.ingredient.calories), 0)
-    .toFixed(2);
-
-  const total_protein = +recipe.ingredients
-    .reduce((total, ing) => (total += ing.ingredient_variant.ingredient.protein), 0)
-    .toFixed(2);
-
-  const total_carbohydrates = +recipe.ingredients
-    .reduce((total, ing) => (total += ing.ingredient_variant.ingredient.carbohydrates), 0)
-    .toFixed(2);
-
-  const total_fat = +recipe.ingredients
-    .reduce((total, ing) => (total += ing.ingredient_variant.ingredient.fat), 0)
-    .toFixed(2);
-
-  const total_sugar = +recipe.ingredients
-    .reduce((total, ing) => (total += ing.ingredient_variant.ingredient.sugar), 0)
-    .toFixed(2);
-
-  const total_fiber = +recipe.ingredients
-    .reduce((total, ing) => (total += ing.ingredient_variant.ingredient.fiber), 0)
-    .toFixed(2);
-
-  const recipeNutritions = {
-    total_protein,
-    total_carbohydrates,
-    total_fat,
-    total_sugar,
-    total_fiber,
-  };
-
-  const deleteRecipeFavourite = async (id: string) => {
-    await deleteRecipeFavouriteMtn.mutateAsync(
-      {
-        body: {
-          id,
-        },
-      },
-      {
-        onSuccess: (data) => {
-          toastSuccess(data.body.message);
-          qc.invalidateQueries({
-            queryKey: ['getRecipeBySlug'],
-          });
-        },
-        onError: (error) => {
-          if (error.status === 400 || error.status === 500) {
-            toastError(error.body.message);
-          } else {
-            toastError('Something went wrong! Please try again later.');
-          }
-          console.log(error);
-        },
-      }
-    );
-  };
-
-  const markRecipeAsFavourite = async () => {
-    await createRecipeFavouriteMtn.mutateAsync(
-      {
-        body: {
-          recipe_id: recipe.id,
-          user_id,
-        },
-      },
-      {
-        onSuccess: (data) => {
-          toastSuccess(data.body.message);
-          qc.invalidateQueries({
-            queryKey: ['getRecipeBySlug'],
-          });
-        },
-        onError: (error) => {
-          if (error.status === 400 || error.status === 500) {
-            toastError(error.body.message);
-          } else {
-            toastError('Something went wrong! Please try again later.');
-          }
-          console.log(error);
-        },
-      }
-    );
-  };
-
   const handleBookmarkIconClicked = async () => {
-    if (recipe.is_favourited && recipe.user_favourite_id) {
-      await deleteRecipeFavourite(recipe.user_favourite_id);
-    } else {
-      await markRecipeAsFavourite();
-    }
-  };
-
-  const upvoteRecipe = async () => {
-    await createRecipeUpvoteMtn.mutateAsync(
+    await toggleRecipeFavouriteMtn.mutateAsync(
       {
         body: {
+          ...(recipe.user_favourite_id ? { id: recipe.user_favourite_id } : {}),
           recipe_id: recipe.id,
           user_id,
         },
@@ -201,11 +84,13 @@ export default function RecipeDetailPage() {
     );
   };
 
-  const deleteRecipeUpvote = async (id: string) => {
-    await deleteRecipeUpvoteMtn.mutateAsync(
+  const handleHeartIconClicked = async () => {
+    await toggleRecipeUpvoteMtn.mutateAsync(
       {
         body: {
-          id,
+          ...(recipe.user_upvote_id ? { id: recipe.user_upvote_id } : {}),
+          recipe_id: recipe.id,
+          user_id,
         },
       },
       {
@@ -225,14 +110,6 @@ export default function RecipeDetailPage() {
         },
       }
     );
-  };
-
-  const handleHearIconClicked = async () => {
-    if (recipe.is_upvoted && recipe.user_upvote_id) {
-      await deleteRecipeUpvote(recipe.user_upvote_id);
-    } else {
-      await upvoteRecipe();
-    }
   };
 
   return (
@@ -258,16 +135,16 @@ export default function RecipeDetailPage() {
                 variant={recipe.is_favourited ? 'default' : 'secondary'}
                 onClick={handleBookmarkIconClicked}
                 className="shadow-lg"
-                disabled={createRecipeFavouriteMtn.isPending || deleteRecipeFavouriteMtn.isPending}
+                disabled={toggleRecipeFavouriteMtn.isPending}
               >
                 <Bookmark className={clsx('h-4 w-4', recipe.is_favourited ? 'fill-current' : '')} />
               </Button>
               <Button
                 size="sm"
                 variant={recipe.is_upvoted ? 'default' : 'secondary'}
-                onClick={handleHearIconClicked}
+                onClick={handleHeartIconClicked}
                 className="shadow-lg"
-                disabled={createRecipeUpvoteMtn.isPending || deleteRecipeUpvoteMtn.isPending}
+                disabled={toggleRecipeUpvoteMtn.isPending}
               >
                 <Heart className={clsx('h-4 w-4', recipe.is_upvoted ? 'fill-current' : '')} />
               </Button>
@@ -279,7 +156,7 @@ export default function RecipeDetailPage() {
             <div className="absolute bottom-4 left-4 right-4">
               <Card className="bg-white/95 backdrop-blur-sm">
                 <CardContent>
-                  <div className="grid grid-cols-3 gap-4 text-center">
+                  <div className="grid grid-cols-4 gap-4 text-center">
                     <div>
                       <div className="flex items-center justify-center mb-1">
                         <Clock className="h-4 w-4 text-orange-500 mr-1" />
@@ -287,13 +164,13 @@ export default function RecipeDetailPage() {
                       <div className="text-sm font-medium">{recipe.cook_time + recipe.preparation_time}m</div>
                       <div className="text-xs text-muted-foreground">Total</div>
                     </div>
-                    {/* <div>
+                    <div>
                       <div className="flex items-center justify-center mb-1">
                         <Users className="h-4 w-4 text-blue-500 mr-1" />
                       </div>
-                      <div className="text-sm font-medium">{servings}</div>
-                      <div className="text-xs text-muted-foreground">Servings</div>
-                    </div> */}
+                      <div className="text-sm font-medium">1</div>
+                      <div className="text-xs text-muted-foreground">Serving</div>
+                    </div>
                     <div>
                       <div className="flex items-center justify-center mb-1">
                         <ChefHat className="h-4 w-4 text-green-500 mr-1" />
@@ -387,127 +264,7 @@ export default function RecipeDetailPage() {
           </TabsList>
 
           <TabsContent value="recipe" className="space-y-8">
-            <div className="grid lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-1">
-                <Card className="sticky top-4">
-                  <CardHeader>
-                    <CardTitle className="text-xl">Ingredients</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {recipe.ingredients.map((ingredient, index) => (
-                      <motion.div
-                        key={ingredient.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-                      >
-                        <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                          <img
-                            src={ingredient.ingredient_variant.image || '/placeholder.svg'}
-                            alt={ingredient.ingredient_variant.name}
-                            width={48}
-                            height={48}
-                            className="object-cover w-full h-full"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="font-medium text-sm">
-                            {ingredient.quantity % 1 === 0 ? ingredient.quantity : ingredient.quantity.toFixed(1)}{' '}
-                            {ingredient.unit}
-                          </div>
-                          <div className="text-sm text-gray-600 truncate">{ingredient.ingredient_variant.name}</div>
-                          {ingredient.note && <div className="text-xs text-muted-foreground">{ingredient.note}</div>}
-                        </div>
-                      </motion.div>
-                    ))}
-
-                    <Separator />
-
-                    {/* BACKLOG_FEATURE */}
-                    {/* <Button variant="outline" className="w-full bg-transparent">
-                      <ShoppingCart className="mr-2 h-4 w-4" />
-                      Add All to Shopping List
-                    </Button> */}
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Instructions */}
-              <div className="lg:col-span-2 space-y-6">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-bold">Instructions</h2>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
-                      <Print className="h-4 w-4 mr-2" />
-                      Print
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Timer className="h-4 w-4 mr-2" />
-                      Timer
-                    </Button>
-                  </div>
-                </div>
-
-                {recipe.steps.map((step, index) => (
-                  <motion.div
-                    key={step.step_no}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <Card
-                      className={`transition-all duration-300 ${
-                        completedSteps.includes(index)
-                          ? 'bg-green-50 border-green-200'
-                          : activeStep === index
-                          ? 'ring-2 ring-orange-200 bg-orange-50'
-                          : ''
-                      }`}
-                    >
-                      <CardContent className="p-6">
-                        <div className="flex gap-4">
-                          <div className="flex-shrink-0">
-                            <Button
-                              size="sm"
-                              variant={completedSteps.includes(index) ? 'default' : 'outline'}
-                              className="w-8 h-8 rounded-full p-0"
-                              onClick={() => toggleStepComplete(index)}
-                            >
-                              {completedSteps.includes(index) ? '✓' : ''}
-                            </Button>
-                          </div>
-
-                          <div className="flex-1 space-y-3">
-                            <div className="flex items-center justify-between">
-                              <h3 className="font-semibold text-lg">{step.content}</h3>
-                              {/* <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                <Clock className="h-4 w-4" />
-                                {instruction.time} min
-                              </div> */}
-                            </div>
-
-                            <p className="text-gray-700 leading-relaxed">{step.content}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="font-medium">Cooking Progress</span>
-                      <span className="text-sm text-muted-foreground">
-                        {completedSteps.length} of {recipe.steps.length} steps
-                      </span>
-                    </div>
-                    <Progress value={(completedSteps.length / recipe.steps.length) * 100} className="h-2" />
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+            <RecipeTab recipe={recipe} />
           </TabsContent>
 
           <TabsContent value="reviews" className="space-y-6">
@@ -515,69 +272,11 @@ export default function RecipeDetailPage() {
           </TabsContent>
 
           <TabsContent value="nutrition">
-            <Card>
-              <CardHeader>
-                <CardTitle>Nutritional Information</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="space-y-4">
-                    <div className="text-center p-6 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl">
-                      <div className="text-3xl font-bold text-orange-600 mb-2">{total_calories}</div>
-                      <div className="text-sm text-muted-foreground">Calories</div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    {Object.entries(recipeNutritions)
-                      .filter(([key]) => key !== 'calories')
-                      .map(([key, value]) => {
-                        const scaledValue = value;
-
-                        const unit = ['total_protein', 'total_fat', 'total_sugar', 'total_fiber'].includes(key)
-                          ? 'g'
-                          : '';
-
-                        return (
-                          <div key={key} className="flex justify-between items-center py-2 border-b">
-                            <span className="capitalize font-medium">{key.split('_').join(' ')}</span>
-                            <span className="font-semibold">
-                              {scaledValue}
-                              {unit}
-                            </span>
-                          </div>
-                        );
-                      })}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <NutritionTab recipe={recipe} />
           </TabsContent>
 
           <TabsContent value="tips">
-            <Card>
-              <CardHeader>
-                <CardTitle>Chef's Tips & Tricks</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recipe.tips.map((tip, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex gap-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg"
-                    >
-                      <div className="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-sm font-bold text-blue-600">{index + 1}</span>
-                      </div>
-                      <p className="text-gray-700 leading-relaxed">{tip.content}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <TipsTab recipe={recipe} />
           </TabsContent>
         </Tabs>
       </div>

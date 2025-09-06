@@ -4,17 +4,14 @@ import { CreateRecipeWithAllFieldsInputSchema, CreateRecipeWithAllFieldsResponse
 import { GetAllRecipesResponseSchema, GetRecipeBySlugResponseSchema } from './recipe/schema';
 import { z } from 'zod';
 import { RecipeDifficultySchema, RecipeStatusSchema } from '../__generated__';
-import {
-  CreateRecipeFavouriteInputSchema,
-  CreateRecipeFavouriteResponseSchema,
-  DeleteRecipeFavouriteInputSchema,
-  DeleteRecipeFavouriteResponseSchema,
-} from './recipe-favourite/schema';
+import { ToggleRecipeFavouriteInputSchema, ToggleRecipeFavouriteResponseSchema } from './recipe-favourite/schema';
 import {
   CreateRecipeUpvoteInputSchema,
   CreateRecipeUpvoteResponseSchema,
   DeleteRecipeUpvoteInputSchema,
   DeleteRecipeUpvoteResponseSchema,
+  ToggleRecipeUpvoteInputSchema,
+  ToggleRecipeUpvoteResponseSchema,
 } from './recipe-upvote/schema';
 import {
   DeleteRecipeReviewInputSchema,
@@ -76,52 +73,30 @@ export const recipeContract = c.router({
     summary: 'Get a recipe by slug',
   },
 
-  createRecipeFavourite: {
+  toggleRecipeFavourite: {
     method: 'POST',
-    path: `${BASE_API_PATH}/recipe/createRecipeFavourite`,
-    body: CreateRecipeFavouriteInputSchema,
+    path: `${BASE_API_PATH}/recipe/toggleRecipeFavourite`,
+    body: ToggleRecipeFavouriteInputSchema,
     responses: {
-      201: CreateRecipeFavouriteResponseSchema,
+      200: ToggleRecipeFavouriteResponseSchema,
+      201: ToggleRecipeFavouriteResponseSchema,
       400: ErrorSchema,
       500: ErrorSchema,
     },
-    summary: 'Create a recipe favourite',
+    summary: 'Toggle a recipe favourite',
   },
 
-  deleteRecipeFavourite: {
+  toggleRecipeUpvote: {
     method: 'POST',
-    path: `${BASE_API_PATH}/recipe/deleteRecipeFavourite`,
-    body: DeleteRecipeFavouriteInputSchema,
+    path: `${BASE_API_PATH}/recipe/toggleRecipeUpvote`,
+    body: ToggleRecipeUpvoteInputSchema,
     responses: {
-      200: DeleteRecipeFavouriteResponseSchema,
+      200: ToggleRecipeUpvoteResponseSchema,
+      201: ToggleRecipeUpvoteResponseSchema,
       400: ErrorSchema,
       500: ErrorSchema,
     },
-    summary: 'Delete a recipe favourite',
-  },
-
-  createRecipeUpvote: {
-    method: 'POST',
-    path: `${BASE_API_PATH}/recipe/createRecipeUpvote`,
-    body: CreateRecipeUpvoteInputSchema,
-    responses: {
-      201: CreateRecipeUpvoteResponseSchema,
-      400: ErrorSchema,
-      500: ErrorSchema,
-    },
-    summary: 'Create a recipe upvote',
-  },
-
-  deleteRecipeUpvote: {
-    method: 'POST',
-    path: `${BASE_API_PATH}/recipe/deleteRecipeUpvote`,
-    body: DeleteRecipeUpvoteInputSchema,
-    responses: {
-      200: DeleteRecipeUpvoteResponseSchema,
-      400: ErrorSchema,
-      500: ErrorSchema,
-    },
-    summary: 'Delete a recipe favourite',
+    summary: 'Toggle a recipe upvote',
   },
 
   upsertRecipeReview: {

@@ -27,11 +27,9 @@ export const RecipesPage = () => {
 
   const qc = useQueryClient();
 
-  const createRecipeFavouriteMtn = recipeApi.createRecipeFavourite.useMutation();
-  const deleteRecipeFavouriteMtn = recipeApi.deleteRecipeFavourite.useMutation();
+  const toggleRecipeFavouriteMtn = recipeApi.toggleRecipeFavourite.useMutation();
 
-  const createRecipeUpvoteMtn = recipeApi.createRecipeUpvote.useMutation();
-  const deleteRecipeUpvoteMtn = recipeApi.deleteRecipeUpvote.useMutation();
+  const toggleRecipeUpvoteMtn = recipeApi.toggleRecipeUpvote.useMutation();
 
   const { data: getAllRecipesData } = recipeApi.getAllRecipes.useQuery(
     ['getAllRecipes', '1', '6', globalFilter, difficulty, user_id],
@@ -48,59 +46,6 @@ export const RecipesPage = () => {
 
   const recipes = getAllRecipesData?.status === 200 ? getAllRecipesData.body.data : [];
 
-  const deleteRecipeFavourite = async (id: string) => {
-    await deleteRecipeFavouriteMtn.mutateAsync(
-      {
-        body: {
-          id,
-        },
-      },
-      {
-        onSuccess: (data) => {
-          toastSuccess(data.body.message);
-          qc.invalidateQueries({
-            queryKey: ['getAllRecipes'],
-          });
-        },
-        onError: (error) => {
-          if (error.status === 400 || error.status === 500) {
-            toastError(error.body.message);
-          } else {
-            toastError('Something went wrong! Please try again later.');
-          }
-          console.log(error);
-        },
-      }
-    );
-  };
-
-  const markRecipeAsFavourite = async ({ recipe_id }: { recipe_id: string }) => {
-    await createRecipeFavouriteMtn.mutateAsync(
-      {
-        body: {
-          recipe_id,
-          user_id,
-        },
-      },
-      {
-        onSuccess: (data) => {
-          toastSuccess(data.body.message);
-          qc.invalidateQueries({
-            queryKey: ['getAllRecipes'],
-          });
-        },
-        onError: (error) => {
-          if (error.status === 400 || error.status === 500) {
-            toastError(error.body.message);
-          } else {
-            toastError('Something went wrong! Please try again later.');
-          }
-          console.log(error);
-        },
-      }
-    );
-  };
-
   const handleBookmarkIconClicked = async ({
     recipe_id,
     user_favourite_id,
@@ -108,45 +53,12 @@ export const RecipesPage = () => {
     recipe_id: string;
     user_favourite_id: string | null;
   }) => {
-    if (user_favourite_id) {
-      await deleteRecipeFavourite(user_favourite_id);
-    } else {
-      await markRecipeAsFavourite({ recipe_id });
-    }
-  };
-
-  const upvoteRecipe = async ({ recipe_id }: { recipe_id: string }) => {
-    await createRecipeUpvoteMtn.mutateAsync(
+    await toggleRecipeFavouriteMtn.mutateAsync(
       {
         body: {
+          ...(user_favourite_id ? { id: user_favourite_id } : {}),
           recipe_id,
           user_id,
-        },
-      },
-      {
-        onSuccess: (data) => {
-          toastSuccess(data.body.message);
-          qc.invalidateQueries({
-            queryKey: ['getAllRecipes'],
-          });
-        },
-        onError: (error) => {
-          if (error.status === 400 || error.status === 500) {
-            toastError(error.body.message);
-          } else {
-            toastError('Something went wrong! Please try again later.');
-          }
-          console.log(error);
-        },
-      }
-    );
-  };
-
-  const deleteRecipeUpvote = async (id: string) => {
-    await deleteRecipeUpvoteMtn.mutateAsync(
-      {
-        body: {
-          id,
         },
       },
       {
@@ -175,11 +87,31 @@ export const RecipesPage = () => {
     user_upvote_id: string | null;
     recipe_id: string;
   }) => {
-    if (user_upvote_id) {
-      await deleteRecipeUpvote(user_upvote_id);
-    } else {
-      await upvoteRecipe({ recipe_id });
-    }
+    await toggleRecipeUpvoteMtn.mutateAsync(
+      {
+        body: {
+          ...(user_upvote_id ? { id: user_upvote_id } : {}),
+          recipe_id,
+          user_id,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          toastSuccess(data.body.message);
+          qc.invalidateQueries({
+            queryKey: ['getAllRecipes'],
+          });
+        },
+        onError: (error) => {
+          if (error.status === 400 || error.status === 500) {
+            toastError(error.body.message);
+          } else {
+            toastError('Something went wrong! Please try again later.');
+          }
+          console.log(error);
+        },
+      }
+    );
   };
 
   return (
@@ -252,7 +184,15 @@ export const RecipesPage = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
-                  <Badge className="bg-white/90 text-gray-700 border-0 shadow-lg backdrop-blur-sm" variant="secondary">
+                  <Badge
+                    variant={
+                      recipe.difficulty === 'EASY'
+                        ? 'secondary'
+                        : recipe.difficulty === 'MEDIUM'
+                        ? 'default'
+                        : 'destructive'
+                    }
+                  >
                     {recipe.difficulty}
                   </Badge>
                   <div className="flex space-x-2">
@@ -263,7 +203,7 @@ export const RecipesPage = () => {
                         handleBookmarkIconClicked({ recipe_id: recipe.id, user_favourite_id: recipe.user_favourite_id })
                       }
                       className="shadow-lg"
-                      disabled={createRecipeFavouriteMtn.isPending || deleteRecipeFavouriteMtn.isPending}
+                      disabled={toggleRecipeFavouriteMtn.isPending}
                     >
                       <Bookmark className={clsx('h-4 w-4', recipe.is_favourited ? 'fill-current' : '')} />
                     </Button>
@@ -274,7 +214,7 @@ export const RecipesPage = () => {
                         handleHeartIconClicked({ recipe_id: recipe.id, user_upvote_id: recipe.user_upvote_id })
                       }
                       className="shadow-lg"
-                      disabled={createRecipeUpvoteMtn.isPending || deleteRecipeUpvoteMtn.isPending}
+                      disabled={toggleRecipeUpvoteMtn.isPending}
                     >
                       <Heart className={clsx('h-4 w-4', recipe.is_upvoted ? 'fill-current' : '')} />
                     </Button>

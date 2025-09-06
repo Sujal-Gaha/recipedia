@@ -4,12 +4,39 @@ import { handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { StatusCodes } from 'http-status-codes';
 
-export const createRecipeUpvote: AppRouteImplementation<typeof recipeContract.createRecipeUpvote> = async ({
+export const toggleRecipeUpvote: AppRouteImplementation<typeof recipeContract.toggleRecipeUpvote> = async ({
   req,
   body,
 }) => {
   try {
     const recipeUpvoteRepo = new PrismaRecipeUpvoteRepo();
+
+    if (body.id) {
+      const data = await recipeUpvoteRepo.delete({
+        data: {
+          id: body.id,
+        },
+      });
+
+      if (!data) {
+        return {
+          status: StatusCodes.INTERNAL_SERVER_ERROR,
+          body: {
+            isSuccess: false,
+            message: 'Failed to delete recipe Upvote',
+          },
+        };
+      }
+
+      return {
+        status: StatusCodes.OK,
+        body: {
+          data,
+          isSuccess: true,
+          message: 'Deleted Recipe Upvote Successfully',
+        },
+      };
+    }
 
     const data = await recipeUpvoteRepo.create({
       data: {

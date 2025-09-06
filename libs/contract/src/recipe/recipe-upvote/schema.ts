@@ -14,6 +14,20 @@ export const CreateRecipeUpvoteResponseSchema = SuccessSchema.extend({
 });
 export type TCreateRecipeUpvoteResponse = z.infer<typeof CreateRecipeUpvoteResponseSchema>;
 
+/** -------- Toggle Recipe Upvote -------- */
+export const ToggleRecipeUpvoteInputSchema = RecipeUpvoteSchema.pick({
+  recipe_id: true,
+  user_id: true,
+}).extend({
+  id: z.string().optional(),
+});
+export type TToggleRecipeUpvoteInput = z.infer<typeof ToggleRecipeUpvoteInputSchema>;
+
+export const ToggleRecipeUpvoteResponseSchema = SuccessSchema.extend({
+  data: RecipeUpvoteSchema,
+});
+export type TToggleRecipeUpvoteResponse = z.infer<typeof ToggleRecipeUpvoteResponseSchema>;
+
 /** -------- Get Recipe Upvote By Id -------- */
 export const GetRecipeUpvoteByIdInputSchema = RecipeUpvoteSchema.pick({
   id: true,
