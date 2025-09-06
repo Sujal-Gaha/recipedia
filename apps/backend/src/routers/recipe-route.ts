@@ -19,11 +19,9 @@ export const recipeRouter = s.router(recipeContract, {
     handler: createRecipe,
   },
   getAllRecipes: {
-    middleware: [validateAccessToken],
     handler: getAllRecipes,
   },
   getRecipeBySlug: {
-    middleware: [validateAccessToken],
     handler: getRecipeBySlug,
   },
 

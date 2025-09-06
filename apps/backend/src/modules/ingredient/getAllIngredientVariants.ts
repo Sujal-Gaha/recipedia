@@ -18,6 +18,7 @@ export const getAllIngredientVariants: AppRouteImplementation<
         page: pageNum,
         perPage: perPageNum,
         ingredient_id: query.ingredient_id,
+        global_filter: query.global_filter,
       },
     });
 

@@ -62,6 +62,7 @@ export const ingredientContract = c.router({
       page: z.string(),
       perPage: z.string(),
       ingredient_id: z.string().optional(),
+      global_filter: z.string().optional(),
     }),
     responses: {
       200: GetAllIngredientVariantsResponseSchema,

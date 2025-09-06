@@ -52,7 +52,7 @@ export class PrismaIngredientVariantRepo extends IngredientVariantRepo {
   }
 
   override async findMany({
-    data: { page, perPage, ingredient_id },
+    data: { page, perPage, ingredient_id, global_filter },
   }: TFindManyIngredientVariantsRepoInput): Promise<TFindManyIngredientVariantsRepoOutput> {
     const ingredientVariants = await db.ingredientVariant.findMany({
       skip: (page - 1) * perPage,
@@ -66,6 +66,7 @@ export class PrismaIngredientVariantRepo extends IngredientVariantRepo {
               ingredient_id,
             }
           : null),
+        ...(global_filter ? { name: { contains: global_filter, mode: 'insensitive' } } : null),
       },
     });
 
@@ -76,6 +77,7 @@ export class PrismaIngredientVariantRepo extends IngredientVariantRepo {
               ingredient_id,
             }
           : null),
+        ...(global_filter ? { name: { contains: global_filter, mode: 'insensitive' } } : null),
       },
     });
 

@@ -22,7 +22,9 @@ export const getAllRecipes: AppRouteImplementation<typeof recipeContract.getAllR
         global_filter: query.global_filter,
         status: query.status,
         recipe_ingredients_ids: query.recipe_ingredients_ids,
+        recipe_ingredient_variants_id: query.recipe_ingredient_variants_id,
         user_id: query.user_id,
+        is_favourited: query.is_favourited,
       },
     });
 

@@ -261,6 +261,8 @@ export class PrismaRecipeRepo extends RecipeRepo {
       global_filter,
       user_id,
       recipe_ingredients_ids,
+      recipe_ingredient_variants_id,
+      is_favourited,
     },
   }: TFindManyRecipesRepoInput): Promise<TFindManyRecipesRepoOutput> {
     const whereInput: Prisma.RecipeWhereInput = {
@@ -270,17 +272,29 @@ export class PrismaRecipeRepo extends RecipeRepo {
       ...(is_flagged ? { is_flagged: is_flagged === 'true' } : null),
       ...(status ? { status: status } : null),
       ...(global_filter ? { title: { contains: global_filter, mode: 'insensitive' } } : null),
+      ...(recipe_ingredient_variants_id
+        ? {
+            ingredients: {
+              some: {
+                ingredient_variant_id: {
+                  in: recipe_ingredient_variants_id,
+                },
+              },
+            },
+          }
+        : null),
       ...(recipe_ingredients_ids
         ? {
-            recipe_ingredients: {
+            ingredients: {
               some: {
-                ingredient_id: {
+                id: {
                   in: recipe_ingredients_ids,
                 },
               },
             },
           }
         : null),
+      ...(is_favourited ? { favourites: { some: { user_id } } } : null),
       is_deleted: false,
     };
 

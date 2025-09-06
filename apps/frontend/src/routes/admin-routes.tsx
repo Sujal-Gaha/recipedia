@@ -7,17 +7,19 @@ import { AdminRecipePage } from '../pages/admin/dashboard/recipe/AdminRecipePage
 import { AdminUserPage } from '../pages/admin/dashboard/user/AdminUserPage';
 import { AdminCreateIngredientPage } from '../pages/admin/dashboard/ingredient/create/CreateIngredientPage';
 import { AdminIngredientDetailPage } from '../pages/admin/detail/ingredient/AdminIngredientDetailPage';
+import { AdminWithAuth } from '../components/auth';
 
 export const adminRoutes: RouteObject[] = [
   {
     path: _FULL_ROUTES.ADMIN_DASHBOARD,
     element: (
       <AdminLayout>
-        <Outlet />
+        <AdminWithAuth>
+          <Outlet />
+        </AdminWithAuth>
       </AdminLayout>
     ),
     children: [
-      // Dashboard
       {
         path: _FULL_ROUTES.ADMIN_DASHBOARD,
         element: <AdminDashboardPage />,
@@ -45,7 +47,9 @@ export const adminRoutes: RouteObject[] = [
     path: _FULL_ROUTES.ADMIN_DETAIL,
     element: (
       <AdminLayout>
-        <Outlet />
+        <AdminWithAuth>
+          <Outlet />
+        </AdminWithAuth>
       </AdminLayout>
     ),
     children: [

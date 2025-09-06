@@ -1,7 +1,11 @@
 import { initContract } from '@ts-rest/core';
 import { BASE_API_PATH, ErrorSchema, TrueOrFalseInputSchema } from '../lib/schema';
 import { CreateRecipeWithAllFieldsInputSchema, CreateRecipeWithAllFieldsResponseSchema } from './schema';
-import { GetAllRecipesResponseSchema, GetRecipeBySlugResponseSchema } from './recipe/schema';
+import {
+  GetAllRecipesResponseSchema,
+  GetRecipeBySlugInputSchema,
+  GetRecipeBySlugResponseSchema,
+} from './recipe/schema';
 import { z } from 'zod';
 import { RecipeDifficultySchema, RecipeStatusSchema } from '../__generated__';
 import { ToggleRecipeFavouriteInputSchema, ToggleRecipeFavouriteResponseSchema } from './recipe-favourite/schema';
@@ -51,7 +55,9 @@ export const recipeContract = c.router({
       is_flagged: TrueOrFalseInputSchema.optional(),
       global_filter: z.string().optional(),
       recipe_ingredients_ids: z.array(z.string()).optional(),
+      recipe_ingredient_variants_id: z.array(z.string()).optional(),
       user_id: z.string().optional(),
+      is_favourited: TrueOrFalseInputSchema.optional(),
     }),
     responses: {
       200: GetAllRecipesResponseSchema,
@@ -63,7 +69,8 @@ export const recipeContract = c.router({
 
   getRecipeBySlug: {
     method: 'GET',
-    path: `${BASE_API_PATH}/recipe/getRecipeBySlug/:slug/:user_id`,
+    path: `${BASE_API_PATH}/recipe/getRecipeBySlug`,
+    query: GetRecipeBySlugInputSchema,
     responses: {
       200: GetRecipeBySlugResponseSchema,
       400: ErrorSchema,

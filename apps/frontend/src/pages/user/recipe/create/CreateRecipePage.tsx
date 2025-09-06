@@ -10,6 +10,7 @@ import { TCreateRecipeWithAllFieldsInput } from '@libs/contract';
 import { toastError, toastSuccess } from '../../../../components/toaster';
 import { ingredientApi } from '../../../../apis/ingredient-api';
 import { useUserStore } from '../../../../stores/useUserStore';
+import { useLoginRequiredDialog } from '../../../../hooks/useLoginRequiredDialog';
 
 export const CreateRecipePage = () => {
   const [activeTab, setActiveTab] = useState('create');
@@ -31,6 +32,10 @@ export const CreateRecipePage = () => {
   );
 
   const fetchedIngredientVariants = getAllIngredientVariants?.status === 200 ? getAllIngredientVariants.body.data : [];
+
+  const { LoginRequiredDialogNode, setLoginRequiredDialog } = useLoginRequiredDialog({
+    action: 'create recipe',
+  });
 
   const { register, handleSubmit, setValue, watch } = useForm<TCreateRecipeWithAllFieldsInput>({
     defaultValues: {
@@ -150,6 +155,10 @@ export const CreateRecipePage = () => {
   };
 
   const createRecipe: SubmitHandler<TCreateRecipeWithAllFieldsInput> = async (input) => {
+    if (!user) {
+      return setLoginRequiredDialog(true);
+    }
+
     await createRecipeMtn.mutateAsync(
       {
         body: {
@@ -237,6 +246,8 @@ export const CreateRecipePage = () => {
             Preview
           </TabsTrigger>
         </TabsList>
+
+        {LoginRequiredDialogNode}
 
         <TabsContent value="create">
           <CreateRecipe

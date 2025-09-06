@@ -16,7 +16,7 @@ import { RecipeTab } from './components/RecipeTab';
 import { NutritionTab } from './components/NutritionTab';
 import { TipsTab } from './components/TipsTab';
 
-export default function RecipeDetailPage() {
+export const RecipeDetailPage = () => {
   const qc = useQueryClient();
 
   const params = useParams();
@@ -32,7 +32,7 @@ export default function RecipeDetailPage() {
   const { data: getRecipeBySlugData, isLoading: isGetRecipeBySlugLoading } = recipeApi.getRecipeBySlug.useQuery(
     ['getRecipeBySlug', slug, user_id],
     {
-      params: {
+      query: {
         slug,
         user_id,
       },
@@ -282,4 +282,4 @@ export default function RecipeDetailPage() {
       </div>
     </div>
   );
-}
+};

@@ -35,7 +35,7 @@ export type TCreateRecipeResponse = z.infer<typeof CreateRecipeResponseSchema>;
 export const GetRecipeBySlugInputSchema = RecipeSchema.pick({
   slug: true,
 }).extend({
-  user_id: z.string(),
+  user_id: z.string().optional(),
 });
 export type TGetRecipeBySlugInput = z.infer<typeof GetRecipeBySlugInputSchema>;
 
@@ -126,7 +126,9 @@ export const GetAllRecipesInputSchema = z.object({
   is_flagged: TrueOrFalseInputSchema.optional(),
   global_filter: z.string().optional(),
   recipe_ingredients_ids: z.array(z.string()).optional(),
+  recipe_ingredient_variants_id: z.array(z.string()).optional(),
   user_id: z.string().optional(),
+  is_favourited: TrueOrFalseInputSchema.optional(),
 });
 export type TGetAllRecipesInput = z.infer<typeof GetAllRecipesInputSchema>;
 

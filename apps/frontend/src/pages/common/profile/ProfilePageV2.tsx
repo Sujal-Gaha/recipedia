@@ -1,8 +1,14 @@
-import { toastError, toastSuccess } from '@/components/toaster';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
+'use client';
+
+import type React from 'react';
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Switch } from '@/components/ui/switch';
 import {
   Dialog,
   DialogContent,
@@ -14,36 +20,36 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
-  Bell,
+  Settings,
+  Edit,
   Calendar,
   Camera,
-  Download,
-  Edit,
-  Eye,
-  Facebook,
+  MapPin,
   Globe,
   Instagram,
-  Lock,
-  Mail,
-  MapPin,
-  Shield,
-  Smartphone,
-  Trash2,
   Twitter,
+  Facebook,
+  Bell,
+  Shield,
+  Eye,
+  Mail,
+  Smartphone,
+  Lock,
+  Trash2,
+  Download,
   Upload,
-  X,
 } from 'lucide-react';
-import { useState } from 'react';
+import Link from 'next/link';
+import { useToast } from '@/hooks/use-toast';
 
-export const ProfilePage = () => {
+export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState('profile');
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
   // Mock user data
   const [user, setUser] = useState({
@@ -131,10 +137,16 @@ export const ProfilePage = () => {
       }));
 
       setIsEditDialogOpen(false);
-      toastSuccess('Your profile has been successfully updated.');
+      toast({
+        title: 'Profile Updated',
+        description: 'Your profile has been successfully updated.',
+      });
     } catch (error) {
-      console.log(error);
-      toastError('Something went wrong! Please try again later.');
+      toast({
+        title: 'Error',
+        description: 'Failed to update profile. Please try again.',
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -142,12 +154,42 @@ export const ProfilePage = () => {
 
   const handleSettingChange = (key: string, value: boolean | string) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
-    toastSuccess('Your preference has been saved.');
+    toast({
+      title: 'Setting Updated',
+      description: 'Your preference has been saved.',
+    });
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center space-x-2">
+              <span className="text-2xl font-bold text-orange-600">Recipedia</span>
+            </Link>
+            <nav className="hidden md:flex items-center space-x-6">
+              <Link href="/recipes" className="text-gray-600 hover:text-orange-600">
+                All Recipes
+              </Link>
+              <Link href="/ingredients" className="text-gray-600 hover:text-orange-600">
+                Ingredient Filter
+              </Link>
+              <Link href="/create" className="text-gray-600 hover:text-orange-600">
+                Create Recipe
+              </Link>
+            </nav>
+            <Button variant="outline" size="sm">
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </Button>
+          </div>
+        </div>
+      </header>
+
       <div className="container mx-auto px-4 py-8">
+        {/* Profile Header */}
         <Card className="mb-8">
           <CardContent className="pt-6">
             <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
@@ -292,7 +334,7 @@ export const ProfilePage = () => {
                                 />
                               </div>
                               <div className="flex items-center space-x-2">
-                                <X className="h-4 w-4 text-blue-500" />
+                                <Twitter className="h-4 w-4 text-blue-500" />
                                 <Input
                                   value={editForm.twitter}
                                   onChange={(e) => setEditForm((prev) => ({ ...prev, twitter: e.target.value }))}
@@ -704,4 +746,4 @@ export const ProfilePage = () => {
       </div>
     </div>
   );
-};
+}

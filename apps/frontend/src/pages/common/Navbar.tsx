@@ -1,4 +1,4 @@
-import { ChefHat, LogOut, Menu, Plus, User } from 'lucide-react';
+import { Bookmark, ChefHat, LogOut, Menu, Plus, User } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { _FULL_ROUTES } from '../../constants/routes';
 import {
@@ -237,6 +237,15 @@ export const Navbar = () => {
                       Profile
                     </Link>
                   </DropdownMenuItem>
+
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to={_FULL_ROUTES.FAVOURITE}>
+                      <Bookmark className="mr-2 h-4 w-4" />
+                      Favourites
+                    </Link>
+                  </DropdownMenuItem>
+
                   {/* BACKLOG_FEATURE */}
                   {/* <DropdownMenuItem asChild>
                     <Link to="/notifications">

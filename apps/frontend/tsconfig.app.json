@@ -8,7 +8,14 @@
     "types": ["node", "@nx/react/typings/cssmodule.d.ts", "@nx/react/typings/image.d.ts", "vite/client"],
     "rootDir": "src",
     "module": "esnext",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+     "paths": {
+      "@/*": ["./src/*"],
+      "@/lib/utils": ["./src/lib/utils.ts"],
+      "@/components/*": ["./src/components/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/pages/*": ["./src/pages/*"]
+    },
   },
   "exclude": [
     "out-tsc",

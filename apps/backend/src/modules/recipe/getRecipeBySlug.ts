@@ -6,15 +6,15 @@ import { StatusCodes } from 'http-status-codes';
 
 export const getRecipeBySlug: AppRouteImplementation<typeof recipeContract.getRecipeBySlug> = async ({
   req,
-  params,
+  query,
 }) => {
   try {
     const recipeRepo = new PrismaRecipeRepo();
 
     const recipe = await recipeRepo.findBySlug({
       data: {
-        slug: params.slug,
-        user_id: params.user_id,
+        slug: query.slug,
+        user_id: query.user_id,
       },
     });
 

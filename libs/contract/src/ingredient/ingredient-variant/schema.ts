@@ -55,6 +55,7 @@ export const GetAllIngredientVariantsInputSchema = z.object({
   page: z.number(),
   perPage: z.number(),
   ingredient_id: z.string().optional(),
+  global_filter: z.string().optional(),
 });
 export type TGetAllIngredientVariantsInput = z.infer<typeof GetAllIngredientVariantsInputSchema>;
 
