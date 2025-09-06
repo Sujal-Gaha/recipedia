@@ -4,6 +4,7 @@ import {
   TDeleteRecipeRepoInput,
   TFindManyRecipesRepoInput,
   TFindManyRecipesRepoOutput,
+  TFindRecipeByIdRepoInput,
   TFindRecipeBySlugRepoInput,
   TFindRecipeBySlugRepoOutput,
   TRecipe,
@@ -65,6 +66,14 @@ export class PrismaRecipeRepo extends RecipeRepo {
         difficulty,
         status,
         is_flagged,
+      },
+    });
+  }
+
+  override async findById({ data: { id } }: TFindRecipeByIdRepoInput): Promise<TRecipe | null> {
+    return await db.recipe.findUnique({
+      where: {
+        id,
       },
     });
   }

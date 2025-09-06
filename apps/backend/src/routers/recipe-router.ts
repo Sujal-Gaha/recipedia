@@ -10,6 +10,7 @@ import { upsertRecipeReview } from '../modules/recipe/upsertRecipeReview';
 import { getRecipeReviewById } from '../modules/recipe/getRecipeReviewById';
 import { toggleRecipeFavourite } from '../modules/recipe/toggleRecipeFavourite';
 import { toggleRecipeUpvote } from '../modules/recipe/toggleRecipeUpvote';
+import { flagRecipeById } from '../modules/recipe/flagRecipeById';
 
 const s = initServer();
 
@@ -17,6 +18,10 @@ export const recipeRouter = s.router(recipeContract, {
   createRecipe: {
     middleware: [validateAccessToken],
     handler: createRecipe,
+  },
+  flagRecipeById: {
+    middleware: [validateAccessToken],
+    handler: flagRecipeById,
   },
   getAllRecipes: {
     handler: getAllRecipes,

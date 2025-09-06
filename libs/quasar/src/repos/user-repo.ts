@@ -2,10 +2,14 @@ import {
   TCreateUserInput,
   TGetUserByEmailInput,
   TGetUserByIdInput,
+  TPaginationOutput,
   TSignUpUserInput,
+  TSuspendUserInput,
+  TTrueOrFalseInput,
   TUpdateUserByEmailInput,
   TUpdateUserByIdInput,
   User,
+  UserTypeType,
 } from '@libs/contract';
 import { BaseRepo } from '../domain/base-repo';
 
@@ -43,6 +47,26 @@ export type TVerifyEmailRepoInput = {
   };
 };
 
+export type TSuspendUserRepoInput = {
+  data: TSuspendUserInput;
+};
+
+export type TFindManyUsersRepoInput = {
+  data: {
+    page: number;
+    perPage: number;
+    global_filter?: string;
+    user_type?: UserTypeType;
+    is_email_verified?: TTrueOrFalseInput;
+    is_suspended?: TTrueOrFalseInput;
+  };
+};
+
+export type TFindManyUsersRepoOutput = {
+  data: TUser[];
+  pagination: TPaginationOutput;
+};
+
 export abstract class UserRepo implements BaseRepo {
   log(): void {
     console.log('User Repo initialized...');
@@ -56,4 +80,7 @@ export abstract class UserRepo implements BaseRepo {
   abstract updateByEmail(input: TUpdateUserByEmailRepoInput): Promise<TUser>;
   abstract findByEmail(input: TFindUserByEmailRepoInput): Promise<TUser | null>;
   abstract verify(input: TVerifyEmailRepoInput): Promise<TUser>;
+
+  abstract suspend(input: TSuspendUserInput): Promise<TUser>;
+  abstract findMany(input: TFindManyUsersRepoInput): Promise<TFindManyUsersRepoOutput>;
 }

@@ -1,6 +1,7 @@
 import {
   TCreateIngredientWithVariantsAndImagesInput,
   TGetAllIngredientsWithVariantsAndImagesInput,
+  TGetAllIngredientsWithVariantsAndImagesOutput,
   TGetIngredientByIdWithVariantsAndImagesInput,
   TGetIngredientByIdWithVariantsAndImagesOutput,
   TIngredientWithVariantsAndImages,
@@ -70,7 +71,7 @@ export class IngredientService {
 
   public findManyIngredientsWithVariantsAndImages = async (
     input: TGetAllIngredientsWithVariantsAndImagesInput
-  ): Promise<{ data: TIngredientWithVariantsAndImages[]; pagination: TPaginationOutput }> => {
+  ): Promise<{ data: TGetAllIngredientsWithVariantsAndImagesOutput[]; pagination: TPaginationOutput }> => {
     const pageNum = getNumFromString(input.page);
     const perPageNum = getNumFromString(input.perPage);
 
@@ -78,6 +79,7 @@ export class IngredientService {
       data: {
         page: pageNum,
         perPage: perPageNum,
+        global_filter: input.global_filter,
       },
     });
 

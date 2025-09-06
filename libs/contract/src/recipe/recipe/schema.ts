@@ -206,3 +206,14 @@ export const DeleteRecipeResponseSchema = SuccessSchema.extend({
   data: RecipeSchema,
 });
 export type TDeleteRecipeResponse = z.infer<typeof DeleteRecipeResponseSchema>;
+
+/** -------- Flag Recipe By Id -------- */
+export const FlagRecipeByIdInputSchema = RecipeSchema.pick({
+  id: true,
+});
+export type TFlagRecipeByIdInput = z.infer<typeof FlagRecipeByIdInputSchema>;
+
+export const FlagRecipeByIdResponseSchema = SuccessSchema.extend({
+  data: RecipeSchema,
+});
+export type TFlagRecipeByIdResponse = z.infer<typeof FlagRecipeByIdResponseSchema>;

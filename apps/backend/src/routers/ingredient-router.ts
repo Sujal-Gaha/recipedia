@@ -10,7 +10,7 @@ const s = initServer();
 
 export const ingredientRouter = s.router(ingredientContract, {
   createIngredient: {
-    // middleware: [validateAccessToken],
+    middleware: [validateAccessToken],
     handler: createIngredient,
   },
   getAllIngredients: {

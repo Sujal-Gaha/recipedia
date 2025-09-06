@@ -2,6 +2,8 @@ import { initContract } from '@ts-rest/core';
 import { BASE_API_PATH, ErrorSchema, TrueOrFalseInputSchema } from '../lib/schema';
 import { CreateRecipeWithAllFieldsInputSchema, CreateRecipeWithAllFieldsResponseSchema } from './schema';
 import {
+  FlagRecipeByIdInputSchema,
+  FlagRecipeByIdResponseSchema,
   GetAllRecipesResponseSchema,
   GetRecipeBySlugInputSchema,
   GetRecipeBySlugResponseSchema,
@@ -9,14 +11,7 @@ import {
 import { z } from 'zod';
 import { RecipeDifficultySchema, RecipeStatusSchema } from '../__generated__';
 import { ToggleRecipeFavouriteInputSchema, ToggleRecipeFavouriteResponseSchema } from './recipe-favourite/schema';
-import {
-  CreateRecipeUpvoteInputSchema,
-  CreateRecipeUpvoteResponseSchema,
-  DeleteRecipeUpvoteInputSchema,
-  DeleteRecipeUpvoteResponseSchema,
-  ToggleRecipeUpvoteInputSchema,
-  ToggleRecipeUpvoteResponseSchema,
-} from './recipe-upvote/schema';
+import { ToggleRecipeUpvoteInputSchema, ToggleRecipeUpvoteResponseSchema } from './recipe-upvote/schema';
 import {
   DeleteRecipeReviewInputSchema,
   DeleteRecipeReviewResponseSchema,
@@ -40,6 +35,18 @@ export const recipeContract = c.router({
       500: ErrorSchema,
     },
     summary: 'Create a recipe',
+  },
+
+  flagRecipeById: {
+    method: 'POST',
+    path: `${BASE_API_PATH}/recipe/flagRecipeById`,
+    body: FlagRecipeByIdInputSchema,
+    responses: {
+      200: FlagRecipeByIdResponseSchema,
+      400: ErrorSchema,
+      404: ErrorSchema,
+      500: ErrorSchema,
+    },
   },
 
   getAllRecipes: {

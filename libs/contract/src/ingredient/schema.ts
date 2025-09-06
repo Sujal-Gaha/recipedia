@@ -89,8 +89,15 @@ export type TGetAllIngredientsWithVariantsAndImagesInput = z.infer<
   typeof GetAllIngredientsWithVariantsAndImagesInputSchema
 >;
 
+export const GetAllIngredientsWithVariantsAndImagesOutputSchema = IngredientSchema.extend({
+  ingredient_variants: z.array(CreateIngredientVariantInputSchema),
+});
+export type TGetAllIngredientsWithVariantsAndImagesOutput = z.infer<
+  typeof GetAllIngredientsWithVariantsAndImagesOutputSchema
+>;
+
 export const GetAllIngredientsWithVariantsAndImagesResponseSchema = SuccessSchema.extend({
-  data: z.array(IngredientWithVariantsAndImagesSchema),
+  data: z.array(GetAllIngredientsWithVariantsAndImagesOutputSchema),
   pagination: PaginationOutputSchema,
 });
 export type TGetAllIngredientsWithVariantsAndImagesResponse = z.infer<

@@ -57,6 +57,7 @@ export type TGetIngredientBySlugResponse = z.infer<typeof GetIngredientBySlugRes
 export const GetAllIngredientsInputSchema = z.object({
   page: z.number(),
   perPage: z.number(),
+  global_filter: z.string().optional(),
 });
 export type TGetAllIngredientsInput = z.infer<typeof GetAllIngredientsInputSchema>;
 

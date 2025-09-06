@@ -1,7 +1,6 @@
 import { Edit, Eye, MoreHorizontal, Package, Trash2, TrendingUp } from 'lucide-react';
 import { Badge } from '../../../../../components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../../components/ui/card';
-import { IIngredient } from '../types/ingredient';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,8 +8,9 @@ import {
   DropdownMenuTrigger,
 } from '../../../../../components/ui/dropdown-menu';
 import { Button } from '../../../../../components/ui/button';
+import { TGetAllIngredientsWithVariantsAndImagesOutput } from '@libs/contract';
 
-export const IngredientCard = ({ ingredient }: { ingredient: IIngredient }) => (
+export const IngredientCard = ({ ingredient }: { ingredient: TGetAllIngredientsWithVariantsAndImagesOutput }) => (
   <Card className="overflow-hidden hover:shadow-lg transition-shadow">
     <div className="relative">
       <img
@@ -21,7 +21,7 @@ export const IngredientCard = ({ ingredient }: { ingredient: IIngredient }) => (
         className="w-full h-40 object-cover"
       />
       <div className="absolute top-2 right-2">
-        <Badge
+        {/* <Badge
           variant={ingredient.status === 'active' ? 'default' : 'secondary'}
           className={
             ingredient.status === 'active'
@@ -30,7 +30,7 @@ export const IngredientCard = ({ ingredient }: { ingredient: IIngredient }) => (
           }
         >
           {ingredient.status}
-        </Badge>
+        </Badge> */}
       </div>
     </div>
     <CardHeader className="pb-3">
@@ -43,16 +43,17 @@ export const IngredientCard = ({ ingredient }: { ingredient: IIngredient }) => (
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center">
             <TrendingUp className="h-4 w-4 mr-1 text-primary" />
-            <span className="font-medium">{ingredient.usageCount} uses</span>
+            {/* <span className="font-medium">{ingredient.usageCount} uses</span> */}
+            <span className="font-medium">0 uses</span>
           </div>
           <div className="flex items-center">
             <Package className="h-4 w-4 mr-1 text-muted-foreground" />
-            <span>{ingredient.variants.length} variants</span>
+            <span>{ingredient.ingredient_variants.length} variants</span>
           </div>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-xs text-muted-foreground">
-            Added {new Date(ingredient.createdAt).toLocaleDateString()}
+            Added {new Date(ingredient.created_at).toLocaleDateString()}
           </span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

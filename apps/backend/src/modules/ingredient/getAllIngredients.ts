@@ -18,6 +18,7 @@ export const getAllIngredients: AppRouteImplementation<typeof ingredientContract
     const ingredients = await ingredientService.findManyIngredientsWithVariantsAndImages({
       page: query.page,
       perPage: query.perPage,
+      global_filter: query.global_filter,
     });
 
     if (!ingredients) {

@@ -1,11 +1,13 @@
-import * as React from 'react';
+'use client';
+
+import type * as React from 'react';
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -27,7 +29,7 @@ interface PaginationComponentProps {
   onPageChange: (page: number) => void;
 }
 
-const PaginationComponent = ({ currentPage, totalPages, onPageChange }: PaginationComponentProps) => {
+export const PaginationComponent = ({ currentPage, totalPages, onPageChange }: PaginationComponentProps) => {
   return (
     <Pagination>
       <PaginationContent>
@@ -76,8 +78,8 @@ const PaginationComponent = ({ currentPage, totalPages, onPageChange }: Paginati
   );
 };
 
-interface TableComponentProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+interface TableComponentProps<TData> {
+  columns: ColumnDef<TData, any>[];
   data: TData[];
   pagination?: {
     page: number;
@@ -87,15 +89,17 @@ interface TableComponentProps<TData, TValue> {
   };
   sorting?: SortingState;
   setSorting?: React.Dispatch<React.SetStateAction<SortingState>>;
+  onTableRowClicked?: (original: TData) => void;
 }
 
-export const TableComponent = <TData, TValue>({
+export const TableComponent = <TData,>({
   columns,
   data,
   pagination,
   sorting,
   setSorting,
-}: TableComponentProps<TData, TValue>) => {
+  onTableRowClicked,
+}: TableComponentProps<TData>) => {
   const table = useReactTable({
     data: data,
     columns: columns,
@@ -122,13 +126,13 @@ export const TableComponent = <TData, TValue>({
     <div>
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader className="text-[15px] leading-[18px] tracking-[-0.18px]">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   const isSortable = header.column.getCanSort();
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={(header.id, header.index)} className="font-medium">
                       {isSortable ? (
                         <Button variant="ghost" onClick={() => header.column.toggleSorting()}>
                           {flexRender(header.column.columnDef.header, header.getContext())}
@@ -152,9 +156,17 @@ export const TableComponent = <TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="text-left">
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  onClick={() => {
+                    if (onTableRowClicked) {
+                      onTableRowClicked(row.original);
+                    }
+                  }}
+                >
+                  {row.getVisibleCells().map((cell, index) => (
+                    <TableCell key={(cell.id, index)}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}

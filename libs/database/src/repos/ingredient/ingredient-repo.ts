@@ -12,6 +12,7 @@ import {
 } from '@libs/quasar';
 import { db } from '../../prisma/client';
 import slugify from 'react-slugify';
+import { Prisma } from '@prisma/client';
 
 export class PrismaIngredientRepo extends IngredientRepo {
   private getSlugForIngredient({ name }: { name: string }) {
@@ -104,22 +105,30 @@ export class PrismaIngredientRepo extends IngredientRepo {
   }
 
   override async findMany({
-    data: { page, perPage },
+    data: { page, perPage, global_filter },
   }: TFindManyIngredientsRepoInput): Promise<TFindManyIngredientsRepoOutput> {
+    const whereInput: Prisma.IngredientWhereInput = {
+      ...(global_filter ? { name: { contains: global_filter, mode: 'insensitive' } } : null),
+    };
+
     const ingredients = await db.ingredient.findMany({
       skip: (page - 1) * perPage,
       take: perPage,
       orderBy: {
         created_at: 'desc',
       },
+      where: whereInput,
       include: {
         variants: true,
       },
     });
-    const count = await db.ingredient.count();
+    const count = await db.ingredient.count({
+      where: whereInput,
+    });
 
     return {
       data: ingredients.map((ingredient) => ({
+        id: ingredient.id,
         name: ingredient.name,
         slug: ingredient.slug,
         image: ingredient.image,
@@ -131,12 +140,9 @@ export class PrismaIngredientRepo extends IngredientRepo {
         protein: ingredient.protein,
         sugar: ingredient.sugar,
         description: ingredient.description,
-        ingredient_variants: ingredient.variants
-          ? ingredient.variants.map((variant) => ({
-              name: variant.name,
-              image: variant.image,
-            }))
-          : [],
+        created_at: ingredient.created_at,
+        updated_at: ingredient.updated_at,
+        ingredient_variants: ingredient.variants ? ingredient.variants : [],
       })),
       pagination: {
         page,
