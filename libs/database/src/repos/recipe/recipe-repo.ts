@@ -147,8 +147,30 @@ export class PrismaRecipeRepo extends RecipeRepo {
       },
     });
 
+    const userFollowing = await db.userFollower.findFirst({
+      where: {
+        following_id: recipe.user_id,
+        follower_id: user_id,
+      },
+    });
+
+    const total_recipes = await db.recipe.count({
+      where: {
+        is_deleted: false,
+        is_flagged: false,
+        user_id: recipe.user_id,
+      },
+    });
+
+    const total_followers = await db.userFollower.count({
+      where: {
+        following_id: recipe.user_id,
+      },
+    });
+
     const is_favourited = !!userFavourite;
     const is_upvoted = !!userUpvote;
+    const is_following = !!userFollowing;
 
     return {
       data: {
@@ -241,19 +263,22 @@ export class PrismaRecipeRepo extends RecipeRepo {
         upvotes: {
           total_votes,
         },
-        user: {
+        chef: {
           id: recipe.user.id,
           name: recipe.user.name,
           email: recipe.user.email,
           user_type: recipe.user.user_type,
           image: recipe.user.image,
           is_email_verified: recipe.user.is_email_verified,
+          total_followers,
+          total_recipes,
         },
         user_favourite_id: recipe.favourites.find((favourite) => favourite.user_id === user_id)?.id || null,
         user_upvote_id: recipe.upvotes.find((upvote) => upvote.user_id === user_id)?.id || null,
         tips: recipe.tips,
         is_favourited,
         is_upvoted,
+        is_following,
       },
     };
   }

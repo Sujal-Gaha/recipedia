@@ -19,4 +19,5 @@ export * from './repos/recipe/recipe-step-repo';
 export * from './repos/recipe/recipe-tips-repo';
 export * from './repos/recipe/recipe-upvote-repo';
 export * from './repos/todo-repo';
+export * from './repos/user-follower-repo';
 export * from './repos/user-repo';

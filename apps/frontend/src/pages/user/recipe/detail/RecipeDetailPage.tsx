@@ -15,6 +15,7 @@ import { ReviewTab } from './components/ReviewTab';
 import { RecipeTab } from './components/RecipeTab';
 import { NutritionTab } from './components/NutritionTab';
 import { TipsTab } from './components/TipsTab';
+import { userApi } from '@/apis/user-api';
 
 export const RecipeDetailPage = () => {
   const qc = useQueryClient();
@@ -25,8 +26,8 @@ export const RecipeDetailPage = () => {
   const { user } = useUserStore();
   const user_id = user?.id || '';
 
+  const toggleUserFollowerMtn = userApi.toggleUserFollower.useMutation();
   const toggleRecipeFavouriteMtn = recipeApi.toggleRecipeFavourite.useMutation();
-
   const toggleRecipeUpvoteMtn = recipeApi.toggleRecipeUpvote.useMutation();
 
   const { data: getRecipeBySlugData, isLoading: isGetRecipeBySlugLoading } = recipeApi.getRecipeBySlug.useQuery(
@@ -43,11 +44,6 @@ export const RecipeDetailPage = () => {
     }
   );
 
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    toastSuccess('Recipe link copied to clipboard!');
-  };
-
   if (isGetRecipeBySlugLoading) {
     return <PageLoading />;
   }
@@ -55,6 +51,11 @@ export const RecipeDetailPage = () => {
   if (getRecipeBySlugData?.status !== 200) return null;
 
   const recipe = getRecipeBySlugData.body.data;
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toastSuccess('Recipe link copied to clipboard!');
+  };
 
   const handleBookmarkIconClicked = async () => {
     await toggleRecipeFavouriteMtn.mutateAsync(
@@ -94,11 +95,32 @@ export const RecipeDetailPage = () => {
         },
       },
       {
-        onSuccess: (data) => {
-          toastSuccess(data.body.message);
+        onSuccess: () => {
           qc.invalidateQueries({
             queryKey: ['getRecipeBySlug'],
           });
+        },
+        onError: (error) => {
+          console.log(error);
+        },
+      }
+    );
+  };
+
+  const handleFollowerBtnClicked = async () => {
+    await toggleUserFollowerMtn.mutateAsync(
+      {
+        body: {
+          follower_id: user_id,
+          following_id: recipe.chef.id,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          qc.invalidateQueries({
+            queryKey: ['getRecipeBySlug'],
+          });
+          toastSuccess(data.body.message);
         },
         onError: (error) => {
           if (error.status === 400 || error.status === 500) {
@@ -106,6 +128,7 @@ export const RecipeDetailPage = () => {
           } else {
             toastError('Something went wrong! Please try again later.');
           }
+
           console.log(error);
         },
       }
@@ -202,9 +225,9 @@ export const RecipeDetailPage = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <Avatar className="h-12 w-12">
-                      <AvatarImage src={recipe.user.image || '/placeholder.svg'} />
+                      <AvatarImage src={recipe.chef.image || '/placeholder.svg'} />
                       <AvatarFallback>
-                        {recipe.user.name
+                        {recipe.chef.name
                           .split(' ')
                           .map((n) => n[0])
                           .join('')}
@@ -212,15 +235,23 @@ export const RecipeDetailPage = () => {
                     </Avatar>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="font-semibold">{recipe.user.name}</h3>
-                        {recipe.user.is_email_verified && <Award className="h-4 w-4 text-blue-500" />}
+                        <h3 className="font-semibold">{recipe.chef.name}</h3>
+                        {recipe.chef.is_email_verified && <Award className="h-4 w-4 text-blue-500" />}
                       </div>
-                      {/* <div className="text-sm text-muted-foreground">
-                        {recipe.author.followers.toLocaleString()} followers • {recipe.author.recipes} recipes
-                      </div> */}
+                      <div className="text-sm text-muted-foreground">
+                        {recipe.chef.total_followers} {recipe.chef.total_followers > 1 ? 'followers' : 'follower'} •{' '}
+                        {recipe.chef.total_recipes} {recipe.chef.total_recipes > 1 ? 'recipes' : 'recipe'}
+                      </div>
                     </div>
                   </div>
-                  <Button variant="outline">Follow</Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleFollowerBtnClicked}
+                    disabled={toggleUserFollowerMtn.isPending}
+                  >
+                    {toggleUserFollowerMtn.isPending ? 'Following...' : recipe.is_following ? 'Unfollow' : 'Follow'}
+                  </Button>
                 </div>
               </CardContent>
             </Card>

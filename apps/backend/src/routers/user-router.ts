@@ -4,6 +4,7 @@ import { initServer } from '@ts-rest/express';
 import { getAllUsers } from '../modules/user/getAllUsers';
 import { getUserById } from '../modules/user/getUserById';
 import { suspendUser } from '../modules/user/suspendUser';
+import { toggleUserFollower } from '../modules/user/toggleUserFollower';
 
 const s = initServer();
 
@@ -21,5 +22,10 @@ export const userRouter = s.router(userContract, {
   suspendUser: {
     middleware: [validateAccessToken],
     handler: suspendUser,
+  },
+
+  toggleUserFollower: {
+    middleware: [validateAccessToken],
+    handler: toggleUserFollower,
   },
 });

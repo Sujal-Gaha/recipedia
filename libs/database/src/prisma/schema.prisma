@@ -81,7 +81,6 @@ model User {
 }
 
 model UserFollower {
-  id           String @id @default(cuid())
   follower_id  String
   following_id String
 
@@ -91,6 +90,7 @@ model UserFollower {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  @@unique([follower_id, following_id])
   @@map("user_followers")
 }
 

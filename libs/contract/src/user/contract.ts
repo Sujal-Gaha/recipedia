@@ -7,6 +7,7 @@ import {
   SuspendUserResponseSchema,
 } from './schema';
 import { BASE_API_PATH, ErrorSchema } from '../lib/schema';
+import { ToggleUserFollowerInputSchema, ToggleUserFollowerResponseSchema } from './user-follower/schema';
 
 const c = initContract();
 
@@ -44,5 +45,18 @@ export const userContract = c.router({
       400: ErrorSchema,
       500: ErrorSchema,
     },
+    summary: 'Suspend a user',
+  },
+
+  toggleUserFollower: {
+    method: 'POST',
+    path: `${BASE_API_PATH}/user-follower/toggleUserFollower`,
+    body: ToggleUserFollowerInputSchema,
+    responses: {
+      200: ToggleUserFollowerResponseSchema,
+      400: ErrorSchema,
+      500: ErrorSchema,
+    },
+    summary: 'Toggle a user follower',
   },
 });

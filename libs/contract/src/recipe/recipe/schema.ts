@@ -40,13 +40,16 @@ export const GetRecipeBySlugInputSchema = RecipeSchema.pick({
 export type TGetRecipeBySlugInput = z.infer<typeof GetRecipeBySlugInputSchema>;
 
 export const GetRecipeBySlugOutputSchema = RecipeSchema.extend({
-  user: UserSchema.pick({
+  chef: UserSchema.pick({
     id: true,
     name: true,
     email: true,
     user_type: true,
     image: true,
     is_email_verified: true,
+  }).extend({
+    total_followers: z.number(),
+    total_recipes: z.number(),
   }),
   ingredients: z.array(
     RecipeIngredientSchema.extend({
@@ -107,6 +110,7 @@ export const GetRecipeBySlugOutputSchema = RecipeSchema.extend({
   tips: z.array(RecipeTipSchema),
   is_favourited: z.boolean(),
   is_upvoted: z.boolean(),
+  is_following: z.boolean(),
 });
 export type TGetRecipeBySlugOutput = z.infer<typeof GetRecipeBySlugOutputSchema>;
 

@@ -4,6 +4,7 @@ export * from './repos/todo-repo';
 
 export * from './repos/file-repo';
 
+export * from './repos/user-follower-repo';
 export * from './repos/user-repo';
 
 export * from './repos/ingredient/ingredient-repo';

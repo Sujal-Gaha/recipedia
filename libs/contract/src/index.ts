@@ -26,5 +26,6 @@ export * from './file/contract';
 
 export * from './user/contract';
 export * from './user/schema';
+export * from './user/user-follower/schema';
 
 export * from './__generated__';
