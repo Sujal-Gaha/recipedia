@@ -4,11 +4,11 @@ import { handleApiErrorAndRespond } from '@libs/quasar';
 import { AppRouteImplementation } from '@ts-rest/express';
 import { StatusCodes } from 'http-status-codes';
 
-export const deleteFile: AppRouteImplementation<typeof fileContract.deleteFile> = async ({ req, params }) => {
+export const deleteFile: AppRouteImplementation<typeof fileContract.deleteFile> = async ({ req, body }) => {
   try {
     const fileRepo = new PrismaFileRepo();
     const fileExists = await fileRepo.findById({
-      data: { id: params.id },
+      data: { id: body.id },
     });
     if (!fileExists) {
       return {
@@ -21,7 +21,7 @@ export const deleteFile: AppRouteImplementation<typeof fileContract.deleteFile> 
     }
     const data = await fileRepo.delete({
       data: {
-        id: params.id,
+        id: body.id,
       },
     });
     return {

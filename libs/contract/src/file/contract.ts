@@ -2,6 +2,7 @@ import { initContract } from '@ts-rest/core';
 import { BASE_API_PATH, ErrorSchema } from '../lib/schema';
 import {
   CreateFileResponseSchema,
+  DeleteFileInputSchema,
   DeleteFileResponseSchema,
   GetAllFilesResponseSchema,
   GetFileByIdResponseSchema,
@@ -66,8 +67,9 @@ export const fileContract = c.router({
     summary: 'Updated a file',
   },
   deleteFile: {
-    method: 'DELETE',
-    path: `${BASE_API_PATH}/file/deleteFile/:id`,
+    method: 'POST',
+    path: `${BASE_API_PATH}/file/deleteFile`,
+    body: DeleteFileInputSchema,
     responses: {
       200: DeleteFileResponseSchema,
       400: ErrorSchema,

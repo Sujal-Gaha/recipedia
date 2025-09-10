@@ -40,7 +40,7 @@ export const AdminCreateIngredientPage = () => {
     resolver: zodResolver(CreateIngredientWithVariantsAndImagesInputSchema),
   });
 
-  const { category, ingredient_variants } = watch();
+  const { category, ingredient_variants, image } = watch();
 
   const categories = [
     'Vegetables',
@@ -117,6 +117,14 @@ export const AdminCreateIngredientPage = () => {
     setValue('image', url);
   };
 
+  const onFileRemove = (url: string) => {
+    setValue('image', '');
+
+    ingredient_variants.forEach((_, index) => {
+      setValue(`ingredient_variants.${index}.image`, '');
+    });
+  };
+
   return (
     <div className="container mx-auto px-6 py-12 max-w-4xl">
       <div className="mb-8">
@@ -187,7 +195,13 @@ export const AdminCreateIngredientPage = () => {
           </CardContent>
         </Card>
 
-        <FileUpload onFileUpload={onFileUpload} cardDescription="Add a high-quality image of the ingredient" />
+        <FileUpload
+          isSingleUpload
+          onFileUpload={onFileUpload}
+          cardDescription="Add a high-quality image of the ingredient"
+          defaultPreviewUrls={[image].filter(Boolean)}
+          onFileRemove={onFileRemove}
+        />
 
         <Card>
           <CardHeader>

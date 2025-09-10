@@ -20,6 +20,7 @@ interface FileUploadProps {
   defaultPreviewUrls: string[];
   defaultPrimaryUrl?: string;
   onSelectPrimary?: (url: string) => void;
+  isSingleUpload?: boolean;
 }
 
 export const FileUpload = ({
@@ -33,6 +34,7 @@ export const FileUpload = ({
   defaultPreviewUrls = [],
   defaultPrimaryUrl,
   onSelectPrimary,
+  isSingleUpload,
 }: FileUploadProps) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const [previewUrls, setPreviewUrls] = useState<string[]>(defaultPreviewUrls);
@@ -40,7 +42,7 @@ export const FileUpload = ({
   const [error, setError] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const fileMtn = fileApi.createFile.useMutation();
+  const createFileMtn = fileApi.createFile.useMutation();
 
   const handleFileUpload = useCallback(
     async (file: File) => {
@@ -58,7 +60,7 @@ export const FileUpload = ({
         return setError(`File size too large. Maximum size is ${maxSize}MB`);
       }
 
-      await fileMtn.mutateAsync(
+      await createFileMtn.mutateAsync(
         {
           body: {
             file,
@@ -70,7 +72,11 @@ export const FileUpload = ({
 
             onFileUpload(uploadedUrl);
 
-            setPreviewUrls((prev) => [...prev, uploadedUrl]);
+            if (isSingleUpload) {
+              setPreviewUrls([uploadedUrl]);
+            } else {
+              setPreviewUrls((prev) => [...prev, uploadedUrl]);
+            }
             toastSuccess('File uploaded successfully!');
           },
           onError: (error) => {
@@ -86,7 +92,7 @@ export const FileUpload = ({
         }
       );
     },
-    [acceptedTypes, fileMtn, maxSize, onFileUpload]
+    [acceptedTypes, createFileMtn, isSingleUpload, maxSize, onFileUpload]
   );
 
   const handleDrop = useCallback(
@@ -136,7 +142,7 @@ export const FileUpload = ({
     }
   };
 
-  const uploadProgress = fileMtn.isPending ? 50 : 0;
+  const uploadProgress = createFileMtn.isPending ? 50 : 0;
 
   return (
     <Card className={className}>
@@ -170,7 +176,7 @@ export const FileUpload = ({
                         size="sm"
                         onClick={() => handleMakeImagePrimary(previewUrl)}
                         className="absolute top-2 right-12 opacity-0 group-hover:opacity-100 transition-opacity"
-                        disabled={fileMtn.isPending}
+                        disabled={createFileMtn.isPending}
                       >
                         <Star
                           className={clsx('h-4 w-4', primaryUrl === previewUrl && 'fill-amber-500 text-amber-500')}
@@ -184,7 +190,7 @@ export const FileUpload = ({
                       size="sm"
                       onClick={() => handleRemoveImage(previewUrl)}
                       className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                      disabled={fileMtn.isPending}
+                      disabled={createFileMtn.isPending}
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -221,10 +227,10 @@ export const FileUpload = ({
               isDragOver
                 ? 'border-primary bg-primary/5 scale-[1.02]'
                 : 'border-muted-foreground/25 hover:border-primary/50 hover:bg-muted/50',
-              fileMtn.isPending && 'pointer-events-none opacity-75'
+              createFileMtn.isPending && 'pointer-events-none opacity-75'
             )}
           >
-            {fileMtn.isPending ? (
+            {createFileMtn.isPending ? (
               <div className="space-y-4">
                 <div className="animate-pulse">
                   <Upload className="mx-auto h-16 w-16 text-primary mb-4" />
