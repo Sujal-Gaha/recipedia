@@ -175,6 +175,8 @@ export const VerifyEmailPage = () => {
   };
 
   const resendOtp = async () => {
+    setCountdown(60);
+    setCanResend(false);
     await sendOtpMtn.mutateAsync(
       {
         email,
@@ -263,7 +265,6 @@ export const VerifyEmailPage = () => {
 
                 <Button
                   type="submit"
-                  // onClick={() => handleVerifyOtp(otp.join(''))}
                   disabled={otp.some((digit) => digit === '') || verifyEmailMtn.isPending}
                   className="w-full h-12 text-lg font-medium"
                 >

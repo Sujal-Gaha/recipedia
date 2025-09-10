@@ -15,7 +15,7 @@ export const CallbackPage = () => {
   useEffect(() => {
     if (isSuccess) {
       setUser(data.data.me);
-      if (data.data.me.user_type === 'USER') {
+      if (data.data.me.user_type === 'USER' || data.data.me.user_type === 'CHEF') {
         navigate(_FULL_ROUTES.HOME);
       }
 
@@ -30,9 +30,11 @@ export const CallbackPage = () => {
   }
 
   if (isError) {
+    setUser(null);
+
     return (
       <Error
-        message={'You are not logged in!'}
+        message="You are not logged in!"
         actionNode={
           <Link to={_FULL_ROUTES.LOGIN} className="text-blue-500 underline">
             Go to login
