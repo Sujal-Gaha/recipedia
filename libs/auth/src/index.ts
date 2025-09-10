@@ -1,7 +1,7 @@
 import { Application } from 'express';
 import { initAuth, RouteGenerator } from '@baijanstack/express-auth';
 import { authConfig } from './config';
-import { EmailNotificationService } from './notifier';
+import { EmailNotificationService } from './notifier/EmailNotificationService';
 import {
   SignUpHandler,
   LoginHandler,
@@ -36,7 +36,7 @@ export function createAuth(app: Application) {
 
 export * from './config';
 export * from './handler';
-export * from './notifier';
+export * from './notifier/EmailNotificationService';
 
 export {
   SignUpResponseCodes,

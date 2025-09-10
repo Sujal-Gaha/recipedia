@@ -13,6 +13,16 @@ import { TVerifyEmailInput, VerifyEmailInputSchema } from '../../apis/auth/fetch
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const EmailVerificationSuccess = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate(_FULL_ROUTES.LOGIN);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background flex items-center justify-center p-4">
       <div className="w-full max-w-md relative z-10">
@@ -24,9 +34,7 @@ const EmailVerificationSuccess = () => {
               </div>
             </div>
             <CardTitle className="text-3xl font-bold text-emerald-600">Email Verified!</CardTitle>
-            <CardDescription className="text-lg">
-              Your email has been successfully verified. Welcome to Recipedia!
-            </CardDescription>
+            <CardDescription className="text-lg">Your email has been successfully verified.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6 text-center">
             <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
@@ -36,23 +44,24 @@ const EmailVerificationSuccess = () => {
                 </span>{' '}
                 Account activated successfully!
               </p>
-              <p className="text-emerald-700 text-sm mt-1">You can now access all features of Recipedia.</p>
+              <p className="text-emerald-700 text-sm mt-1">Your account is now ready to use.</p>
             </div>
 
-            <div className="space-y-3">
-              <Button asChild className="w-full h-12 text-lg font-medium">
-                <Link to={_FULL_ROUTES.PROFILE}>Complete Your Profile</Link>
-              </Button>
-              <Button variant="outline" asChild className="w-full h-12 bg-transparent">
-                <Link to={_FULL_ROUTES.RECIPE}>Start Exploring Recipes</Link>
-              </Button>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p className="text-blue-800 font-medium">Redirecting to login page...</p>
+              <p className="text-blue-700 text-sm mt-1">
+                You will be automatically redirected to the login page in a few seconds.
+              </p>
             </div>
 
             <p className="text-sm text-muted-foreground">
-              Ready to start cooking?{' '}
-              <Link to="/" className="text-primary hover:underline font-medium">
-                Go to homepage
-              </Link>
+              If you are not redirected automatically,{' '}
+              <button
+                onClick={() => navigate(_FULL_ROUTES.LOGIN)}
+                className="text-primary hover:underline font-medium cursor-pointer"
+              >
+                Click here to login
+              </button>
             </p>
           </CardContent>
         </Card>
@@ -60,7 +69,6 @@ const EmailVerificationSuccess = () => {
     </div>
   );
 };
-
 export const VerifyEmailPage = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [isVerified, setIsVerified] = useState(false);

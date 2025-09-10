@@ -26,6 +26,8 @@ const envSchema = z.object({
   }),
   FRONTEND_URL: z.string().min(1),
   BACKEND_URL: z.string().min(1),
+  MAIL_USER: z.string().min(1),
+  MAIL_PASS: z.string().min(1),
 });
 
 type TEnv = z.infer<typeof envSchema>;
@@ -46,6 +48,8 @@ const env: TEnv = {
   },
   FRONTEND_URL: process.env['FRONTEND_URL'] || '',
   BACKEND_URL: process.env['BACKEND_URL'] || '',
+  MAIL_USER: process.env['MAIL_USER'] || '',
+  MAIL_PASS: process.env['MAIL_PASS'] || '',
 };
 
 const validateEnv = (env: TEnv) => {
