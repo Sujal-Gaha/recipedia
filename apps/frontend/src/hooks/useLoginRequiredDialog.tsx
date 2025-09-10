@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../components/ui/dialog';
-import { ArrowRight, ChefHat, Lock, User, X } from 'lucide-react';
-import { Card, CardContent } from '../components/ui/card';
-import { Button } from '../components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ArrowRight, ChefHat, Lock, User } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { _FULL_ROUTES } from '../constants/routes';
+import { _FULL_ROUTES } from '@/constants/routes';
 
 const LoginRequiredDialog = ({
   setLoginRequiredDialog,

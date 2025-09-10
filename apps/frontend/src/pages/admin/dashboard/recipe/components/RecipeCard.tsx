@@ -1,13 +1,13 @@
-import { CheckCircle, Clock, Eye, Flag, MoreHorizontal, Star } from 'lucide-react';
-import { Badge } from '../../../../../components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../../components/ui/card';
+import { Clock, Eye, Flag, MoreHorizontal, Star } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../../../../../components/ui/dropdown-menu';
-import { Button } from '../../../../../components/ui/button';
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { TGetAllRecipesOutput } from '@libs/contract';
 import { _FULL_ROUTES } from '@/constants/routes';

@@ -1,19 +1,19 @@
 import { useState } from 'react';
-import { Button } from '../../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { Input } from '../../components/ui/input';
-import { Label } from '../../components/ui/label';
-import { Separator } from '../../components/ui/separator';
-import { Checkbox } from '../../components/ui/checkbox';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
+import { Checkbox } from '@/components/ui/checkbox';
 import { ChefHat, Eye, EyeOff, Mail, Lock, ArrowLeft } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { _FULL_ROUTES } from '../../constants/routes';
+import { _FULL_ROUTES } from '@/constants/routes';
 import { BackgroundPattern } from './components/background-pattern';
-import { useLoginMutation, useSendOtpMutation } from '../../apis/auth/query';
+import { useLoginMutation, useSendOtpMutation } from '@/apis/auth/query';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { TLoginInput, TLoginInputSchema } from '../../apis/auth/fetcher';
+import { TLoginInput, TLoginInputSchema } from '@/apis/auth/fetcher';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toastError, toastSuccess } from '../../components/toaster';
+import { toastError, toastSuccess } from '@/components/toaster';
 
 const isGoogleAndFacebookLoginProviderEnabled = false;
 
@@ -122,7 +122,7 @@ export const LoginPage = () => {
                         id="email"
                         type="email"
                         className="pl-10 h-12"
-                        placeholder="chef../..example.com"
+                        placeholder="chef@example.com"
                         {...register('email')}
                       />
                     </div>

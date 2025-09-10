@@ -1,10 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useMeQuery } from '../../apis/auth/query';
-import { Error } from '../../components/error';
-import { PageLoader } from '../../components/PageLoader';
-import { _FULL_ROUTES } from '../../constants/routes';
+import { useMeQuery } from '@/apis/auth/query';
+import { Error } from '@/components/error';
+import { PageLoader } from '@/components/PageLoader';
+import { _FULL_ROUTES } from '@/constants/routes';
 import { useEffect } from 'react';
-import { useUserStore } from '../../stores/useUserStore';
+import { useUserStore } from '@/stores/useUserStore';
 
 export const CallbackPage = () => {
   const { setUser } = useUserStore();

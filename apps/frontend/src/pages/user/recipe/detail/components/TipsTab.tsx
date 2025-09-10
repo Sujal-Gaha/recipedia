@@ -1,5 +1,5 @@
 import { TGetRecipeBySlugOutput } from '@libs/contract';
-import { Card, CardContent, CardHeader, CardTitle } from '../../../../../components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 
 export const TipsTab = ({ recipe }: { recipe: TGetRecipeBySlugOutput }) => {

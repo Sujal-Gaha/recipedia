@@ -10,7 +10,7 @@ import {
   TValidateTokenResponseCodes,
   TVerifyEmailResponseCodes,
 } from '@libs/auth';
-import { env } from '../../lib/env';
+import { env } from '@/lib/env';
 import { z } from 'zod';
 
 export type TSignUpInput = {

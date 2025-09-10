@@ -15,11 +15,11 @@ import {
   Eye,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Button } from '../../../../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
-import { Badge } from '../../../../components/ui/badge';
-import { _FULL_ROUTES } from '../../../../constants/routes';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../../components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { _FULL_ROUTES } from '@/constants/routes';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface Recipe {
   id: string;

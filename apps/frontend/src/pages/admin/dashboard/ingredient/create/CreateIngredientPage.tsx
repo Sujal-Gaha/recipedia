@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import { Plus, X, Save, ArrowLeft, Carrot, Info } from 'lucide-react';
-import { Button } from '../../../../../components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { _FULL_ROUTES } from '../../../../../constants/routes';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../../components/ui/card';
-import { Label } from '../../../../../components/ui/label';
-import { Input } from '../../../../../components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../../components/ui/select';
-import { Textarea } from '../../../../../components/ui/textarea';
-import { Badge } from '../../../../../components/ui/badge';
-import { ingredientApi } from '../../../../../apis/ingredient-api';
+import { _FULL_ROUTES } from '@/constants/routes';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { ingredientApi } from '@/apis/ingredient-api';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   CreateIngredientWithVariantsAndImagesInputSchema,
   TCreateIngredientWithVariantsAndImagesInput,
 } from '@libs/contract';
 // import { AdditionalInformation } from './components/AdditionalInformations';
-import { toastError, toastSuccess } from '../../../../../components/toaster';
-import { FileUpload } from '../../../../../components/file-upload';
+import { toastError, toastSuccess } from '@/components/toaster';
+import { FileUpload } from '@/components/file-upload';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export const AdminCreateIngredientPage = () => {

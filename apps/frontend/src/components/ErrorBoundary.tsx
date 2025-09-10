@@ -1,8 +1,8 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { AlertCircle, RefreshCw } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Button } from '../components/ui/button';
-import { Alert, AlertDescription, AlertTitle } from '../components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface ErrorBoundaryProps {
   children: ReactNode;

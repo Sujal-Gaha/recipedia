@@ -1,10 +1,10 @@
 import { RouteObject } from 'react-router-dom';
-import { _FULL_ROUTES } from '../constants/routes';
-import { LoginPage } from '../pages/auth/LoginPage';
-import { RegisterPage } from '../pages/auth/RegisterPage';
-import { ForgotPasswordPage } from '../pages/auth/ForgotPasswordPage';
-import { VerifyEmailPage } from '../pages/auth/VerifyEmailPage';
-import { CallbackPage } from '../pages/auth/CallbackPage';
+import { _FULL_ROUTES } from '@/constants/routes';
+import { LoginPage } from '@/pages/auth/LoginPage';
+import { RegisterPage } from '@/pages/auth/RegisterPage';
+import { ForgotPasswordPage } from '@/pages/auth/ForgotPasswordPage';
+import { VerifyEmailPage } from '@/pages/auth/VerifyEmailPage';
+import { CallbackPage } from '@/pages/auth/CallbackPage';
 
 export const authRoutes: RouteObject[] = [
   {

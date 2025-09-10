@@ -1,19 +1,19 @@
 import { LogOut, Shield, User } from 'lucide-react';
-import { Badge } from '../../../components/ui/badge';
+import { Badge } from '@/components/ui/badge';
 import { Link, useNavigate } from 'react-router-dom';
-import { _FULL_ROUTES } from '../../../constants/routes';
-import { useUserStore } from '../../../stores/useUserStore';
-import { useLogoutMutation } from '../../../apis/auth/query';
-import { toastError, toastSuccess } from '../../../components/toaster';
+import { _FULL_ROUTES } from '@/constants/routes';
+import { useUserStore } from '@/stores/useUserStore';
+import { useLogoutMutation } from '@/apis/auth/query';
+import { toastError, toastSuccess } from '@/components/toaster';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../../../components/ui/dropdown-menu';
-import { Button } from '../../../components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export const AdminNavbar = () => {
   const navigate = useNavigate();

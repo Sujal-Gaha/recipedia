@@ -1,10 +1,10 @@
 import { ArrowLeft, Calendar, FileText, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Badge } from '../../../components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
-import { Separator } from '../../../components/ui/separator';
-import { Button } from '../../../components/ui/button';
-import { _FULL_ROUTES } from '../../../constants/routes';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import { _FULL_ROUTES } from '@/constants/routes';
 
 export const TermsOfServicePage = () => {
   return (

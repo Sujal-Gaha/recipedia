@@ -1,16 +1,16 @@
 import { DragEvent, useState } from 'react';
 import { Eye, Edit } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../../components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PreviewRecipe } from './components/PreviewRecipe';
 import { RecipeIngredient, RecipeStep } from './types/recipe';
 import { CreateRecipe } from './components/CreateRecipe';
-import { recipeApi } from '../../../../apis/recipe-api';
+import { recipeApi } from '@/apis/recipe-api';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { TCreateRecipeWithAllFieldsInput } from '@libs/contract';
-import { toastError, toastSuccess } from '../../../../components/toaster';
-import { ingredientApi } from '../../../../apis/ingredient-api';
-import { useUserStore } from '../../../../stores/useUserStore';
-import { useLoginRequiredDialog } from '../../../../hooks/useLoginRequiredDialog';
+import { toastError, toastSuccess } from '@/components/toaster';
+import { ingredientApi } from '@/apis/ingredient-api';
+import { useUserStore } from '@/stores/useUserStore';
+import { useLoginRequiredDialog } from '@/hooks/useLoginRequiredDialog';
 
 export const CreateRecipePage = () => {
   const [activeTab, setActiveTab] = useState('create');

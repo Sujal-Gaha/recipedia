@@ -1,5 +1,5 @@
 import { Outlet, RouteObject } from 'react-router-dom';
-import { _FULL_ROUTES } from '../constants/routes';
+import { _FULL_ROUTES } from '@/constants/routes';
 import { HomePage } from '@/pages/common/landing/HomePage';
 import { IngredientsPage } from '@/pages/user/IngredientsPage';
 import { RecipesPage } from '@/pages/user/recipe/RecipePage';

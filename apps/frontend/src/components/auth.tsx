@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
-import { useMeQuery } from '../apis/auth/query';
+import { useMeQuery } from '@/apis/auth/query';
 import { Error } from './error';
 import { Link } from 'react-router-dom';
 import { PageLoader } from './PageLoader';
-import { _FULL_ROUTES } from '../constants/routes';
-import { useUserStore } from '../stores/useUserStore';
+import { _FULL_ROUTES } from '@/constants/routes';
+import { useUserStore } from '@/stores/useUserStore';
 
 export const WithAuth = ({ children }: { children: ReactNode }) => {
   const meQuery = useMeQuery();

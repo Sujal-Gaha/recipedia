@@ -1,18 +1,18 @@
 import { ArrowLeft, Check, ChefHat, Eye, EyeOff, Lock, Mail, User } from 'lucide-react';
 import { useState } from 'react';
-import { Button } from '../../components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { Label } from '../../components/ui/label';
-import { Input } from '../../components/ui/input';
-import { Checkbox } from '../../components/ui/checkbox';
-import { Separator } from '../../components/ui/separator';
-import { _FULL_ROUTES } from '../../constants/routes';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Separator } from '@/components/ui/separator';
+import { _FULL_ROUTES } from '@/constants/routes';
 import { BackgroundPattern } from './components/background-pattern';
-import { useSendOtpMutation, useSignUpMutation } from '../../apis/auth/query';
+import { useSendOtpMutation, useSignUpMutation } from '@/apis/auth/query';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { TSignUpInput } from '../../apis/auth/fetcher';
-import { toastError, toastSuccess } from '../../components/toaster';
+import { TSignUpInput } from '@/apis/auth/fetcher';
+import { toastError, toastSuccess } from '@/components/toaster';
 
 const isGoogleAndFacebookLoginProviderEnabled = false;
 

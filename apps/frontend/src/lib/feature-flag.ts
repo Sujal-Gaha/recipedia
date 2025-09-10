@@ -22,4 +22,4 @@ export function getFeatureFlagFn(flags: string) {
   };
 }
 
-export const isFeatureEnabled = getFeatureFlagFn(env.FEATURE_FLAGS);
+export const isFeatureEnabled = getFeatureFlagFn(env.VITE_FEATURE_FLAGS);

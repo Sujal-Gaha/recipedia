@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Search, Filter, Clock, Star, TrendingUp, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Badge } from '../../components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { Input } from '../../components/ui/input';
-import { Checkbox } from '../../components/ui/checkbox';
-import { Button } from '../../components/ui/button';
-import { _FULL_ROUTES } from '../../constants/routes';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
+import { _FULL_ROUTES } from '@/constants/routes';
 import { ingredientApi } from '@/apis/ingredient-api';
 import { recipeApi } from '@/apis/recipe-api';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';

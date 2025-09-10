@@ -1,10 +1,10 @@
 import { TGetRecipeBySlugOutput } from '@libs/contract';
-import { Card, CardContent, CardHeader, CardTitle } from '../../../../../components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
-import { Separator } from '../../../../../components/ui/separator';
-import { Button } from '../../../../../components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import { Timer, Printer as Print } from 'lucide-react';
-import { Progress } from '../../../../../components/ui/progress';
+import { Progress } from '@/components/ui/progress';
 import { useState } from 'react';
 
 export const RecipeTab = ({ recipe }: { recipe: TGetRecipeBySlugOutput }) => {

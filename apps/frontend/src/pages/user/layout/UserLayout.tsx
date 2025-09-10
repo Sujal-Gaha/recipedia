@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { Navbar } from '../../common/Navbar';
-import { Footer } from '../../common/Footer';
+import { Navbar } from '@/pages/common/Navbar';
+import { Footer } from '@/pages/common/Footer';
 
 export const UserLayout = ({ children }: { children: ReactNode }) => {
   return (

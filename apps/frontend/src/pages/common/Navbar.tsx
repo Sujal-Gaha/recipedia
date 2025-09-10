@@ -1,6 +1,6 @@
 import { Bookmark, ChefHat, LogOut, Menu, Plus, User } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { _FULL_ROUTES } from '../../constants/routes';
+import { _FULL_ROUTES } from '@/constants/routes';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,28 +9,21 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
-} from '../../components/ui/navigation-menu';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '../../components/ui/sheet';
-import { Button } from '../../components/ui/button';
-import { useUserStore } from '../../stores/useUserStore';
+} from '@/components/ui/navigation-menu';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { useUserStore } from '@/stores/useUserStore';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '../../components/ui/dropdown-menu';
-import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
-import { Badge } from '../../components/ui/badge';
-import { useLogoutMutation } from '../../apis/auth/query';
-import { toastError, toastSuccess } from '../../components/toaster';
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { useLogoutMutation } from '@/apis/auth/query';
+import { toastError, toastSuccess } from '@/components/toaster';
 
 const navigationItems = [
   {

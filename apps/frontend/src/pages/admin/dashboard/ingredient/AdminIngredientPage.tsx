@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Grid3X3, List, Plus, Search } from 'lucide-react';
-import { Button } from '../../../../components/ui/button';
-import { Input } from '../../../../components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { IngredientCard } from './components/IngredientCard';
 import { Link } from 'react-router-dom';
-import { _FULL_ROUTES } from '../../../../constants/routes';
+import { _FULL_ROUTES } from '@/constants/routes';
 import { ingredientApi } from '@/apis/ingredient-api';
 import { IngredientTable } from './components/IngredientTable';
 

@@ -1,6 +1,6 @@
 import { ChefHat } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { _FULL_ROUTES } from '../../constants/routes';
+import { _FULL_ROUTES } from '@/constants/routes';
 
 export const Footer = () => {
   return (

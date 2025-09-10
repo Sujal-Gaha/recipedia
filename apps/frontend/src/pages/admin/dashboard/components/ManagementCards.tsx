@@ -1,8 +1,8 @@
 import { ArrowRight, Carrot, ChefHat, Users } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-import { _FULL_ROUTES } from '../../../../constants/routes';
-import { Button } from '../../../../components/ui/button';
+import { _FULL_ROUTES } from '@/constants/routes';
+import { Button } from '@/components/ui/button';
 
 export const ManagementCards = ({
   stats,

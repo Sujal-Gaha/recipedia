@@ -1,9 +1,9 @@
 import { RouteObject } from 'react-router-dom';
-import { _FULL_ROUTES } from '../constants/routes';
-import { TermsOfServicePage } from '../pages/common/terms-of-service/TermsOfServicePage';
-import { PrivacyPolicyPage } from '../pages/common/privacy-policy/PrivacyPolicyPage';
-import { ContactPage } from '../pages/common/contact/ContactPage';
-import FAQPage from '../pages/common/faq/FAQPage';
+import { _FULL_ROUTES } from '@/constants/routes';
+import { TermsOfServicePage } from '@/pages/common/terms-of-service/TermsOfServicePage';
+import { PrivacyPolicyPage } from '@/pages/common/privacy-policy/PrivacyPolicyPage';
+import { ContactPage } from '@/pages/common/contact/ContactPage';
+import FAQPage from '@/pages/common/faq/FAQPage';
 
 export const commonRoutes: RouteObject[] = [
   {

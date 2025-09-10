@@ -1,20 +1,20 @@
 import { Bookmark, Clock, Heart, Search, Star, TrendingUp } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
-import { Input } from '../../../../components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { RecipeDifficulty } from '@prisma/client';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RecipeDifficultySchema } from '@libs/contract';
-import { recipeApi } from '../../../../apis/recipe-api';
-import { useUserStore } from '../../../../stores/useUserStore';
+import { recipeApi } from '@/apis/recipe-api';
+import { useUserStore } from '@/stores/useUserStore';
 import { useQueryClient } from '@tanstack/react-query';
-import { toastError, toastSuccess } from '../../../../components/toaster';
-import { Badge } from '../../../../components/ui/badge';
-import { Button } from '../../../../components/ui/button';
+import { toastError, toastSuccess } from '@/components/toaster';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import clsx from 'clsx';
-import { Avatar, AvatarFallback, AvatarImage } from '../../../../components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Link } from 'react-router-dom';
-import { _FULL_ROUTES } from '../../../../constants/routes';
+import { _FULL_ROUTES } from '@/constants/routes';
 
 export const FavouriteRecipePage = () => {
   const [sortBy, setSortBy] = useState('popular');

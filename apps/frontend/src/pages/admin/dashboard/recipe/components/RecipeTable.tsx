@@ -9,7 +9,7 @@ import {
 import { _FULL_ROUTES } from '@/constants/routes';
 import { TGetAllRecipesOutput } from '@libs/contract';
 import { createColumnHelper } from '@tanstack/react-table';
-import { CheckCircle, Eye, Flag, MoreHorizontal } from 'lucide-react';
+import { Eye, Flag, MoreHorizontal } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const columnHelperForRecipe = createColumnHelper<TGetAllRecipesOutput>();

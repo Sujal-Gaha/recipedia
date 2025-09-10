@@ -1,5 +1,5 @@
 import { initQueryClient } from '@ts-rest/react-query';
-import { env } from '../lib/env';
+import { env } from '@/lib/env';
 import { recipeContract } from '@libs/contract';
 
 export const recipeApi = initQueryClient(recipeContract, {

@@ -1,15 +1,15 @@
 import { Bookmark, CheckCircle, Clock, Edit, Heart, Share2, Star, TrendingUp } from 'lucide-react';
-import { Button } from '../../../../../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../../components/ui/card';
-import { Badge } from '../../../../../components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '../../../../../components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   RecipeDifficultySchema,
   TCreateRecipeWithAllFieldsInput,
   TGetAllIngredientVariantsOutput,
 } from '@libs/contract';
 import { SubmitHandler, UseFormHandleSubmit, UseFormWatch } from 'react-hook-form';
-import { useUserStore } from '../../../../../stores/useUserStore';
+import { useUserStore } from '@/stores/useUserStore';
 
 export const PreviewRecipe = ({
   fetchedIngredientVariants,

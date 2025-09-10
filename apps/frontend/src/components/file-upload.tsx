@@ -3,10 +3,10 @@ import { Camera, Upload, X, FileImage, AlertCircle, Star } from 'lucide-react';
 import { toastError, toastInfo, toastSuccess } from './toaster';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
-import { cn } from '../lib/utils';
+import { cn } from '@/lib/utils';
 import { Progress } from './ui/progress';
 import { Button } from './ui/button';
-import { fileApi } from '../apis/file-api';
+import { fileApi } from '@/apis/file-api';
 import clsx from 'clsx';
 
 interface FileUploadProps {

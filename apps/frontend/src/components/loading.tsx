@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { ChefHat, Utensils, Heart, Star } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '@/lib/utils';
 
 interface LoadingProps {
   variant?: 'spinner' | 'dots' | 'pulse' | 'chef' | 'recipe' | 'minimal';

@@ -26,7 +26,7 @@ import {
   verifyEmail,
 } from './fetcher';
 import { useEffect, useRef } from 'react';
-import { toastError } from '../../components/toaster';
+import { toastError } from '@/components/toaster';
 
 // for register api
 export function useSignUpMutation() {

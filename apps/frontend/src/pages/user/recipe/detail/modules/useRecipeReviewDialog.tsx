@@ -1,16 +1,16 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../../../../components/ui/dialog';
-import { Button } from '../../../../../components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
-import { Label } from '../../../../../components/ui/label';
+import { Label } from '@/components/ui/label';
 import clsx from 'clsx';
 import { RecipeReviewRatingEnumSchema, RecipeReviewRatingEnumType, TUpsertRecipeReviewInput } from '@libs/contract';
-import { Textarea } from '../../../../../components/ui/textarea';
-import { recipeApi } from '../../../../../apis/recipe-api';
+import { Textarea } from '@/components/ui/textarea';
+import { recipeApi } from '@/apis/recipe-api';
 import { SubmitHandler, useForm, UseFormHandleSubmit, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import { toastError, toastSuccess } from '../../../../../components/toaster';
+import { toastError, toastSuccess } from '@/components/toaster';
 import { useQueryClient } from '@tanstack/react-query';
-import { CardLoading, InlineLoading } from '../../../../../components/loading';
+import { CardLoading, InlineLoading } from '@/components/loading';
 
 const getRating = (rating: string): number => {
   if (rating === 'ONE') return 1;

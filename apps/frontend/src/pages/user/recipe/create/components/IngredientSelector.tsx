@@ -1,17 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from '../../../../../components/ui/popover';
-import { Button } from '../../../../../components/ui/button';
-import { Badge } from '../../../../../components/ui/badge';
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '../../../../../components/ui/command';
-import { cn } from '../../../../../lib/utils';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { cn } from '@/lib/utils';
 
 interface IngredientVariant {
   id: string;

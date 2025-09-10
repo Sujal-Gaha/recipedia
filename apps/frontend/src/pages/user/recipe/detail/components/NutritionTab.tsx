@@ -1,5 +1,5 @@
 import { TGetRecipeBySlugOutput } from '@libs/contract';
-import { Card, CardContent, CardHeader, CardTitle } from '../../../../../components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const NutritionTab = ({ recipe }: { recipe: TGetRecipeBySlugOutput }) => {
   const total_calories = +recipe.ingredients

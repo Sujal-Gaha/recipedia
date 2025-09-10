@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Grid3X3, List, Search } from 'lucide-react';
-import { Button } from '../../../../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../components/ui/card';
-import { Input } from '../../../../components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RecipeCard } from './components/RecipeCard';
 import { recipeApi } from '@/apis/recipe-api';
 import { RecipeDifficultySchema, RecipeDifficultyType, RecipeStatusSchema, RecipeStatusType } from '@libs/contract';

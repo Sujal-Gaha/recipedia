@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef, ClipboardEvent, KeyboardEvent } from 'react';
 import { Shield, CheckCircle, Clock, RefreshCw, ArrowLeft, AlertCircle } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { Button } from '../../components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Input } from '../../components/ui/input';
+import { Input } from '@/components/ui/input';
 import { BackgroundPattern } from './components/background-pattern';
-import { _FULL_ROUTES } from '../../constants/routes';
-import { useSendOtpMutation, useVerifyEmailMutation } from '../../apis/auth/query';
-import { toastError, toastSuccess } from '../../components/toaster';
+import { _FULL_ROUTES } from '@/constants/routes';
+import { useSendOtpMutation, useVerifyEmailMutation } from '@/apis/auth/query';
+import { toastError, toastSuccess } from '@/components/toaster';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { TVerifyEmailInput, VerifyEmailInputSchema } from '../../apis/auth/fetcher';
+import { TVerifyEmailInput, VerifyEmailInputSchema } from '@/apis/auth/fetcher';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const EmailVerificationSuccess = () => {

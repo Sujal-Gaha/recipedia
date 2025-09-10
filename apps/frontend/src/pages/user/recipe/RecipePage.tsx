@@ -1,21 +1,21 @@
 import { useState } from 'react';
-import { Button } from '../../../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
-import { Badge } from '../../../components/ui/badge';
-import { Input } from '../../../components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter, Clock, Star, TrendingUp, Heart, Bookmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { _FULL_ROUTES } from '../../../constants/routes';
+import { _FULL_ROUTES } from '@/constants/routes';
 import { RecipesPageHeader } from './components/PageHeader';
-import { recipeApi } from '../../../apis/recipe-api';
+import { recipeApi } from '@/apis/recipe-api';
 import clsx from 'clsx';
-import { Avatar, AvatarFallback, AvatarImage } from '../../../components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { RecipeDifficulty } from '@prisma/client';
 import { RecipeDifficultySchema } from '@libs/contract';
-import { toastError, toastSuccess } from '../../../components/toaster';
+import { toastError, toastSuccess } from '@/components/toaster';
 import { useQueryClient } from '@tanstack/react-query';
-import { useUserStore } from '../../../stores/useUserStore';
+import { useUserStore } from '@/stores/useUserStore';
 
 export const RecipesPage = () => {
   const [sortBy, setSortBy] = useState('popular');

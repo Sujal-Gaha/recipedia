@@ -1,12 +1,12 @@
 import { Dispatch, DragEvent, SetStateAction } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../../components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChefHat, Clock, Eye, GripVertical, MoveDown, MoveUp, Plus, X } from 'lucide-react';
-import { Label } from '../../../../../components/ui/label';
-import { Input } from '../../../../../components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { RecipeIngredient, RecipeStep } from '../types/recipe';
-import { Textarea } from '../../../../../components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../../../components/ui/select';
-import { Button } from '../../../../../components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 import { SubmitHandler, UseFormHandleSubmit, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import {
   RecipeDifficultySchema,
@@ -15,7 +15,7 @@ import {
   TCreateRecipeWithAllFieldsInput,
   TGetAllIngredientVariantsOutput,
 } from '@libs/contract';
-import { FileUpload } from '../../../../../components/file-upload';
+import { FileUpload } from '@/components/file-upload';
 
 export const CreateRecipe = ({
   fetchedIngredientVariants,

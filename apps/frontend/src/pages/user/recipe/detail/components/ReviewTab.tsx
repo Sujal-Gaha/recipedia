@@ -1,21 +1,21 @@
 import { RecipeReviewVoteTypeType, TGetRecipeBySlugOutput } from '@libs/contract';
-import { Card, CardContent } from '../../../../../components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Award, Edit, Flag, MessageCircle, MoreHorizontal, Star, ThumbsDown, ThumbsUp } from 'lucide-react';
-import { Progress } from '../../../../../components/ui/progress';
-import { Separator } from '../../../../../components/ui/separator';
-import { Button } from '../../../../../components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { Avatar, AvatarFallback, AvatarImage } from '../../../../../components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../../../../../components/ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu';
 import { useState } from 'react';
-import { recipeApi } from '../../../../../apis/recipe-api';
+import { recipeApi } from '@/apis/recipe-api';
 import clsx from 'clsx';
-import { toastError, toastSuccess } from '../../../../../components/toaster';
+import { toastError, toastSuccess } from '@/components/toaster';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRecipeReviewModal } from '../modules/useRecipeReviewDialog';
 

@@ -1,38 +1,23 @@
 import { Edit, Eye, MoreHorizontal, Package, Trash2, TrendingUp } from 'lucide-react';
-import { Badge } from '../../../../../components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../../../components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../../../../../components/ui/dropdown-menu';
-import { Button } from '../../../../../components/ui/button';
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 import { TGetAllIngredientsWithVariantsAndImagesOutput } from '@libs/contract';
 
 export const IngredientCard = ({ ingredient }: { ingredient: TGetAllIngredientsWithVariantsAndImagesOutput }) => (
   <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-    <div className="relative">
-      <img
-        src={ingredient.image || '/placeholder.svg'}
-        alt={ingredient.name}
-        width={200}
-        height={150}
-        className="w-full h-40 object-cover"
-      />
-      <div className="absolute top-2 right-2">
-        {/* <Badge
-          variant={ingredient.status === 'active' ? 'default' : 'secondary'}
-          className={
-            ingredient.status === 'active'
-              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/50'
-              : 'bg-gray-50 text-gray-700 border border-gray-200/50'
-          }
-        >
-          {ingredient.status}
-        </Badge> */}
-      </div>
-    </div>
+    <img
+      src={ingredient.image || '/placeholder.svg'}
+      alt={ingredient.name}
+      width={200}
+      height={150}
+      className="w-full h-40 object-cover"
+    />
     <CardHeader className="pb-3">
       <CardTitle className="text-lg">{ingredient.name}</CardTitle>
       <CardDescription>{ingredient.category}</CardDescription>
