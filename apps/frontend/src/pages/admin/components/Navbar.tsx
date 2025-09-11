@@ -87,7 +87,7 @@ export const AdminNavbar = () => {
                   Profile
                 </Link>
               </DropdownMenuItem>
-              {/* BACKLOG_FEATURE */}
+              {/* !BACKLOG_FEATURE */}
               {/* <DropdownMenuItem asChild>
                 <Link to="/notifications">
                   <Settings className="mr-2 h-4 w-4" />

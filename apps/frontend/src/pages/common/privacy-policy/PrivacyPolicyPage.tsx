@@ -28,7 +28,7 @@ export const PrivacyPolicyPage = () => {
           <div className="flex gap-2">
             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
               <Calendar className="w-3 h-3 mr-1" />
-              Last updated: January 15, 2024
+              Last updated: January 15, 2025
             </Badge>
             <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
               <Lock className="w-3 h-3 mr-1" />

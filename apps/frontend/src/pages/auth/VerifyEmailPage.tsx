@@ -322,11 +322,10 @@ export const VerifyEmailPage = () => {
                 </Button>
               </div>
 
-              {/* Help section */}
               <div className="text-center pt-4 border-t">
                 <p className="text-sm text-muted-foreground">
                   Having trouble?{' '}
-                  <Link to="/contact" className="text-primary hover:underline font-medium">
+                  <Link to={_FULL_ROUTES.CONTACT} className="text-primary hover:underline font-medium">
                     Contact support
                   </Link>
                 </p>

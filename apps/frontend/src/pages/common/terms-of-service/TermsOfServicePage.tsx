@@ -22,12 +22,12 @@ export const TermsOfServicePage = () => {
             </div>
             <div>
               <h1 className="text-4xl font-bold text-gray-900">Terms of Service</h1>
-              <p className="text-gray-600 mt-2">Last updated: January 15, 2024</p>
+              <p className="text-gray-600 mt-2">Last updated: January 15, 2025</p>
             </div>
           </div>
           <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
             <Calendar className="w-3 h-3 mr-1" />
-            Effective Date: January 15, 2024
+            Effective Date: January 15, 2025
           </Badge>
         </div>
 

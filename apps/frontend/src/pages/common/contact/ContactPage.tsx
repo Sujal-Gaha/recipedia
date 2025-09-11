@@ -283,7 +283,7 @@ export const ContactPage = () => {
                     <div className="space-y-2">
                       <Label htmlFor="category">Category *</Label>
                       <Select value={formData.category} onValueChange={(value) => handleInputChange('category', value)}>
-                        <SelectTrigger>
+                        <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
                         <SelectContent>

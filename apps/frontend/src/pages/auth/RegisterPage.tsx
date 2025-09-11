@@ -255,11 +255,11 @@ export const RegisterPage = () => {
                     />
                     <Label htmlFor="terms" className="text-sm leading-relaxed">
                       I agree to the{' '}
-                      <Link to="/terms" className="text-primary hover:underline">
+                      <Link to={_FULL_ROUTES.TERMS_OF_SERVICE} className="text-primary hover:underline">
                         Terms of Service
                       </Link>{' '}
                       and{' '}
-                      <Link to="/privacy" className="text-primary hover:underline">
+                      <Link to={_FULL_ROUTES.PRIVACY_POLICY} className="text-primary hover:underline">
                         Privacy Policy
                       </Link>
                     </Label>
@@ -350,11 +350,11 @@ export const RegisterPage = () => {
         <div className="mt-8 text-center">
           <p className="text-xs text-muted-foreground">
             By creating an account, you agree to our{' '}
-            <Link to="/terms" className="text-primary hover:underline">
+            <Link to={_FULL_ROUTES.TERMS_OF_SERVICE} className="text-primary hover:underline">
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link to="/privacy" className="text-primary hover:underline">
+            <Link to={_FULL_ROUTES.PRIVACY_POLICY} className="text-primary hover:underline">
               Privacy Policy
             </Link>
           </p>

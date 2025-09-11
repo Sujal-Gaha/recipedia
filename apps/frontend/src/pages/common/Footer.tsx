@@ -48,12 +48,12 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/users" className="hover:text-foreground transition-colors">
+                <Link to="#" className="hover:text-foreground transition-colors">
                   Top Chefs
                 </Link>
               </li>
               <li>
-                <Link to="/reviews" className="hover:text-foreground transition-colors">
+                <Link to="#" className="hover:text-foreground transition-colors">
                   Reviews
                 </Link>
               </li>
@@ -63,17 +63,17 @@ export const Footer = () => {
             <h3 className="font-semibold mb-6 text-lg">Support</h3>
             <ul className="space-y-3 text-muted-foreground">
               <li>
-                <Link to="/help" className="hover:text-foreground transition-colors">
+                <Link to="#" className="hover:text-foreground transition-colors">
                   Help Center
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-foreground transition-colors">
+                <Link to={_FULL_ROUTES.CONTACT} className="hover:text-foreground transition-colors">
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link to="/privacy" className="hover:text-foreground transition-colors">
+                <Link to={_FULL_ROUTES.PRIVACY_POLICY} className="hover:text-foreground transition-colors">
                   Privacy Policy
                 </Link>
               </li>

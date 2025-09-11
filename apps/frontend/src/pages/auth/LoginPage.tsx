@@ -241,11 +241,11 @@ export const LoginPage = () => {
         <div className="mt-8 text-center">
           <p className="text-xs text-muted-foreground">
             By signing in, you agree to our{' '}
-            <Link to="/terms" className="text-primary hover:underline">
+            <Link to={_FULL_ROUTES.TERMS_OF_SERVICE} className="text-primary hover:underline">
               Terms of Service
             </Link>{' '}
             and{' '}
-            <Link to="/privacy" className="text-primary hover:underline">
+            <Link to={_FULL_ROUTES.PRIVACY_POLICY} className="text-primary hover:underline">
               Privacy Policy
             </Link>
           </p>
