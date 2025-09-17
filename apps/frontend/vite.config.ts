@@ -30,6 +30,7 @@ export default defineConfig(() => ({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
+      '@libs/contract': resolve(__dirname, '../../libs/contract/src/index.ts'),
     },
   },
 }));
