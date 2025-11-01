@@ -2,7 +2,7 @@ import { DragEvent, useState } from 'react';
 import { Eye, Edit } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PreviewRecipe } from './components/PreviewRecipe';
-import { RecipeIngredient, RecipeStep } from './types/recipe';
+import { RecipeIngredient, RecipeStep, RecipeTip } from './types/recipe';
 import { CreateRecipe } from './components/CreateRecipe';
 import { recipeApi } from '@/apis/recipe-api';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -56,11 +56,15 @@ export const CreateRecipePage = () => {
         },
       ],
       images: [],
-      tips: [],
+      tips: [
+        {
+          content: '',
+        },
+      ],
     },
   });
 
-  const { ingredients, steps, difficulty, images } = watch();
+  const { ingredients, steps, difficulty, images, tips } = watch();
 
   const addIngredient = () => {
     const newIngredient: RecipeIngredient = {
@@ -152,6 +156,18 @@ export const CreateRecipePage = () => {
     setCompletedSteps((prev) =>
       prev.includes(step_no) ? prev.filter((stepNo) => stepNo !== step_no) : [...prev, step_no]
     );
+  };
+
+  const addTip = () => {
+    const newTip: RecipeTip = {
+      content: '',
+    };
+    setValue('tips', [...tips, newTip]);
+  };
+
+  const removeTip = (index: number) => {
+    const updatedTips = tips.filter((_, i) => i !== index);
+    setValue('tips', updatedTips);
   };
 
   const createRecipe: SubmitHandler<TCreateRecipeWithAllFieldsInput> = async (input) => {
@@ -260,9 +276,12 @@ export const CreateRecipePage = () => {
             difficulty={difficulty}
             ingredients={ingredients}
             steps={steps}
+            tips={tips}
             handleDrop={handleDrop}
             addIngredient={addIngredient}
             addStep={addStep}
+            addTip={addTip}
+            removeTip={removeTip}
             removeIngredient={removeIngredient}
             removeStep={removeStep}
             moveStep={moveStep}

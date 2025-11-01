@@ -22,3 +22,7 @@ export interface RecipeFormData {
   tags: string[];
   image?: string;
 }
+
+export interface RecipeTip {
+  content: string;
+}

@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ChefHat, Clock, Eye, GripVertical, MoveDown, MoveUp, Plus, X } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { RecipeIngredient, RecipeStep } from '../types/recipe';
+import { RecipeIngredient, RecipeStep, RecipeTip } from '../types/recipe';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,7 @@ export const CreateRecipe = ({
   difficulty,
   ingredients,
   steps,
+  tips,
   onFileUpload,
   onFileRemove,
   onSelectPrimary,
@@ -32,6 +33,8 @@ export const CreateRecipe = ({
   handleDragOver,
   handleDragStart,
   moveStep,
+  addTip,
+  removeTip,
   removeIngredient,
   removeStep,
   draggedStep,
@@ -46,6 +49,7 @@ export const CreateRecipe = ({
   images: Pick<RecipeImage, 'is_primary' | 'url'>[];
   difficulty: RecipeDifficultyType;
   ingredients: RecipeIngredient[];
+  tips: RecipeTip[];
   steps: RecipeStep[];
   onFileUpload: (url: string) => void;
   onFileRemove: (url: string) => void;
@@ -57,6 +61,8 @@ export const CreateRecipe = ({
   draggedStep: number | null;
   removeStep: (step_no: number) => void;
   moveStep: (step_no: number, direction: 'up' | 'down') => void;
+  addTip: () => void;
+  removeTip: (index: number) => void;
   handleDragOver: (e: DragEvent) => void;
   handleDragStart: (e: DragEvent, step_no: number) => void;
   setActiveTab: Dispatch<SetStateAction<string>>;
@@ -327,6 +333,49 @@ export const CreateRecipe = ({
           <Button type="button" variant="outline" onClick={addStep} className="mt-6 h-12 bg-transparent">
             <Plus className="mr-2 h-5 w-5" />
             Add Step
+          </Button>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl">Tips</CardTitle>
+          <CardDescription className="text-lg">Provide tips and tricks for the recipe.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {tips.map((_, index) => (
+              <div
+                key={index}
+                className="flex gap-4 p-4 rounded-lg border-2 transition-all border-transparent bg-muted/30 shadow-lg"
+              >
+                <div className="flex-shrink-0 w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-lg font-semibold">
+                  {index + 1}
+                </div>
+
+                <Textarea
+                  placeholder="Describe this tip in detail..."
+                  rows={3}
+                  className="text-base"
+                  {...register(`tips.${index}.content`)}
+                />
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => removeTip(index)}
+                  disabled={tips.length === 1}
+                  className="h-10 w-10 p-0 self-start !cursor-pointer"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
+          <Button type="button" variant="outline" onClick={addTip} className="mt-6 h-12 bg-transparent">
+            <Plus className="mr-2 h-5 w-5" />
+            Add Tips
           </Button>
         </CardContent>
       </Card>
