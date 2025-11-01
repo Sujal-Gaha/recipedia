@@ -1,5 +1,6 @@
 import { UserTypeType } from '@libs/contract';
 import {
+  TForgotPasswordResponseCodes,
   TLoginResponseCodes,
   TLogoutResponseCodes,
   TMeResponseCodes,
@@ -139,9 +140,11 @@ export async function logout(): Promise<TLogoutOutput> {
   return data;
 }
 
-export type TSendOtpInput = {
-  email: string;
-};
+export const SendOtpInputSchema = z.object({
+  email: z.string().email(),
+});
+
+export type TSendOtpInput = z.infer<typeof SendOtpInputSchema>;
 export type TSendOtpOutput = {
   message: string;
   code: TSendOtpResponseCodes;
@@ -202,13 +205,16 @@ export async function verifyEmail(input: TVerifyEmailInput): Promise<TVerifyEmai
   return data;
 }
 
-export type TForgotPasswordInput = {
-  email: string;
-  otp: string;
-  newPassword: string;
-};
+export const ForgotPasswordInputSchema = z.object({
+  email: z.string().email(),
+  otp: z.string().min(6),
+  newPassword: z.string().min(8),
+});
+
+export type TForgotPasswordInput = z.infer<typeof ForgotPasswordInputSchema>;
 export type TForgotPasswordOutput = {
   message: string;
+  code: TForgotPasswordResponseCodes;
 };
 export async function forgotPassword(input: TForgotPasswordInput): Promise<TForgotPasswordOutput> {
   const res = await fetch(`${env.VITE_BACKEND_URL}/v1/auth/forgot-password`, {
